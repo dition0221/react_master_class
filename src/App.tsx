@@ -1,30 +1,23 @@
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => props.theme.backgroundColor};
-`;
-
-const Title = styled.h1`
-  color: ${(props) => props.theme.textColor};
-  font-size: 128px;
-  + span {
-    margin-top: 10px;
-    color: yellowgreen;
-  }
-`;
+import { useState } from "react";
 
 function App() {
+  const [value, setValue] = useState("");
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    console.log(value);
+  };
   return (
-    <Wrapper>
-      <Title>Hello</Title>
-      <span>@dition0221</span>
-    </Wrapper>
+    <div>
+      <form>
+        <input
+          value={value}
+          onChange={onChange}
+          type="text"
+          placeholder="username"
+        />
+        <button>Log In</button>
+      </form>
+    </div>
   );
 }
 
