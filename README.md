@@ -56,8 +56,7 @@
       - 'npm i -D @types/패키지명'을 실행해 설치
     - 'index.tsx'에서 root 코드가 error 날 시 아래의 코드로 수정 (+ as HTMLElement)
       - const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-- **23-08-21 : #3.2 ~ #**
-  - 3.5 / 2:12
+- **23-08-21 : #3.2 ~ #3.7 / TypeScript**
 
 ---
 
