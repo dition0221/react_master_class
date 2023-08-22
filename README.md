@@ -56,7 +56,25 @@
       - 'npm i -D @types/패키지명'을 실행해 설치
     - 'index.tsx'에서 root 코드가 error 날 시 아래의 코드로 수정 (+ as HTMLElement)
       - const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-- **23-08-21 : #3.2 ~ #4.2 / TypeScript + React Router V6 (1)**
+- **23-08-21 : #3.2 ~ #4.2 / TypeScript + React Router V6(1)**
+  - TypeScript
+    - React Component
+      - Component가 필요로 하는 prop을 TS에게 설명해야 함
+      - interface : 객체 모양(object shape)을 TS에게 설명해주는 TS의 개념
+        - 선언 기본형 : interface 인터페이스명 { ... }
+        - 사용 기본형 : ':타입명'
+        - 'styled-components'에서 prop을 받으려면, 타입을 선언해 주어야 함
+          - 기본형 : const 컴포넌트명 = styled.HTML태그명<타입명>\`...\`;
+    - 선택적(optional) props
+      - '?'기호를 사용해 선택적 prop 설정 가능
+      - 병합연산자 '??' : 'null' 또는 'undefined'일 때 기본값 지정 가능
+    - React State
+      - TS가 'useState'의 초깃값을 보고, 자동적으로 타입을 추론함
+      - 가끔 2개 이상의 타입을 사용하는 경우, 직접 타입을 선언해 주어야 함
+        - 기본형 : const [변수명, 함수명] = useState<타입명>(초깃값);
+    - React Event
+      - 'addEventListener'에 인자로 사용하는 'event'에 타입을 설명해야 함
+- **23-08-22 : #5.0 ~ # /**
 
 ---
 
