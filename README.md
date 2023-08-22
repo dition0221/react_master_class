@@ -6,7 +6,7 @@
 
 ---
 
-- **23-08-17 : #1.0 ~ #2.2 / Styled Components(1)**
+- **23-08-17 : #1.0 ~ #2.2 / Styled-Components(1)**
   - 패키지 : 'styled-components'
     - React 애플리케이션에서 컴포넌트 기반 스타일링을 위한 라이브러리
     - JavaScript 코드 안에서 스타일을 정의하고, 컴포넌트와 함께 사용 가능
@@ -20,7 +20,7 @@
       - 이미 만들어진 컴포넌트로부터 확장 가능
         - 기본형 : const 컴포넌트명 = styled(기존컴포넌트명)\`...\`;
     - 자동 완성 기능 'vscode-styled-components' 확장프로그램 사용
-- **23-08-18 : #2.3 ~ #3.1 / Styled Components(2) & Set up TypeScript**
+- **23-08-18 : #2.3 ~ #3.1 / Styled-Components(2) & Set up TypeScript**
   - styled-components
     - 컴포넌트의 스타일은 그대로 사용하되, HTML태그만을 바꾸고 싶을 때
       - 컴포넌트에서 'as="HTML태그명"' 속성을 사용
@@ -56,7 +56,7 @@
       - 'npm i -D @types/패키지명'을 실행해 설치
     - 'index.tsx'에서 root 코드가 error 날 시 아래의 코드로 수정 (+ as HTMLElement)
       - const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-- **23-08-21 : #3.2 ~ #4.2 / TypeScript + React Router V6(1)**
+- **23-08-21 : #3.2 ~ #4.2 / TypeScript + React-Router-V6(1)**
   - TypeScript
     - React Component
       - Component가 필요로 하는 prop을 TS에게 설명해야 함
@@ -74,9 +74,11 @@
         - 기본형 : const [변수명, 함수명] = useState<타입명>(초깃값);
     - React Event
       - 'addEventListener'에 인자로 사용하는 'event'에 타입을 설명해야 함
-- **23-08-22 : #5.0 ~ # /**
+- **23-08-22 : #5.0 ~ #5.3 / React-Router + createGlobalStyle + fetchAPI**
 
 ---
+
+- **23-08-23 : #5.4 ~ #5. /**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
