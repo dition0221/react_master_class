@@ -1,6 +1,12 @@
-import { useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useParams,
+} from "react-router-dom";
 import styled from "styled-components";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // Components
 import Loader from "../components/Loader";
 
@@ -23,21 +29,21 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const DivContainer = styled.div`
+const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #111;
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 15px;
   padding: 20px;
 `;
 
-const ExplainDiv = styled.div`
+const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   h1 {
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 10px;
   }
   span {
@@ -49,6 +55,28 @@ const Description = styled.p`
   font-size: 18px;
   margin: 30px 0;
   line-height: 110%;
+`;
+
+const Tabs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 30px 0;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ $isActive: boolean }>`
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  text-align: center;
+  color: ${(props) =>
+    props.$isActive ? props.theme.accentColor : props.theme.textColor};
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  a {
+    display: block;
+    padding: 10px;
+  }
 `;
 
 /* Interface */
@@ -117,11 +145,14 @@ interface PriceData {
 export default function Coin() {
   const [loading, setLoading] = useState(true);
   const { coinId } = useParams();
-  const { state } = useLocation() as RouteState; // from 'Home.tsx'
+  const { state } = useLocation() as RouteState; // Data from 'Home.tsx'
   const [info, setInfo] = useState<InfoData>();
   const [price, setPrice] = useState<PriceData>();
-  /*
-  ! 사용 시 각주 제거하기
+  // useMatch
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
+  // fetch API
+  // ! API 사용 시 각주 제거하기
   useEffect(() => {
     (async () => {
       const infoData = await (
@@ -130,50 +161,58 @@ export default function Coin() {
       const priceData = await (
         await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
       ).json();
-      console.log("infoData", infoData);
-      console.log("priceData", priceData);
       setInfo(infoData);
       setPrice(priceData);
       setLoading(false);
     })();
   }, [coinId]);
-  */
 
   return (
     <Container>
       <Header>
-        <Title>{state?.name ?? ""}</Title>
+        <Title>{state?.name ? state.name : loading ? null : info?.name}</Title>
       </Header>
       {loading ? (
         <Loader />
       ) : (
-        <Fragment>
-          <DivContainer>
-            <ExplainDiv>
+        <>
+          <Overview>
+            <OverviewItem>
               <h1>RANK:</h1>
               <span>{info?.rank ?? "-"}</span>
-            </ExplainDiv>
-            <ExplainDiv>
+            </OverviewItem>
+            <OverviewItem>
               <h1>SYMBOL:</h1>
               <span>{`$${info?.symbol ?? " -"}`}</span>
-            </ExplainDiv>
-            <ExplainDiv>
+            </OverviewItem>
+            <OverviewItem>
               <h1>OPEN SOURCE:</h1>
               <span>{info?.open_source ? "Yes" : "No"}</span>
-            </ExplainDiv>
-          </DivContainer>
+            </OverviewItem>
+          </Overview>
           <Description>{info?.description}</Description>
-          <DivContainer>
-            <ExplainDiv>
+          <Overview>
+            <OverviewItem>
               <h1>TOTAL SUPPLY:</h1>
               <span>{price?.total_supply ?? "-"}</span>
-            </ExplainDiv>
-            <ExplainDiv>
+            </OverviewItem>
+            <OverviewItem>
               <h1>MAX SUPPLY:</h1>
               <span>{price?.max_supply ?? "-"}</span>
-            </ExplainDiv>
-          </DivContainer>
-        </Fragment>
+            </OverviewItem>
+          </Overview>
+
+          <Tabs>
+            <Tab $isActive={chartMatch !== null}>
+              <Link to={"chart"}>CHART</Link>
+            </Tab>
+            <Tab $isActive={priceMatch !== null}>
+              <Link to={"price"}>PRICE</Link>
+            </Tab>
+          </Tabs>
+
+          <Outlet />
+        </>
       )}
     </Container>
   );

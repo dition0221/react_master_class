@@ -22,8 +22,9 @@ const CoinsList = styled.ul``;
 const Coin = styled.li`
   background-color: whitesmoke;
   color: ${(props) => props.theme.bgColor};
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border-radius: 15px;
+  font-size: 40px;
   a {
     display: flex;
     align-items: center;
@@ -61,8 +62,7 @@ interface CoinInterface {
 export default function Coins() {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
-  /*
-  ! 사용 시 각주 제거하기
+  // ! API 사용 시 각주 제거하기
   useEffect(() => {
     (async () => {
       const json = await (
@@ -72,12 +72,11 @@ export default function Coins() {
       setLoading(false);
     })();
   }, []);
-  */
 
   return (
     <Container>
       <Header>
-        <Title>암호화폐 코인</Title>
+        <Title>암호화폐</Title>
       </Header>
       {loading ? (
         <Loader />

@@ -52,7 +52,6 @@ const GlobalStyle = createGlobalStyle`
 	}
 	body {
 	font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
-	font-size: 40px;
 	background-color: ${(props) => props.theme.bgColor};
 	color: ${(props) => props.theme.textColor};
 	}

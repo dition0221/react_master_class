@@ -102,8 +102,7 @@
   - 즉시 실행 함수 표현 (IIFE; Immediately Invoked Function Expression)
     - 정의되자마자 즉시 실행되는 함수 (선언 후 실행할 필요 없음)
     - 기본형 : (함수선언)();
-- **23-08-23 : #5.4 ~ #5.11 /**
-  <!-- 5.7 / 3:03 -->
+- **23-08-23 : #5.4 ~ #5.8 / Link state + Nested Routes + useMatch**
 
 ---
 
