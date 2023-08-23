@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+// Components
+import Loader from "../components/Loader";
 
 const Container = styled.div`
   padding: 0 20px;
@@ -18,12 +20,13 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
+  background-color: whitesmoke;
   color: ${(props) => props.theme.bgColor};
   margin-bottom: 10px;
   border-radius: 15px;
   a {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 20px;
     transition: color 0.2s ease-in;
   }
@@ -39,9 +42,10 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
+const Img = styled.img`
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
 `;
 
 interface CoinInterface {
@@ -57,6 +61,8 @@ interface CoinInterface {
 export default function Coins() {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  /*
+  ! 사용 시 각주 제거하기
   useEffect(() => {
     (async () => {
       const json = await (
@@ -66,6 +72,7 @@ export default function Coins() {
       setLoading(false);
     })();
   }, []);
+  */
 
   return (
     <Container>
@@ -73,12 +80,17 @@ export default function Coins() {
         <Title>암호화폐 코인</Title>
       </Header>
       {loading ? (
-        <Loader>Loading...</Loader>
+        <Loader />
       ) : (
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
+              <Link to={`/${coin.id}`} state={{ name: coin.name }}>
+                <Img
+                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                />
+                {coin.name} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinsList>

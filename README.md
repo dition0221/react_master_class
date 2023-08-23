@@ -2,7 +2,7 @@
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/>
 
 ---
 
@@ -75,10 +75,37 @@
     - React Event
       - 'addEventListener'에 인자로 사용하는 'event'에 타입을 설명해야 함
 - **23-08-22 : #5.0 ~ #5.3 / React-Router + createGlobalStyle + fetchAPI**
+  - React-Router v6
+    - 설정법
+      1. '/src/routes' 폴더에 화면에 보여줄 컴포넌트 파일들을 생성하기
+      2. '/src/Router.tsx' 라우터 파일 생성 및 설정하기
+         - { BrowserRouter, Routes, Route } 등
+      3. 라우터 파일을 렌더링하기
+         - 'App.tsx'에서 &lt;Router /&gt;를 return하여 렌더링
+    - 'useParams()' : URL 파라미터 값(object)을 받을 수 있음
+    - &lt;Link&gt; : React-Router 내에서 페이지를 이동하는 태그
+      - 기본형 : &lt;Link to="이동할URL"&gt;내용&lt;/Link&gt;
+      - CSS에서는 'Link' 대신 'a'태그로 사용 가능
+  - 'styled-components'에서의 전역 스타일링
+    - 'createGlobalStyle' 프로퍼티를 사용해 렌더링 시 전역 스코프에 스타일 사용
+      - 기본형 : const 컴포넌트명 = createGlobalStyle\` ... \`;
+    - '&lt;컴포넌트명 /&gt;'을 사용해 return
+      - 폰트 사용 시 '@import'문이 제대로 적용되지 않으므로, 'index.html'의 &lt;head&gt;에 넣은 후 사용
+  - &lt;Fragment&gt; : 일종의 유령 컴포넌트
+    - 부모 element 없이 서로 붙어있는 많은 컴포넌트들을 return할 수 있게 해줌
+      - &lt;div&gt; element 사용 없이 렌더링
+      - 무수한 &lt;div&gt;가 사용되는 것을 방지함
+  - fetch API
+    - API를 통해 데이터를 가져올 때 TS에게 데이터의 타입을 알려주어야 함 (interface)
+    - 'axios'패키지 사용 시 json 형식으로 바로 가져옴
+      - 기본형 : const 변수명 = await axios("URL주소");
+  - 즉시 실행 함수 표현 (IIFE; Immediately Invoked Function Expression)
+    - 정의되자마자 즉시 실행되는 함수 (선언 후 실행할 필요 없음)
+    - 기본형 : (함수선언)();
+- **23-08-23 : #5.4 ~ #5.11 /**
+  <!-- 5.7 / 3:03 -->
 
 ---
-
-- **23-08-23 : #5.4 ~ #5. /**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
