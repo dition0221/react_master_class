@@ -62,16 +62,17 @@ interface CoinInterface {
 export default function Coins() {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  // fetch API
   // ! API 사용 시 각주 제거하기
-  useEffect(() => {
-    (async () => {
-      const json = await (
-        await fetch("https://api.coinpaprika.com/v1/coins")
-      ).json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const json = await (
+  //       await fetch("https://api.coinpaprika.com/v1/coins")
+  //     ).json();
+  //     setCoins(json.slice(0, 100));
+  //     setLoading(false);
+  //   })();
+  // }, []);
 
   return (
     <Container>

@@ -2,7 +2,7 @@
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/>
 
 ---
 
@@ -95,6 +95,7 @@
     - 부모 element 없이 서로 붙어있는 많은 컴포넌트들을 return할 수 있게 해줌
       - &lt;div&gt; element 사용 없이 렌더링
       - 무수한 &lt;div&gt;가 사용되는 것을 방지함
+    - 주로 빈 태그(<></>)로 사용함
   - fetch API
     - API를 통해 데이터를 가져올 때 TS에게 데이터의 타입을 알려주어야 함 (interface)
     - 'axios'패키지 사용 시 json 형식으로 바로 가져옴
@@ -103,6 +104,25 @@
     - 정의되자마자 즉시 실행되는 함수 (선언 후 실행할 필요 없음)
     - 기본형 : (함수선언)();
 - **23-08-23 : #5.4 ~ #5.8 / Link state + Nested Routes + useMatch**
+  - &lt;Link&gt; state : 화면에 보이지 않는 방식으로 다른 페이지에 데이터를 보내는 방법
+    - 'state' 속성을 사용해 object 형식으로 데이터 전송 가능
+    - 'useLocation()'을 사용해 데이터를 수신
+      - 받은 데이터의 타입을 TS에게 설명해주어야 함
+      - react-router-dom v6부터 'useLocation()'의 제네릭을 지원하지 않음
+        - 'as 인터페이스명' 방식으로 사용
+  - '?.' 옵셔널체이닝
+    - 객체의 프로퍼티에 접근 시 해당 프로퍼티가 존재하지 않는 경우, Error를 발생시키지 않고 'undefined'를 반환함
+  - Nested Routes : route 안에 존재하는 또 다른 route
+    - 웹사이트에서 탭을 사용할 때 유용함 (스크린 안에 섹션이 많을 때 등)
+    - 생성법 (자식 route를 라우터 파일에 작성하는 방법)
+      1. 라우터 파일에서 부모 &lt;Route&gt;에 감싸서 사용하기
+         - 상대경로 URL을 지원하므로, 자식 route의 path는 상대경로를 사용
+      2. 자식 route가 어디에 render가 될지 부모 route 컴포넌트에서 '&lt;Outlet /&gt;'으로 표시하기
+  - useMatch() : 현재 URL 위치를 기준으로 지정된 경로에 대한 일치 데이터를 반환
+    - 기본형 : const 변수명 = useMatch("URL주소");
+      - import { useMatch } from "react-router-dom";
+      - 상대경로 URL 사용 불가능
+    - 사용자가 선택한 URL에 위치하면 object를 반환, 그렇지않으면 null을 반환
 
 ---
 
