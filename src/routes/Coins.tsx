@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 // Components
 import Loader from "../components/Loader";
+// API
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0 20px;
@@ -49,7 +51,7 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
-interface CoinInterface {
+interface ICoins {
   id: string;
   name: string;
   symbol: string;
@@ -60,30 +62,19 @@ interface CoinInterface {
 }
 
 export default function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  // fetch API
-  // ! API 사용 시 각주 제거하기
-  // useEffect(() => {
-  //   (async () => {
-  //     const json = await (
-  //       await fetch("https://api.coinpaprika.com/v1/coins")
-  //     ).json();
-  //     setCoins(json.slice(0, 100));
-  //     setLoading(false);
-  //   })();
-  // }, []);
+  // Fetch API (React-Query)
+  const { isLoading, data } = useQuery<ICoins[]>(["allCoins"], fetchCoins);
 
   return (
     <Container>
       <Header>
         <Title>암호화폐</Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                 <Img

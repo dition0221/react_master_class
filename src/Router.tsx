@@ -21,3 +21,11 @@ export default function Router() {
     </BrowserRouter>
   );
 }
+
+/*
+/ -> All Coins
+/:id -> /btc -> Coin Detail
+
+/btc/information
+/btc/chart
+*/

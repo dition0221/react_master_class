@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
-import { Fragment } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const GlobalStyle = createGlobalStyle`
 	// Reset CSS
@@ -63,10 +63,11 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <Fragment>
+    <>
       <GlobalStyle />
       <Router />
-    </Fragment>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </>
   );
 }
 

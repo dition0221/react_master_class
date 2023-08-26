@@ -1,26 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // CSS
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 // Components
 import App from "./App";
 
+const queryClient = new QueryClient(); // React-Query
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
-
-/*
-/ -> All Coins
-/:id -> /btc -> Coin Detail
-
-/btc/information
-/btc/chart
-*/
