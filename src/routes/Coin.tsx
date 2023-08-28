@@ -38,6 +38,12 @@ const Overview = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 15px;
   padding: 20px;
+  @media screen and (max-width: 400px) {
+    flex-direction: column;
+    div:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const OverviewItem = styled.div`
@@ -49,7 +55,15 @@ const OverviewItem = styled.div`
     margin-bottom: 10px;
   }
   span {
-    font-size: 28px;
+    font-size: 21px;
+  }
+  @media screen and (max-width: 475px) {
+    h1 {
+      font-size: 14px;
+    }
+    span {
+      font-size: 18px;
+    }
   }
 `;
 
@@ -73,7 +87,7 @@ const Tab = styled.span<{ $isActive: boolean }>`
   color: ${(props) =>
     props.$isActive ? props.theme.accentColor : props.theme.textColor};
   &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
   }
   a {
     display: block;
@@ -82,7 +96,7 @@ const Tab = styled.span<{ $isActive: boolean }>`
 `;
 
 /* Interface */
-interface RouteState {
+interface IRouteState {
   state: {
     name: string;
   };
@@ -145,8 +159,9 @@ interface ITickersData {
 }
 
 export default function Coin() {
+  // parameter
   const { coinId } = useParams();
-  const { state } = useLocation() as RouteState; // Data from 'Home.tsx'
+  const { state } = useLocation() as IRouteState; // Data from 'Home.tsx'
   // useMatch
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
@@ -205,7 +220,7 @@ export default function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>

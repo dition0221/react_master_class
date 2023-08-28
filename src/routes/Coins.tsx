@@ -17,6 +17,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
 `;
 
 const CoinsList = styled.ul``;
@@ -26,7 +27,7 @@ const Coin = styled.li`
   color: ${(props) => props.theme.bgColor};
   margin-bottom: 15px;
   border-radius: 15px;
-  font-size: 40px;
+  font-size: 30px;
   a {
     display: flex;
     align-items: center;
@@ -68,7 +69,7 @@ export default function Coins() {
   return (
     <Container>
       <Header>
-        <Title>암호화폐</Title>
+        <Title>Cryptocurrency</Title>
       </Header>
       {isLoading ? (
         <Loader />

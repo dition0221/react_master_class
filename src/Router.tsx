@@ -6,10 +6,12 @@ import Coin from "./routes/Coin";
 import Chart from "./routes/Chart";
 import Price from "./routes/Price";
 import Loader from "./components/Loader";
+import FooterBtn from "./components/FooterBtn";
 
 export default function Router() {
   return (
     <BrowserRouter>
+      <FooterBtn />
       <Routes>
         <Route path="/" element={<Coins />} />
         <Route path="/:coinId" element={<Coin />}>
