@@ -1,10 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useOutletContext } from "react-router-dom";
 import ApexChart from "react-apexcharts";
+import { useOutletContext } from "react-router-dom";
+import styled from "styled-components";
 // API
 import { fetchCoinChart } from "../api";
 // Components
 import Loader from "../components/Loader";
+
+const NoData = styled.h1`
+  font-size: 40px;
+  text-align: center;
+`;
 
 /* Interface */
 interface IChartProps {
@@ -32,11 +38,11 @@ export default function Chart() {
   const isError = !Array.isArray(data);
 
   return (
-    <div>
+    <>
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <Loader text="Data Not Found" />
+        <NoData>- No Data from API -</NoData>
       ) : (
         <ApexChart
           type="line"
@@ -73,10 +79,30 @@ export default function Chart() {
               labels: { show: false },
               axisTicks: { show: false },
               axisBorder: { show: false },
+              categories: data?.map((price) =>
+                new Date(price.time_close * 1000).toUTCString()
+              ),
+              type: "datetime",
+            },
+            fill: {
+              type: "gradient",
+              gradient: {
+                gradientToColors: ["#0be881"],
+                stops: [0, 100],
+              },
+            },
+            colors: ["#0fbcf9"],
+            tooltip: {
+              y: {
+                formatter: (value) => `$ ${value.toFixed(2)}`,
+              },
+              x: {
+                format: "yy-MM-dd, ddd",
+              },
             },
           }}
         />
       )}
-    </div>
+    </>
   );
 }

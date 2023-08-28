@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 // Components
 import Loader from "../components/Loader";
 // API
@@ -176,6 +177,14 @@ export default function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {`${
+            state?.name ? state.name : loading ? null : infoData?.name
+          } | dition0221`}
+        </title>
+      </Helmet>
+
       <Header>
         <Title>
           {state?.name ? state.name : loading ? null : infoData?.name}
@@ -195,8 +204,8 @@ export default function Coin() {
               <span>{`$${infoData?.symbol ?? " -"}`}</span>
             </OverviewItem>
             <OverviewItem>
-              <h1>OPEN SOURCE:</h1>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <h1>PRICE:</h1>
+              <span>{tickersData?.quotes.USD.price.toFixed(3) ?? "-"}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>

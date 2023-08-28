@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 // Components
 import Loader from "../components/Loader";
 // API
@@ -68,6 +69,10 @@ export default function Coins() {
 
   return (
     <Container>
+      <Helmet>
+        <title>Crypto | dition0221</title>
+      </Helmet>
+
       <Header>
         <Title>Cryptocurrency</Title>
       </Header>

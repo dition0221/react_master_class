@@ -13,11 +13,11 @@ const Container = styled.footer`
 `;
 
 const Btn = styled.button`
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
   background-color: ${(props) => props.theme.bgColor};
   border: 2px solid ${(props) => props.theme.textColor};
   border-radius: 5px;
@@ -29,6 +29,7 @@ const Btn = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.accentColor};
     color: ${(props) => props.theme.bgColor};
+    cursor: pointer;
   }
 `;
 
