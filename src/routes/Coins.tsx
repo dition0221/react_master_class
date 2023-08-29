@@ -29,13 +29,18 @@ const Coin = styled.li`
   margin-bottom: 15px;
   border-radius: 15px;
   font-size: 30px;
+  transition: transform 0.3s ease-in-out;
   a {
     display: flex;
     align-items: center;
     padding: 20px;
     transition: color 0.2s ease-in;
+    @media screen and (max-width: 400px) {
+      font-size: 7.5vw;
+    }
   }
   &:hover {
+    transform: translateY(-5px);
     a {
       color: ${(props) => props.theme.accentColor};
     }
@@ -45,6 +50,9 @@ const Coin = styled.li`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  @media screen and (max-width: 400px) {
+    font-size: 12.4vw;
+  }
 `;
 
 const Img = styled.img`
@@ -53,6 +61,7 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
+/* Interface */
 interface ICoins {
   id: string;
   name: string;

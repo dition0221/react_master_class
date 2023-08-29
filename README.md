@@ -124,7 +124,63 @@
       - 상대경로 URL 사용 불가능
     - 사용자가 선택한 URL에 위치하면 object를 반환, 그렇지않으면 null을 반환
 - **23-08-26 : #5.9 ~ #5.11 / React-Query**
+  - React-Query
+    - 편리한 방식으로 데이터를 fetch 할 수 있는 패키지
+      - 기존 방식인 useEffect와 useState를 활용한 fetch API를 하지 않아도 됨
+    - 설치법 : 'npm i @tanstack/react-query'
+    - 설정법
+      1. 'index.tsx'에서 'queryClient' 객체 생성하기
+      2. '&lt;QueryClientProvider&gt;' 생성 후 감싸주기
+    - 사용법
+      1. fetcher 함수 생성하기
+         - 무조건 fetch promise(json)를 return 해주어야 함
+      2. 'useQuery' Hook을 사용해 API 데이터 가져오기
+         - 기본형 : const { isLoading, data } = useQuery&lt;제네릭&gt;([쿼리키명], fetcher함수, ?옵션);
+           - queryKey : (string[]) query의 고유식별자
+           - fetcher함수 : 매개변수 필요 시 익명화살표함수로 작성
+           - 옵션 : (object)
+             - refetchInterval : (number) 자동으로 refetch하는 시간 주기를 설정
+           - isLoading : 로딩에 대한 boolean값을 return
+           - data : fetch가 끝난 후 데이터를 넣어줌
+    - [핵심] 다른 페이지에 갔다가 다시 돌아와도 API를 재요청하지 않음
+      - React-Query가 데이터를 캐시에 저장해두기 때문
+  - React-Query-Devtools
+    - 캐시에 존재하는 Query를 볼 수 있음
+      - React-Query의 모든 내부 동작을 시각화하는 데 도움
+      - 문제 발생시 디버깅 시간을 절약할 수 있음
+    - 기본적으로 React-Query-Devtools는 process.env.NODE_ENV === 'development'인 경우에만 번들에 포함되므로, production build 중에 제외하는 것에 대해 걱정할 필요 없음
+    - 설치법 : 'npm i @tanstack/react-query-devtools'
+    - 설정 및 사용법 : 'App.tsx'에서 'ReactQueryDevtools'를 import한 후 컴포넌트를 사용
+      - 'initialIsOpen={true}' 속성 필수
 - **23-08-28 : #5.12 ~ #5.16 / ApexCharts + React-Helmet**
+  - useOutletContext()
+    - 중첩된 라우트(Nested Routes)에서 부모에서 자식 컴포넌트에게 상태(state)를 공유하기 위한 목적으로 사용하는 Hook
+    - &lt;Outlet /&gt; 사용 시 하위 Route에게 변수를 넘겨줄 수 있는 기능
+      - 송신 기본형 : &lt;Outlet context={{ ... }}&gt; (object 형식으로 사용)
+      - 수신 기본형
+        - import { useOutletContext } from "react-router-dom";
+        - const 변수명 = useOutletContext<제네릭>();
+  - ApexCharts.js
+    - API로 받아온 데이터 등을 시각화 할 수 있는 패키지
+    - 설치법 : 'npm i react-apexcharts apexcharts'
+    - 사용법
+      - import ApexChart from "react-apexcharts";
+      - &lt;ApexChart 속성들 /&gt;
+        - type : 그래프 타입 (string)
+        - series : 보여줄 데이터 (object[]) { name: string, data: [] }
+        - options : 공식문서를 참고하여 사용 (object)
+  - React-Helmet
+    - 문서의 &lt;head&gt;로 렌더링하는 컴포넌트형 패키지
+    - 설치법 : 'npm i react-helmet'
+    - 사용법
+      - import { Helmet } from "react-helmet";
+      - &lt;Helmet&gt; ... &lt;/Helmet&gt;
+    - 'Using UNSAFE_componentWillMount in strict mode is not recommended
+      and may indicate bugs in your code.'의 Error 시 'react-helmet-async' 패키지를 사용
+      - 'App.tsx'에서 &lt;Router /&gt;를 &lt;HelmetProvider&gt;로 감싸준 후 사용
+      - 'react-helmet' 패키지도 다운 받아야 함
+- **23-08-29 : [Code Challenge] use ApexChart**
+  <!-- TODO : Price.tsx 내용을 Chart.tsx로 옮긴 후, Price.tsx에는 변화량(tickers.quotes.USD) 표시하기 -->
 
 ---
 

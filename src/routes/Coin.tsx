@@ -25,11 +25,13 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
+  padding-top: 10px;
 `;
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  text-align: center;
 `;
 
 const Overview = styled.div`
@@ -94,6 +96,10 @@ const Tab = styled.span<{ $isActive: boolean }>`
     display: block;
     padding: 10px;
   }
+`;
+
+const OutletContainer = styled.div`
+  margin-bottom: 70px;
 `;
 
 /* Interface */
@@ -229,7 +235,9 @@ export default function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet context={{ coinId }} />
+          <OutletContainer>
+            <Outlet context={{ coinId }} />
+          </OutletContainer>
         </>
       )}
     </Container>

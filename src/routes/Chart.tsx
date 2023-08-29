@@ -1,23 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import ApexChart from "react-apexcharts";
 import { useOutletContext } from "react-router-dom";
-import styled from "styled-components";
 // API
 import { fetchCoinChart } from "../api";
 // Components
 import Loader from "../components/Loader";
-
-const NoData = styled.h1`
-  font-size: 40px;
-  text-align: center;
-`;
+import NoData from "../components/NoData";
 
 /* Interface */
-interface IChartProps {
+export interface IChartProps {
   coinId: string;
 }
 
-interface IData {
+export interface IData {
   time_open: number;
   time_close: number;
   open: string;
@@ -42,7 +37,7 @@ export default function Chart() {
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <NoData>- No Data from API -</NoData>
+        <NoData />
       ) : (
         <ApexChart
           type="line"

@@ -2,13 +2,14 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.footer`
+  z-index: 99;
   position: fixed;
   right: 20px;
   bottom: 20px;
   display: flex;
   align-items: center;
   button:last-child {
-    margin-left: 10px;
+    margin-left: 15px;
   }
 `;
 
