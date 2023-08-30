@@ -38,7 +38,7 @@ const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 15px;
   padding: 20px;
   @media screen and (max-width: 400px) {
@@ -84,13 +84,14 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.span<{ $isActive: boolean }>`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-align: center;
   color: ${(props) =>
     props.$isActive ? props.theme.accentColor : props.theme.textColor};
+  transition: background-color 0.2s ease-in-out;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.2);
   }
   a {
     display: block;
@@ -196,6 +197,7 @@ export default function Coin() {
           {state?.name ? state.name : loading ? null : infoData?.name}
         </Title>
       </Header>
+
       {loading ? (
         <Loader />
       ) : (

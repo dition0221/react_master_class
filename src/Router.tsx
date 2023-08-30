@@ -10,7 +10,7 @@ import FooterBtn from "./components/FooterBtn";
 
 export default function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <FooterBtn />
       <Routes>
         <Route path="/" element={<Coins />} />
@@ -23,11 +23,3 @@ export default function Router() {
     </BrowserRouter>
   );
 }
-
-/*
-/ -> All Coins
-/:id -> /btc -> Coin Detail
-
-/btc/information
-/btc/chart
-*/

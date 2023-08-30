@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import ApexChart from "react-apexcharts";
 import { useOutletContext } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 // API
 import { fetchCoinChart } from "../api";
+// Atom
+import { isDarkAtom } from "../atoms";
 // Components
 import Loader from "../components/Loader";
 import NoData from "../components/NoData";
@@ -24,6 +27,8 @@ export interface IData {
 }
 
 export default function Chart() {
+  // Theme
+  const isDark = useRecoilValue(isDarkAtom);
   // parameter
   const { coinId } = useOutletContext<IChartProps>();
   // react-query
@@ -50,7 +55,7 @@ export default function Chart() {
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               width: 500,
