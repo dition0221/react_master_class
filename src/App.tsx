@@ -1,12 +1,6 @@
-import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { HelmetProvider } from "react-helmet-async";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Router from "./Router";
-import { useRecoilValue } from "recoil";
-// Theme
-import { darkTheme, lightTheme } from "./theme";
-// Atom
-import { isDarkAtom } from "./atoms";
+import { createGlobalStyle } from "styled-components";
+// Components
+import ToDoList from "./ToDoList";
 
 const GlobalStyle = createGlobalStyle`
 	// Reset CSS
@@ -73,17 +67,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const isDark = useRecoilValue(isDarkAtom);
-
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <HelmetProvider>
-          <Router />
-        </HelmetProvider>
-        <ReactQueryDevtools initialIsOpen={true} />
-      </ThemeProvider>
+      <GlobalStyle />
+      <ToDoList />
     </>
   );
 }

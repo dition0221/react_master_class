@@ -1,8 +1,8 @@
-# React JS - Master Class
+# React - Master Class
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/React Hook Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>
 
 ---
 
@@ -180,7 +180,29 @@
       - 'App.tsx'에서 &lt;Router /&gt;를 &lt;HelmetProvider&gt;로 감싸준 후 사용
       - 'react-helmet' 패키지도 다운 받아야 함
 - **23-08-29 : [Code Challenge] use ApexChart**
+  - **<a href="https://github.com/dition0221/react-crypto_coin_tracker">[GitHub] 암호화폐 코인 트래커</a>**
+  - **<a href="https://dition0221.github.io/react-crypto_coin_tracker/">[결과물] 암호화폐 코인 트래커</a>**
 - **23-08-30 : #6.0 ~ #6.4 / Recoil Atom**
+  - Recoil
+    - React에서 사용할 수 있는 상태 관리(state management) 라이브러리
+    - 설치법 : 'npm i recoil'
+    - 설정법 : 'index.tsx'에서 &lt;RecoilRoot&gt;로 앱을 감싸주기
+  - atom : 특정 컴포넌트에 종속되지 않으며, global state를 저장하는 기본 단위
+    - Recoil에서는 state값을 'atom'이라는 버블에 담아서 사용
+    - atom이 변경되면 컴포넌트도 변경된 값으로 re-rendering 됨
+    - 사용법
+      1. 'atom'을 관리하는 파일 생성하기
+         - '/src/atoms.ts'
+      2. 'atom' 생성하기
+         - import { atom } from "recoil";
+         - 기본형 : export const 변수명 = atom({ key: 키값, default: 초기값});
+      3. [Read] 다른 컴포넌트에서 'atom' 연결하기
+         - 기본형 : const 변수명 = useRecoilValue(아톰명);
+      4. [Write] 다른 컴포넌트에서 'atom' 수정하기
+         - 기본형 : const Setter함수 = useRecoilState(아톰명);
+         - 'useState()'처럼 사용하면 됨
+- **23-08-31 : #6.5 ~ #6.**
+  - 6.7
 
 ---
 
