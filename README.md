@@ -202,10 +202,36 @@
          - 기본형 : const Setter함수 = useRecoilState(아톰명);
          - 'useState()'처럼 사용하면 됨
 - **23-08-31 : #6.5 ~ #6.7 / React-Hook-Form(1)**
+  - React Hook Form
+    - React에서 &lt;form&gt;을 간단하게 제작할 수 있게 도와주며, 검증까지 할 수 있는 패키지
+      - 기존 React에서 &lt;form&gt; 제작 시 setState(), value, onChange, onSubmit 등을 사용해야 했음
+    - 설치법 : 'npm i react-hook-form'
+    - 기본형
+      - import { useForm} from "react-hook-form";
+      - const { register, watch, handleSubmit, formState } = useForm&lt;제네릭&gt;();
+    - register : &lt;input&gt;의 value와 onChange를 대체하는 속성
+      - name, onBlur, onChange, ref 등을 가지는 object를 return하는 함수
+      - 사용법 : &lt;input {...register(이름, {검증 속성})} /&gt;
+        - ES6 문법을 사용해 register 함수가 반환하는 객체를 가져다가 props로 사용
+        - HTML 뿐만아니라 JS에서도 검증을 할 수 있도록 함
+          - 유효하지 않을 시 자동으로 해당 element로 focus 해줌
+      - ex. &lt;input {...register("email", { required: true, minLength: 10 })} placeholder="Email" /&gt;
+    - handleSubmit : &lt;form&gt;의 'onSubmit'을 대체하고, validation을 담당함
+      - 기존 onSubmit의 'event.preventDefault()와 setModifier함수'를 대체
+      - 사용법 : &lt;form onSubmit={handleSubmit(데이터 유효 시 호출함수, ?데이터 무효 시 호출 함수)}&gt;
+    - watch : &lt;form&gt;의 입력값들의 변화를 관찰할 수 있게 해주는 함수
+      - register함수를 사용하는 모든 element들의 값을 object로 반환
+      - ex. console.log(watch());
+    - formState : 데이터 검증이 유효하지 않을 시 'formState.errors'를 참조해 error 내용 확인 가능
+      - 어떤 종류의 error가 발생했는지 알 수 있음
+      - error 발생 시 message를 보낼 수 있음
+      - ex. &lt;input {...register("pw", {
+        required: "PW is Required",
+        minLength: { value: 5, message: "Your PW is too short" }})} /&gt;
+- **23-09-02 : #6.8 ~ #6.10 / React-Hook-Form(2)**
+  <!-- TODO: 필기요약지 recoil 파트와 react-hook-form 파트 분리하기 -->
 
 ---
-
-- **23-09-01 : #6.8 ~ #6. / React-Hook-Form(2)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
