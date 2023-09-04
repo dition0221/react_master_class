@@ -208,7 +208,7 @@
     - 설치법 : 'npm i react-hook-form'
     - 기본형
       - import { useForm} from "react-hook-form";
-      - const { register, watch, handleSubmit, formState } = useForm&lt;제네릭&gt;();
+      - const { register, watch, handleSubmit, formState 등 } = useForm&lt;제네릭&gt;();
     - register : &lt;input&gt;의 value와 onChange를 대체하는 속성
       - name, onBlur, onChange, ref 등을 가지는 object를 return하는 함수
       - 사용법 : &lt;input {...register(이름, {검증 속성})} /&gt;
@@ -229,6 +229,34 @@
         required: "PW is Required",
         minLength: { value: 5, message: "Your PW is too short" }})} /&gt;
 - **23-09-02 : #6.8 ~ #6.10 / React-Hook-Form(2)**
+  - React-Hook-Form
+    - React-Hook-Form에서는 register 사용 시 문자열을 return 하면, error 메시지를 return한다는 뜻
+    - setValue : 필드 값을 업데이트하는 함수
+      - 기본형 : const { setValue } = useForm();
+      - 사용법 : setValue(이름, 필드값);
+    - reset : &lt;form&gt;의 모든 필드값을 초기화하는 함수
+      - 기본형 : const { reset } = useForm();
+      - 사용법 : reset();
+  - React-Hook-Form - 검증
+    - 검증 시 정규식(Regular Expression)을 사용할 수 있음 : 'pattern' 프로퍼티 사용
+    - 검증 조건마다 message를 적어놨다면, error 문구를 화면에 출력 가능
+      - 사용자가 제출한 이후에는 message가 실시간으로 변함
+      - 'useForm()'에 제네릭을 명시하지 않았을시 string으로 타입을 명시해주어야 함 (as string)
+  - React-Hook-Form - 커스텀 검증
+    - 'handleSubmit()'의 인자로 사용하는 콜백함수에 커스텀 검증이 가능함
+    - 검증 콜백함수의 매개변수는 자동으로 &lt;form&gt;의 element들을 받음
+      - 해당 매개변수의 프로퍼티를 사용
+    - useForm()의 'setError' 프로퍼티는 특정한 error를 발생시켜 줌
+      - 기본형 : setError(레지스터명, { message: 에러메시지 });
+      - interface에 옵션 항목을 넣어서, 추가적인 error를 표기할 수 있음
+      - &lt;form&gt;에서 자동으로 error 항목으로 focus되게 할 수 있음
+        - setError()의 3번째 매개변수로 '{ shouldFocus: true }'를 부여하여 작동
+    - register의 검증 속성들 중 'validate' 옵션을 사용해 커스텀 규칙을 검사할 수 있음
+      - validate : 현재 value값을 인자로 받는 콜백함수를 값으로 가지며, boolean값을 반환함 (검증을 통과/불통과)
+      - 삼항조건연산자(또는 ||)를 사용해 error 메시지를 return 하도록 함
+      - 여러 함수(검증)가 있는 object 형태가 될 수 있음
+      - async 비동기로 만들어서 서버에다가 확인하고 응답을 받을 수 있음
+- **23-09-04 : #6.11 ~ #6.15 / To-Do List**
 
 ---
 
