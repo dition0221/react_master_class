@@ -229,7 +229,6 @@
         required: "PW is Required",
         minLength: { value: 5, message: "Your PW is too short" }})} /&gt;
 - **23-09-02 : #6.8 ~ #6.10 / React-Hook-Form(2)**
-  <!-- TODO: 필기요약지 recoil 파트와 react-hook-form 파트 분리하기 -->
 
 ---
 
