@@ -2,7 +2,7 @@
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/React Hook Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil Persist-3578E5?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/React Hook Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>
 
 ---
 
@@ -257,6 +257,39 @@
       - 여러 함수(검증)가 있는 object 형태가 될 수 있음
       - async 비동기로 만들어서 서버에다가 확인하고 응답을 받을 수 있음
 - **23-09-04 : #6.11 ~ #6.15 / To-Do List**
+  - Recoil - useRecoilState()
+    - atom을 'useState()'처럼 사용하는 메서드
+      - 'useRecoilValue()'와 'useSetRecoilState()'를 따로 사용할 필요가 없음
+    - 기본형 : const [값, 세터함수] = useRecoilState(아톰명);
+  - 매개변수를 가지는 Event Listener 사용법
+    1. element에서 event를 익명함수를 사용해 매개변수를 전달하는 방법
+       - ex.
+         const onClick = (newCategory: IToDo["category"]) => {
+         &nbsp;&nbsp;console.log("I wanna to", newCategory);
+         };
+         &lt;button onClick={() => onClick("DOING")}&gt;Doing&lt;/button&gt;
+    2. element의 name 속성을 활용하는 방법
+    - 'name' 속성에 직접 타입을 줄 수 없기 때문에, 1번 방법을 선호
+    - ex.
+      const onClick = (event: React.MouseEvent&lt;HTMLButtonElement&gt;) => {
+      &nbsp;&nbsp;console.log("I wanna to", <span>event.currentTarget.name</span>);
+      };
+      &lt;button name="DOING" onClick={onClick}&gt;Doing&lt;/button&gt;
+  - To-Do List에서 하나의 to-do를 수정하는 방법
+    - 배열을 mutate하지 않으면서, 'useSetRecoilState()'로 원하는 하나의 값을 수정해야 함
+    1. 'id' 등의 속성을 사용하여, 배열 속 원하는 element의 index 찾기
+       - 값 자체를 찾을 필요는 없고, 배열 index값만 알면 됨
+       - 배열의 '.findIndex(콜백함수)' 메서드를 사용해 조건에 맞는 index를 알아냄
+    2. element를 업데이트하기
+       - 찾은 index에 대한 element를 새로운 값으로 대체(replace)해야 함
+       - element를 교체하는 이유는 해당 element의 위치가 바뀌지 않길 바라기 때문
+       1. 교체할 element의 앞 부분을 새로운 배열로 생성하기
+          - '.slice(시작인덱스, 끝인덱스)' 메서드를 사용해 새로운 배열 생성
+       2. 교체할 element의 뒷 부분을 새로운 배열로 생성하기
+          - '.slice()' 메서드의 끝인덱스를 지정하지 않을 시 끝까지 잘라서 반환함
+       3. 교체 후 새로운 배열로 생성하기
+          - 배열의 스프레드 연산자(...)를 이용하여, 앞부분과 뒷부분 사이에 새 원소를 넣음
+- **23-09-05 : #6.16 ~ #6.19 + #7.0 ~ / Recoil Selector + Recoil-Persist**
 
 ---
 
