@@ -292,10 +292,64 @@
        3. 교체 후 새로운 배열로 생성하기
           - 배열의 스프레드 연산자(...)를 이용하여, 앞부분과 뒷부분 사이에 새 원소를 넣음
 - **23-09-05 : #6.16 ~ #7.1 / Recoil Selector + Recoil-Persist**
+  - Recoil - Selector
+    - atom의 output을 변형시키는 도구 (atom의 state 자체를 바꾸는 것이 아니라, 그의 output을 바꾸는 것)
+    - 선언법
+      const 셀렉터명 = selector({
+      &nbsp;&nbsp;key: 키값,
+      &nbsp;&nbsp;get: ({ get }) => {
+      &nbsp;&nbsp;&nbsp;&nbsp;const 변수명 = get(아톰명); // atom을 가져오는 문 (필수x)
+      &nbsp;&nbsp;&nbsp;&nbsp;......
+      &nbsp;&nbsp;&nbsp;&nbsp;return 값;
+      &nbsp;&nbsp;},
+      });
+      - get
+        - 인자로 받는 옵션 중의 'get'함수를 이용해 atom을 받아올 수 있으며, 여러 번 사용해 여러 개의 atom을 가져올 수 있음
+        - return하는 값은 해당 selector의 value가 됨
+    - 사용법 : const 변수명 = useRecoilValue(셀렉터명);
+    - atom이 변하면, selector도 변함
+  - Recoil - Selector의 'set' 속성
+    - selector의 'set' 속성을 사용하여, selector에서 atom의 state를 수정할 수 있음
+    - 기본형
+      &nbsp;&nbsp;set: ({ set }, 새로운값) => {
+      &nbsp;&nbsp;......
+      &nbsp;&nbsp;set(아톰명, 수정할값); // 새로운 값과 수정할 값은 같을 필요 x
+      }
+      - 여러 개의 atom에 대해 'set()'함수를 사용할 수 있음
+    - 'useRecoilState()'로 selector를 불러와서 사용할 수 있음
+      - 첫 번째 요소 : get 프로퍼티로부터 return한 값
+      - 두 번째 요소 : set 프로퍼티로를 실행시키는 함수
+      - 'useRecoilState()'를 atom과 selector 둘다에서 사용 가능
+  - enum
+    - 열거형(enumeration)으로 정의하는 데 사용하는 데이터 형식
+    - 기본형: enum 변수명 { 값1, 값2, 값3, ... }
+      - 변수명은 대문자로 시작
+      - 컴퓨터는 열거 상수로 사용함
+        - 열거 상수는 0부터 시작하여 순서대로 1씩 증가한 값을 가지며, 순서를 따로 지정하지 않는 한 자동으로 할당됨 (수동 할당 가능, 숫자나 문자열 가능)
+        - 직접 같은 값으로 주어서 사용할 수 있음
+          (ex. enum Categories { "TO_DO" = "TO_DO" })
+    - 사용 시 프로퍼티 방식으로 사용
+      (ex. Categories.TO_DO)
+  - Recoil-Persist 패키지
+    - Recoil 상태 관리 라이브러리와 Local Storage를 통합하여, Recoil 상태를 영구적으로 저장하고 복원하는 데 도움을 주는 패키지
+      - 브라우저의 Local Storage를 활용하여, Recoil 상태를 지속적으로 유지할 수 있음
+    - 설치법 : 'npm i recoil-persist'
+    - 설정법
+      1. atom 파일에서 'recoilPersist' 객체 생성하기
+         - const { persistAtom } = recoilPersist();
+           - 'recoilPersist()'의 옵션
+             - key : Local Storage에 데이터 저장 시 사용되는 key명
+               - 기본값 : "recoil-persist"
+             - storage : 데이터를 저장할 저장소 설정
+               - 기본값 : localStorage
+             - converter : 저장소에서 값을 직렬화/역직렬화하는 방법을 구성
+               - 기본값 : JSON
+      2. Local Storage를 사용하고자 하는 atom에 'effect_UNSTABLE' 속성 할당하기
+         - 'effect_UNSTABLE: [persistAtom]' 속성만 추가하면 됨
+    - 설정만 해놓으면 Local Storage에 저장(set)과 불러오기(get)를 자동으로 실행함
+- **23-09-06 : #7.2 ~ #7.4 / React-Beautiful-Dnd**
 
 ---
-
-- **23-09-06 : #7.2 ~ #7. /**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
