@@ -2,9 +2,9 @@
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/React Hook Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>
-<img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil Persist-3578E5?style=flat-square&logoColor=white"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled&dash;Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>  
+<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Hook&dash;Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>  
+<img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil&dash;Persist-3578E5?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/@hello&dash;pangea/dnd-0BAF7C?style=flat-square&logoColor=white"/>
 
 ---
 
@@ -347,7 +347,44 @@
       2. Local Storage를 사용하고자 하는 atom에 'effect_UNSTABLE' 속성 할당하기
          - 'effect_UNSTABLE: [persistAtom]' 속성만 추가하면 됨
     - 설정만 해놓으면 Local Storage에 저장(set)과 불러오기(get)를 자동으로 실행함
-- **23-09-06 : #7.2 ~ #7.4 / React-Beautiful-Dnd**
+- **23-09-06 : #7.2 ~ #7.4 / React-Beautiful-Dnd(1)**
+  - react-beautiful-dnd 패키지 (@hello-pangea/dnd)
+    - 화면에서 drag&drop을 할 수 있게 해주는 패키지
+    - 설치법 : 'npm i @hello-pangea/dnd'
+      - 'react-beautiful-dnd'는 종속성 문제때문에 React 18버전에서 제대로 동작하지 않고, 해당 패키지가 더 이상 없뎃이므로 비추천
+    - 웹 페이지에서 작동이 되지 않을 시 'React.StrictMode'를 제거할 것
+  - &lt;DragDropContext /&gt;
+    - drag&drop을 가능하게 하고 싶은 앱의 한 부분(영역)
+      - 앱 전체가 아닌 사용자가 drag&drop을 할 특정 영역에만 생성하도록 함
+    - 기본형 : &lt;DragDropContext onDragEnd={콜백함수}&gt; ... &lt;/DragDropContext&gt;
+      - onDragEnd : [필수] 사용자가 drag를 끝낸 시점에 실행하는 콜백함수
+        - 콜백함수에 내용이 없다면, drag&drop이 끝날 시 원래대로 돌아옴
+      - [필수] 태그 사이에는 children(하위 태그)이 있어야 함
+  - &lt;Droppable /&gt;
+    - 어떤 것을 드롭할 수 있는 영역(list)
+    - 기본형 : &lt;Droppable droppableId="이름"&gt; ... &lt;/Droppable&gt;
+      - droppableId : [필수] drop할 수 있는 영역이 여러 개일 수 있기 때문
+      - [필수] 태그 사이에는 children(콜백함수 JSX)이 있어야 함
+        - 콜백함수의 첫 번째 인자로 'provided'를 받음 (위치만 중요하지, 이름은 아무거나 가능)
+        - 콜백함수에서 사용되는 JSX에 'provided.droppableProps'의 모든 프로퍼티와 'ref'속성으로 'provided.innerRef'를 주어야 함
+        - ex. {(provided) => &lt;ul ref={provided.innerRef} {...provided.droppableProps}&gt; ... &lt;/ul&gt;}
+    - 'provided.placeholder' : &lt;/Droppable&gt;이 끝날 때 두어, drag&drop 시 &lt;Droppable&gt;의 사이즈가 이상하게 변하는 것을 막음
+      - &lt;Droppable&gt;의 하위 콜백함수에서 사용된 JSX의 닫힌 태그 바로 앞에서 사용
+  - &lt;Draggable /&gt;
+    - 사용자가 drag할 수 있는 영역(list에 있는 item)
+    - 기본형 : &lt;Draggable draggableId="이름" index={인덱스}&gt; ...... &lt;/Draggable&gt;
+      - draggableId : [필수] drop할 수 있는 영역이 여러 개일 수 있기 때문
+        - 'key'속성 사용 시 'draggableId'의 속성값과 같아야 함 (drag&drop 할 수 있기 때문)
+      - index : [필수] sorting을 위한 프로퍼티
+      - [필수] 태그 사이에는 children(콜백함수 JSX)이 있어야 함
+        - 콜백함수의 첫 번째 인자로 'provided'를 받음 (위치만 중요하지, 이름은 아무거나 가능)
+        - provided.draggableProps : 해당 element의 drag 기능
+        - provided.dragHandleProps : drag하기 위해 잡을 수 있는 영역
+          - 해당 프로퍼티를 준 element를 drag 해야함
+        - 콜백함수에서 사용되는 JSX에 'provided.draggableProps'의 모든 프로퍼티와 'provided.dragHandleProps'의 모든 프로퍼티와 'ref'속성으로 'provided.innerRef'를 주어야 함
+        - ex. {(provided) =>
+          &lt;li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}&gt; ...... &lt;/li&gt;}
+- **23-09-07 : #7.5 ~ #7.10 / React-Beautiful-Dnd(2)**
 
 ---
 
