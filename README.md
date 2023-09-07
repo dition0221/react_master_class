@@ -384,7 +384,7 @@
         - 콜백함수에서 사용되는 JSX에 'provided.draggableProps'의 모든 프로퍼티와 'provided.dragHandleProps'의 모든 프로퍼티와 'ref'속성으로 'provided.innerRef'를 주어야 함
         - ex. {(provided) =>
           &lt;li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}&gt; ...... &lt;/li&gt;}
-- **23-09-07 : #7.5 ~ #7.10 / React-Beautiful-Dnd(2)**
+- **23-09-07 : #7.5 ~ #7.11 / React-Beautiful-Dnd(2)**
 
 ---
 

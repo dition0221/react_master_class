@@ -1,9 +1,9 @@
-import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 // Atoms
 import { toDoState } from "./atoms";
-import DraggableCard from "./components/DraggableCard";
+// Components
 import Board from "./components/Board";
 
 const Wrapper = styled.div`

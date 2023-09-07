@@ -9,11 +9,9 @@ import App from "./App";
 
 const GlobalStyle = createGlobalStyle`
 	// Reset CSS
-	/*
-	http://meyerweb.com/eric/tools/css/reset/ 
+	/* http://meyerweb.com/eric/tools/css/reset/ 
 	v2.0 | 20110126
-	License: none (public domain)
-	*/
+	License: none (public domain) */
 	html, body, div, span, applet, object, iframe,
 	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 	a, abbr, acronym, address, big, cite, code,
@@ -65,10 +63,10 @@ const GlobalStyle = createGlobalStyle`
 	background-color: ${(props) => props.theme.bgColor};
 	color: black;
 	}
-  a {
-  text-decoration: none;
-  color: inherit;
-  }
+	a {
+	text-decoration: none;
+	color: inherit;
+	}
 `;
 
 const root = ReactDOM.createRoot(

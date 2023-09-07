@@ -1,5 +1,5 @@
-import { Draggable } from "@hello-pangea/dnd";
 import React from "react";
+import { Draggable } from "@hello-pangea/dnd";
 import { styled } from "styled-components";
 
 const Card = styled.div`
