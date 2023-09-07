@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/react-crypto_coin_tracker/static/js/main.473090be.js",
-    "index.html": "/react-crypto_coin_tracker/index.html",
-    "main.473090be.js.map": "/react-crypto_coin_tracker/static/js/main.473090be.js.map"
+    "main.js": "/static/js/main.d88dfabb.js",
+    "index.html": "/index.html",
+    "main.d88dfabb.js.map": "/static/js/main.d88dfabb.js.map"
   },
   "entrypoints": [
-    "static/js/main.473090be.js"
+    "static/js/main.d88dfabb.js"
   ]
 }
