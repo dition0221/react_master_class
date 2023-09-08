@@ -385,6 +385,73 @@
         - ex. {(provided) =>
           &lt;li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}&gt; ...... &lt;/li&gt;}
 - **23-09-07 : #7.5 ~ #7.11 / React-Beautiful-Dnd(2)**
+  - &lt;DragDropContext&gt; - 'onDragEnd'
+    - 'onDragEnd' 프로퍼티는 drag&drop이 끝날 때 실행하는 함수
+    - 어떤 일이 일어났는지에 대한 정보를 담고있는 argument를 제공함
+      - 'onDragEnd'의 인자의 타입은 'DropResult' (타입 문서 참조)
+      - draggableId : drag&drop을 한 element를 알려줌
+      - destination : 목적지의 정보 { droppableId, index }
+      - source : 출발지의 정보 { droppableId, index }
+    - drag&drop을 한 element를 저장한 배열에서도 똑같이 만들어주어야 함
+      1. 배열에서 drag한 element를 삭제하기
+         - 'source.index'를 참조해 삭제
+         - 배열.splice(시작인덱스, 삭제할갯수) : 해당 item을 배열에서 삭제하는 메서드
+           - 원본 배열이 바뀌는 mutation이 일어나므로, 먼저 원본을 복사한 후 사용해야 함
+           - 배열 복사 시 스프레드 연산자(...)를 사용한 '[...배열명]' 방식으로 복사해야 함
+             - 배열은 그냥 복사 시 주소값만 연결되기 때문
+      2. 삭제한 element를 배열에서 drop한 위치에 생성하기
+         - 'destination.index'와 'draggableId'를 참조해 생성
+         - 배열.splice(시작인덱스, 삭제할갯수, 아이템) : 삭제할 갯수를 0으로 하고 아이템 매개변수를 넣어주면, 배열의 해당 인덱스에 아이템을 추가할 수 있음
+         - 'destination'이 없을 수도 있음 (같은 자리에 drag&drop을 할 수도 있기 때문)
+  - 문제 발생 : drag&drop 시 가끔 content가 떨리는 현상 (최적화 문제)
+    - 이유 : 부모 component의 state가 변하면, 자식 component들까지 전부 re-rendering되기 때문 (React의 기본 동작 방식)
+      - drag하는 component 이외에도, 형제 component 등 전부가 re-rendering 됨
+      - console.log()로 확인 가능
+    - 해결 : 'React.memo()'를 사용해 해결
+      - 해당 component의 prop이 변하지 않았다면, re-rendering하지 않도록 함
+      - 'export default React.memo(컴포넌트명);'을 사용
+  - 다수의 보드(&lt;Droppable&gt;) 사용하기
+    - 준비 과정
+      1. 다수의 보드를 사용하기 위해, atomState를 여러 개의 Array를 가지는 Object로 사용하기
+      2. '.map()'을 사용해 여러 개의 보드를 rendering하기
+         - 'Object.keys(객체명)'으로 해당 객체의 key명들을 배열로 뽑아낼 수 있음
+           - 'Object.keys(객체명).map(키명 => 객체명[키명])'을 사용해 각 key의 값들을 뽑아낼 수 있음
+         - 사용자가 여러 개의 보드를 생성/삭제 할 수 있으니, interface를 설정해줘야 함
+           - ex. interface IToDoState { [key: string]: string[]; }
+    - drag&drop을 사용하려면, 현재 위치의 Array에서 제거한 후 새로운 위치의 Array에 붙여놓기
+      - 'source'와 'destination'을 참조 가능
+      1. source의 보드와 destination의 보드가 같은지 체크하기
+         - 각각 '.droppableId'를 통해 참조 가능
+      2. 같은 보드에서 이동이 일어날 시
+         1. 수정이 일어난 보드만 복사하기
+         2. 복사한 보드를 수정한 후, 다른 보드들 옆에 놓기
+      3. 다른 보드로 이동이 일어날 시
+         1. 출발지 보드와 도착지 보드를 복사하기
+         2. 복사한 보드들을 수정한 후, 다른 보드들 옆에 놓기
+      - 다른 보드들 옆에 놓기 위해 스프레드연산자(...)와 computed property name을 이용해야 하며(ES6), 전체 객체가 먼저 사용되어야 함
+        - ex. return { ...allBoards, [source.droppableId]: boardCopy }
+  - 문제 발생 : item을 가지고 있지 않는 보드에는 해당 보드 맨 위로 이동해야지만 item을 받을 수 있는 불편함
+    - CSS로 받는 부분(&lt;Droppable&gt;의 하위 element)의 영역을 부모 element에 가득 차게끔 만들기
+    - 해결 방법
+      1. 부모 element에 'display: flex;' CSS를 부여하기
+      2. 자식 element에 'flex-grow: 1;' CSS를 부여하기
+      - 자식 element의 영역이 부모 element에 가득 차게끔 만듦
+  - &lt;Droppable&gt;, &lt;Draggable&gt; - snapshot
+    - &lt;Droppable&gt; 또는 &lt;Draggable&gt;의 children으로 사용되는 콜백함수의 두 번째 인자로 'snapshot'을 사용할 수 있음
+      - 두 번째 자리가 중요함, 이름은 아무거나 상관없음
+    - 'snapshot'의 프로퍼티는 형식 정의 파일에서 확인 가능
+      - isDraggingOver : 보드로 들어올 때의 dragging에 대한 boolean값을 받음
+        - 사용자가 보드 위로 drag해서 들어오고 있는지 알려줌
+      - draggingFormThisWith : 사용자가 해당 보드로부터 drag를 시작했는지도 알려줌
+        - 사용자가 어떤 보드를 떠난다면, 그 보드로부터 drag를 시작했다는 뜻
+        - DraggableId | undefined
+        - 'Boolean(draggingFormThisWith)'로 사용 시 drag하여 해당 보드를 떠나면 true
+    - 사용법 : &lt;Droppable&gt;의 콜백함수 JSX element에서 프로퍼티를 부여하여 사용
+      - element는 snapshot의 프로퍼티를 모르기 때문에, 형식 정의를 해주어야 함
+      - 프로퍼티를 이용해 styled-components로 CSS 적용 가능
+- **23-09-08 : #7.12 ~ #7.16 / React-Beautiful-Dnd(3)**
+  <!-- TODO : 꾸미기 / 리스트 추가하는 폼(모달박스) / 보드삭제 버튼 생성하기 -->
+  <!-- *DONE :  Local Storage 사용 / 삭제 및 쓰레기통 -->
 
 ---
 
