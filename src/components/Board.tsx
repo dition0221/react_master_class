@@ -2,14 +2,12 @@ import { Droppable } from "@hello-pangea/dnd";
 import { styled } from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import { FaRegTrashCan } from "react-icons/fa6";
-
 // Interface & Atoms
 import { IToDo, toDoState } from "../atoms";
 // Components
 import DraggableCard from "./DraggableCard";
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   width: 300px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
@@ -19,10 +17,16 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 const Title = styled.h2`
   text-align: center;
   font-weight: 600;
-  margin-bottom: 10px;
   font-size: 18px;
 `;
 
@@ -50,26 +54,13 @@ const Form = styled.form`
   }
 `;
 
-const TrashCanWrapper = styled.div`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-`;
-
-const TrashCanIcon = styled(FaRegTrashCan)<{ $isDraggingOver: boolean }>`
-  width: 50px;
-  height: 50px;
-  color: ${(props) => (props.$isDraggingOver ? "#ffeaa7" : "none")};
-  transition: color 0.2s ease-in-out;
-`;
+interface IForm {
+  toDo: string;
+}
 
 interface IBoardProps {
   toDos: IToDo[];
   boardId: string;
-}
-
-interface IForm {
-  toDo: string;
 }
 
 export default function Board({ toDos, boardId }: IBoardProps) {
@@ -91,7 +82,11 @@ export default function Board({ toDos, boardId }: IBoardProps) {
 
   return (
     <Wrapper>
-      <Title>{boardId}</Title>
+      <Header>
+        <span>📁</span>
+        <Title>{boardId}</Title>
+        <button>x</button>
+      </Header>
       <Form onSubmit={handleSubmit(onValid)}>
         <input
           {...register("toDo", { required: true })}
@@ -117,18 +112,6 @@ export default function Board({ toDos, boardId }: IBoardProps) {
             ))}
             {provided.placeholder}
           </Area>
-        )}
-      </Droppable>
-      <Droppable droppableId="trash">
-        {(provided, snapshot) => (
-          <>
-            <TrashCanWrapper
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <TrashCanIcon $isDraggingOver={snapshot.isDraggingOver} />
-            </TrashCanWrapper>
-          </>
         )}
       </Droppable>
     </Wrapper>

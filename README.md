@@ -449,9 +449,9 @@
     - 사용법 : &lt;Droppable&gt;의 콜백함수 JSX element에서 프로퍼티를 부여하여 사용
       - element는 snapshot의 프로퍼티를 모르기 때문에, 형식 정의를 해주어야 함
       - 프로퍼티를 이용해 styled-components로 CSS 적용 가능
-- **23-09-08 : #7.12 ~ #7.16 / React-Beautiful-Dnd(3)**
-  <!-- TODO : 꾸미기 / 리스트 추가하는 폼(모달박스) / 보드삭제 버튼 생성하기 -->
-  <!-- *DONE :  Local Storage 사용 / 삭제 및 쓰레기통 -->
+- **23-09-08 : #7.12 ~ #7.16 / React-Beautiful-Dnd(3) + Code Challenge**
+  <!-- TODO : 꾸미기(window98 스타일) / 보드삭제 버튼 생성하기 -->
+  <!-- *DONE : Local Storage 사용 / 삭제 및 쓰레기통 / 리스트 추가하는 폼(모달박스) -->
 
 ---
 

@@ -5,6 +5,8 @@ import { useRecoilState } from "recoil";
 import { toDoState } from "./atoms";
 // Components
 import Board from "./components/Board";
+import AddBoard from "./components/AddBoard";
+import TrashCan from "./components/TrashCan";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -15,7 +17,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Boards = styled.div`
+const Boards = styled.main`
   display: flex;
   justify-content: center;
   width: 100%;
@@ -25,7 +27,6 @@ const Boards = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
     const { source, destination } = info;
     // No movement
     if (!destination) return;
@@ -67,13 +68,14 @@ function App() {
 
   return (
     <Wrapper>
-      {/* TODO : 모달박스 넣기 */}
+      <AddBoard />
       <DragDropContext onDragEnd={onDragEnd}>
         <Boards>
           {Object.keys(toDos).map((boardId) => (
             <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
           ))}
         </Boards>
+        <TrashCan />
       </DragDropContext>
     </Wrapper>
   );
