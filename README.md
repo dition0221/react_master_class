@@ -449,7 +449,24 @@
     - 사용법 : &lt;Droppable&gt;의 콜백함수 JSX element에서 프로퍼티를 부여하여 사용
       - element는 snapshot의 프로퍼티를 모르기 때문에, 형식 정의를 해주어야 함
       - 프로퍼티를 이용해 styled-components로 CSS 적용 가능
-- **23-09-08 : #7.12 ~ #7.16 / React-Beautiful-Dnd(3) + Code Challenge**
+- **23-09-08 : #7.12 ~ #7.16 / React-Beautiful-Dnd(3) + Code Challenge(1)**
+  - React - ref 속성
+    - React.js component를 통해 HTML element를 가져와서 그걸 변형시킬 수 있도록 해줌
+      - aka. vanilla JS의 document.getElementById()
+    - 기본형
+      const 변수명 = useRef<제네릭>(null);
+      &lt;태그명 ref={변수명} /&gt;
+      - 보통 'useRef()'의 인자로 null값을 사용함 (참조할 element를 초기화한 후 사용하기 위함)
+  - To-Do의 타입 교체
+    - 'string[]'에서 '{ id:number, text: string }[]'인 타입으로 교체
+    - 문제 발생 : 'onDragEnd'에서 'draggableId'를 참조해 재배열 한 것을 바꾸어줘야 함
+      - 기존의 string[] 타입에서는 draggableId = item 이어서 쉬웠음
+      - 지금의 draggableId는 string타입의 id 프로퍼티 값임
+    - 해결 방법 : '.index' 프로퍼티를 이용해서 item을 찾기
+      - 'source.index'를 통해 타겟(Object)을 찾은 후 사용
+- **23-09-09 : Code Challenge(2)**
+- **23-09-10 : Code Challenge(3)**
+
   <!-- TODO : 꾸미기(window98 스타일) / 보드삭제 버튼 생성하기 -->
   <!-- *DONE : Local Storage 사용 / 삭제 및 쓰레기통 / 리스트 추가하는 폼(모달박스) -->
 

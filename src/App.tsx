@@ -30,7 +30,7 @@ function App() {
     const { source, destination } = info;
     // No movement
     if (!destination) return;
-    // Delete within trashcan
+    // Delete to trashcan
     if (destination.droppableId === "trash") {
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
