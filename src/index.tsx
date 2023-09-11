@@ -60,8 +60,8 @@ const GlobalStyle = createGlobalStyle`
 	}
 	body {
 	font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
-	background-color: ${(props) => props.theme.bgColor};
 	color: black;
+	background: linear-gradient(135deg, pink, skyblue);
 	}
 	a {
 	text-decoration: none;

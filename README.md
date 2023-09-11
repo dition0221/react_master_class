@@ -2,9 +2,9 @@
 
 ### React를 더욱 심층적으로 구현합니다.
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled&dash;Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>  
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Hook&dash;Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>  
-<img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/Recoil&dash;Persist-3578E5?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/@hello&dash;pangea/dnd-0BAF7C?style=flat-square&logoColor=white"/>
+_React_ : <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/Styled&dash;Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>  
+_Framework_ : <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Query-FF4154?style=flat-square&logo=reactquery&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat-square&logo=recoil&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil&dash;Persist-3578E5?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/React&dash;Hook&dash;Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white"/>  
+_Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=flat-square"/> <img src="https://img.shields.io/badge/@hello&dash;pangea/dnd-0BAF7C?style=flat-square&logoColor=white"/> <img src="https://img.shields.io/badge/Framer&dash;Motion-d0e?style=flat-square&logo=framer&logoColor=white"/>
 
 ---
 
@@ -464,13 +464,15 @@
       - 지금의 draggableId는 string타입의 id 프로퍼티 값임
     - 해결 방법 : '.index' 프로퍼티를 이용해서 item을 찾기
       - 'source.index'를 통해 타겟(Object)을 찾은 후 사용
-- **23-09-09 : Code Challenge(2)**
-- **23-09-10 : Code Challenge(3)**
-
-  <!-- TODO : 꾸미기(window98 스타일) / 보드삭제 버튼 생성하기 -->
-  <!-- *DONE : Local Storage 사용 / 삭제 및 쓰레기통 / 리스트 추가하는 폼(모달박스) -->
+- **23-09-09 ~ 10 : Code Challenge(2)**
+- **23-09-11 : #8.0 ~ #8.9 / Animations(1)**
 
 ---
+
+- **23-09-12 : #8.10 ~ #8.16 / Animations(2)**
+- **23-09-13 : #9.0 ~ #9.4 / NETFLIX Clone(1)**
+- **23-09-14 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
+- **23-09-15 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
