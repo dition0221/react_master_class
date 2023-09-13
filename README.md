@@ -466,6 +466,80 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 'source.index'를 통해 타겟(Object)을 찾은 후 사용
 - **23-09-09 ~ 10 : Code Challenge(2)**
 - **23-09-12 : #8.0 ~ #8.6 / Animations(1)**
+  - Framer-Motion 패키지
+    - 애니메이션을 만들 수 있는 React.js용 라이브러리
+      - CSS transition 코드 없이 작동하는 애니메이션
+    - 설치법 : 'npm i framer-motion'
+    - 설정법 : 'import { motion } from "framer-motion";'
+    - 규칙 : 'motion'의 프로퍼티를 HTML태그명으로 사용해야지 애니메이션을 만들 수 있음
+      - 기본형 : &lt;motion.HTML태그명&gt;
+    - 'styled-components'에서 motion 애니메이션 태그 생성법
+      - 기본형 : const 컴포넌트명 = styled(태그명)\` ... \`;
+  - motion의 props
+    - 기본적으로 'style'프로퍼티처럼 연속하는 2개의 중괄호를 사용 ({{, }})
+    - initial : element의 초기 상태를 나타냄
+    - animate : element의 최종 상태를 나타냄
+    - transition : 트랜지션 프로퍼티
+      - delay : n초 후에 애니메이션 발생 [seconds]
+      - duration : n초 동안 애니메이션 발생 [seconds]
+  - 애니메이션 만들기
+    - 기본값으로 살짝 튕기는 듯한 느낌으로 'type: "spring"'이 적용되어 있음
+      - stiffness : [number] 경직됨
+      - damping : [number] 반동력
+      - bounce : 튕기는 정도
+      - mass : 물체의 질량
+    - 'type: "tween"' : 선형적(linear)
+  - Variants
+    - 애니메이션 설정을 분리된 Object로 옮겨서 사용하는 방법
+    - 초기 상태와 최종 상태를 명시해야 함
+      - 이름은 아무거나 사용 가능하지만, 사용 시 이름이 같아야 함
+      - 최종 상태의 옵션으로 'transition'을 넣어줄 수 있음
+      - Variants에 프로퍼티를 더 추가할 수 있으며, :hover 등에 사용할 수 있음
+    - 기본형
+      const 변수명 = {
+      &nbsp;&nbsp;초기상태명 : { ... },
+      &nbsp;&nbsp;최종상태명 : {},
+      }
+      &lt;태그명 variants={변수명} initial="초기상태명" animate="최종상태명"&gt;
+  - Variants - 자식 컴포넌트
+    - 부모 컴포넌트가 variants, initial, animate를 갖고 있을 때 기본값으로 자식 컴포넌트에도 적용됨
+      - 자동으로 부모의 initial, animate의 값을 상속받음
+    - 자식 컴포넌트에 새로운 variants 적용 시 variants만 적어주면 됨
+      - 단, 상태명은 부모 variants와 같은 이름을 사용해야 함
+        - 자동으로 initial, animate를 복붙하기 때문
+    - 부모 컴포넌트에서 자식 컴포넌트의 'delay'를 조절 가능
+      - delayChildren : 자식 컴포넌트들의 delay 시간 [seconds]
+      - staggerChildren : 각각의 자식 컴포넌트들의 delay 시차 [seconds]
+  - event에 따른 animation
+    - 'while이벤트명' 속성을 사용
+      - { whileHover, whileTap, whileDrag, whileFocus, whileInView }
+    - variants에서 상태명 키-값을 사용 가능
+  - Dragging (드래깅)
+    - 사용법 : 컴포넌트에 'drag'속성을 부여하면 됨
+      - 'drag="x"' : x축으로만 drag 가능
+      - 'drag="y"' : y축으로만 drag 가능
+    - whileDrag : drag하는 동안 나타나는 animation 속성
+      - 색을 사용할 때 number값(rgb, hex 등)을 사용해야지 자동으로 transition이 작동함
+        - 그렇지 않으면(string 등), 즉각적으로 색이 변함
+    - dragConstraints : drag가 허용될 수 있는 영역
+      - { top, bottom, left, right }
+      - 제한된 영역을 넘어서면, 영역 내로 되돌아감
+    - dragSnapToOrigin : drag가 끝나면 처음 위치로 되돌아가는 속성
+    - dragElastic : drag 시의 당기는 힘
+      - 0~1 사이의 값을 가짐 (기본값 0.5)
+      - 0 : drag요소가 제한된 영역 밖으로 나갈 수 없음
+      - 1 : drag요소와 마우스 커서가 같은 위치로 drag함
+    - 제한된 영역 내에서만 dragging을 허용시키는 방법
+      1. 제한된 영역을 가지는 div 컴포넌트 내에 drag할 수 있는 컴포넌트 생성하기
+      2. 제한된 영역(부모) 컴포넌트에 CSS 'overflow: hidden' 속성 부여하기
+         - 'overflow: hidden' : 하위 요소가 부모 요소의 내에서만 보이도록 함 (초과된 부분은 보이지 않음)
+      3. 제한된영역 내에서만 drag할 수 있도록 제약을 넣기
+         1. 수학적 방법
+            - ex. 제한영역=600x600 / 드래그요소=200x200
+              dragConstraints={{ top: -200, bottom: 200, left: -200, right: 200 }}
+         2. 'ref' 속성을 이용하는 방법
+            - 제한된 영역의 'ref'를 설정한 후, 드래깅 요소의 'dragConstraints'에 제한된 영역의 ref를 할당
+            - 기본형 : const 변수명 = useRef&lt;제네릭&gt;(null);
 
 ---
 
