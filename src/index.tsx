@@ -61,7 +61,6 @@ const GlobalStyle = createGlobalStyle`
 	body {
 	font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
 	color: black;
-	background: linear-gradient(135deg, pink, skyblue);
 	}
 	a {
 	text-decoration: none;

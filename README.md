@@ -540,13 +540,13 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
          2. 'ref' 속성을 이용하는 방법
             - 제한된 영역의 'ref'를 설정한 후, 드래깅 요소의 'dragConstraints'에 제한된 영역의 ref를 할당
             - 기본형 : const 변수명 = useRef&lt;제네릭&gt;(null);
+- **23-09-14 : #8.7 ~ #8.13 / Animations(2)**
 
 ---
 
-- **23-09-13 : #8.7 ~ #8.16 / Animations(2)**
-- **23-09-14 : #9.0 ~ #9.4 / NETFLIX Clone(1)**
-- **23-09-15 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
-- **23-09-16 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
+- **23-09-15 : #8.14 ~ #9.4 / Animations(3) + NETFLIX Clone(1)**
+- **23-09-16 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
+- **23-09-17 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
