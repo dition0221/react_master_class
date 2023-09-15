@@ -541,12 +541,87 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
             - 제한된 영역의 'ref'를 설정한 후, 드래깅 요소의 'dragConstraints'에 제한된 영역의 ref를 할당
             - 기본형 : const 변수명 = useRef&lt;제네릭&gt;(null);
 - **23-09-14 : #8.7 ~ #8.13 / Animations(2)**
+  - Motion Value
+    - 애니메이션 내의 수치를 tracking할 때 필요한 변수
+      - dragging을 왼쪽/오른쪽에 따라 배경색을 바꾸는 등
+    - Motion Value가 바뀌어도, 컴포넌트가 re-rendering하지 않음 (state값이 아니기 때문)
+    - 사용법
+      const 변수명 = useMotionValue(초기값);
+      &lt;태그명 style={{ 속성: 변수명 }} /&gt;
+      - 변수명.get() : 현재 값을 불러오는 메서드
+      - 변수명.set() : 해당 값으로 처리하는 메서드
+      - ex.
+        const x = useMotionValue();
+        &lt;button onClick={() => x.set(200)}&gt;Click me&lt;/button&gt;
+        &lt;Box style={{ x }} drag="x" /&gt;
+  - useMotionValueEvent()
+    - 'motion value'값을 알아보기 위해 사용하는 메서드
+    - 기본형 : useMotionValueEvent(변수명, 이벤트명, 콜백함수);
+      - 이벤트명 중 "change"는 콜백함수의 인자로 'latest'값(= .get()) 제공
+  - useTransform()
+    - 'motion value' 입력 범위를 출력 범위로 매핑하는 데 사용하는 메서드
+      - 애니메이션과 상호작용을 동적으로 제어하고 관리하기 위해 사용ㅇ
+    - 기본형 : const 변수명 = useTransform(모션값변수명, 입력배열, 출력배열);
+      - 모션값변수명 : 'useMotionValue' 값
+      - 입력 배열 : 입력 값 범위
+      - 출력 배열 : 출력 값 범위
+    - 입력 범위 내에 있을 때, 해당 값에 대한 출력 범위 값을 반환함
+      - 입력 범위를 벗어나도 최소/최대 출력 범위를 반환함
+      - 범위 내에서는 점진적으로 값을 반환함
+  - useScroll()
+    - 현재 페이지 스크롤의 'motion value'값을 반환하는 메서드
+    - 기본형 : const { 프로퍼티명 } = useScroll();
+      - scrollX, scrollY : 절대 스크롤 위치값 [px]
+      - scrollXProgress, scrollYProgress : 상대 스크롤 위치값 (0~1)
+  - SVG Animation
+    - &lt;path&gt;
+      - 'fill' 속성 : svg의 색깔을 변경 가능
+        - 'fill="currentColor"' : &lt;svg&gt;의 색상을 사용하며, 기본값은 'black'
+          - &lt;svg&gt;의 'color'속성을 통해 변경 가능
+        - 'fill="transparent"' : 투명
+      - 'stroke' 속성 : 테두리의 색깔을 변경 가능
+      - 'strokeWidth' 속성 : 테두리의 두께를 변경 가능
+      - 'stroke', 'strokeWidth', 'fill' 등은 CSS로 옮길 수 있음
+    - SVG를 animate하기 위해 &lt;motion.path&gt;로 대체하여 사용
+      - 'pathLength' 속성 : 현재 위치까지의 path의 길이를 나타냄 (0~1)
+        - 이를 사용해 테두리를 그려주는 animation 사용 가능
+  - 특정 프로퍼티의 transition 시간을 정하는 방법
+    - 기본적으로 전체 속성의 animation 시간이 통일되어 있었음
+    - 각각의 프로퍼티마다 duration이나 delay 시간을 지정할 수 있음
+    - 사용법 : transition에서 바꾸고자 하는 프로퍼티에 직접 할당
+      - 전체에 대한 animation은 'default'에 할당
+      - ex. transition : { default : {duration : 5}, fill : {duration : 1} }
+  - AnimatePresence
+    - React에서 사라지는(없어지는) 컴포넌트를 animate할 수 있도록 함
+      - 기본 React에서는 사라지는 컴포넌트를 animation을 부여할 수 없음
+    - 규칙
+      1. &lt;AnimatePresence&gt;는 항상 'visible' 상태이어야 함
+      2. &lt;AnimatePresence&gt;의 내부에는 조건문이 존재해야 함
+    - 기본형 : &lt;AnimatePresence&gt;{조건 ? 참 : 거짓}&lt;/AnimatePresence&gt;
+      - 조건문에 들어가는 컴포넌트에 animation을 적용함
+      - 컴포넌트가 사라질 떄의 animation은 'exit' 속성을 사용
+    - 컴포넌트에 'custom' 속성값을 넣어, variants에서 조건문 사용 가능
+      1. &lt;motion.태그&gt;와 &lt;AnimatePresence&gt; 둘다 'custom' 속성을 부여하여 사용
+      2. 'variants'를 Object를 return하는 콜백함수로 사용해야함
+      - ex.
+        &lt;AnimatePresence custom={isBack}&gt;
+        &nbsp;&nbsp;&lt;Box custom={isBack} ... /&gt;
+        &lt;/AnimatePresence&gt;
+        const boxVariants = {
+        &nbsp;&nbsp;entry : (isBack: Boolean) => ({
+        &nbsp;&nbsp;&nbsp;&nbsp;x : isBack ? -500 : 500;
+        &nbsp;&nbsp;}),
+        };
+    - &lt;AnimatePresence&gt;의 'mode="wait"' 프로퍼티
+      - exit가 일어난 후 entry가 일어나도록 설정하는 프로퍼티
+      - 미 사용 시 exit와 entry가 동시에 일어남
+- **23-09-15 : #8.14 ~ #9.4 / Animations(3)**
 
 ---
 
-- **23-09-15 : #8.14 ~ #9.4 / Animations(3) + NETFLIX Clone(1)**
-- **23-09-16 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
-- **23-09-17 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
+- **23-09-16 : #9.0 ~ #9.4 / NETFLIX Clone(1)**
+- **23-09-17 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
+- **23-09-18 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
