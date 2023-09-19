@@ -623,12 +623,15 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - 서로 다른 컴포넌트에 같은 값을 가지는 'layoutId' 속성을 부여 시 하나의 컴포넌트로 연결하여 animation을 보여줌
       - 시각적으로 하나의 연속 컴포넌트로 처리됨
     - 기본형 : &lt;컴포넌트명 layoutId="값" /&gt;
-- **23-09-19 : #9.0 ~ #9.4 / NETFLIX Clone(1)**
+- **23-09-19 : #9.0 ~ #9.1 / NETFLIX Clone(1)**
+  - Font 파일 적용
+    - .woff2, .ttf 등의 font파일 적용 시 'src'폴더 내에 파일을 위치시켜야 함
+    - '@font-face'문을 통해 font를 정의
+    - 'globalStyle' 보다는 'css파일'에 정의해야 초기 로딩 성능이 향상됨
 
 ---
 
-- **23-09-20 : #9.5 ~ #9.10 / NETFLIX Clone(2)**
-- **23-09-21 : #9.11 ~ #9.15 / NETFLIX Clone(3)**
+- **23-09-20 : #9.2 ~ #9.15 / NETFLIX Clone(2)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

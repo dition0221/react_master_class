@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Netflix-Sans";
+  src: url("./fonts/NetflixSans-Bold.woff2") format("woff2"),
+    url("./fonts/NetflixSans-Light.woff2") format("woff2"),
+    url("./fonts/NetflixSans-Medium.woff2") format("woff2"),
+    url("./fonts/NetflixSans-Regular.woff2") format("woff2");
+}

@@ -4,6 +4,8 @@ import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 // Theme
 import { theme } from "./theme";
+// Fonts
+import "./styles/fonts.css";
 // Components
 import App from "./App";
 
@@ -59,8 +61,7 @@ const GlobalStyle = createGlobalStyle`
 		box-sizing: border-box;
 	}
 	body {
-		font-weight: 300;
-		font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
+		font-family: 'Netflix-Sans', sans-serif; // Font in 'fonts.css'
 		color: black;
 		line-height: 1.2;
 	}
