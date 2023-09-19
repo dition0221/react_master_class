@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 // Theme
-import { darkTheme } from "./theme";
+import { theme } from "./theme";
 // Components
 import App from "./App";
 
@@ -56,25 +56,28 @@ const GlobalStyle = createGlobalStyle`
 	}
 	// Customize
 	* {
-	box-sizing: border-box;
+		box-sizing: border-box;
 	}
 	body {
-	font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
-	color: black;
+		font-weight: 300;
+		font-family: 'Open Sans', sans-serif; // Font-URL at 'index.html'
+		color: black;
+		line-height: 1.2;
 	}
 	a {
-	text-decoration: none;
-	color: inherit;
+		text-decoration: none;
+		color: inherit;
 	}
 `;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <App />
       </ThemeProvider>
