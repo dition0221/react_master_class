@@ -623,12 +623,12 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - 서로 다른 컴포넌트에 같은 값을 가지는 'layoutId' 속성을 부여 시 하나의 컴포넌트로 연결하여 animation을 보여줌
       - 시각적으로 하나의 연속 컴포넌트로 처리됨
     - 기본형 : &lt;컴포넌트명 layoutId="값" /&gt;
-- **23-09-19 : #9.0 ~ #9.1 / NETFLIX Clone(1)**
+- **23-09-19 : #9.0 ~ #9.1 / NETFLIX Clone(1) - Setup**
   - Font 파일 적용
     - .woff2, .ttf 등의 font파일 적용 시 'src'폴더 내에 파일을 위치시켜야 함
     - '@font-face'문을 통해 font를 정의
     - 'globalStyle' 보다는 'css파일'에 정의해야 초기 로딩 성능이 향상됨
-- **23-09-21 : #9.2 / NETFLIX Clone(2)**
+- **23-09-21 : #9.2 / NETFLIX Clone(2) - Header**
   - [Framer-Motion] Animation 반복
     - CSS의 값을 배열형식으로 지정 시 자동으로 값을 변환하는 Animation처럼 작동함
     - 'transition'의 'repeat'프로퍼티를 사용해 Animation 반복 횟수 지정 가능
@@ -638,7 +638,7 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 현재 주소와 같을 시 Object를 반환
       - 현재 주소와 다를 시 'null'값을 반환
       - 상대 경로, 절대 경로 둘다 사용 가능
-- **23-09-22 : #9.3 ~ #9.8 / NETFLIX Clone(3)**
+- **23-09-22 : #9.3 ~ #9.8 / NETFLIX Clone(3) - Header & Home**
 
 ---
 

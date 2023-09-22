@@ -29,6 +29,7 @@ export interface IGetMovieResult {
   total_results: number;
 }
 
+// Get movies now playing
 export async function getMovies() {
   const options = {
     method: "GET",
