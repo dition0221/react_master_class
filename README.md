@@ -638,10 +638,11 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 현재 주소와 같을 시 Object를 반환
       - 현재 주소와 다를 시 'null'값을 반환
       - 상대 경로, 절대 경로 둘다 사용 가능
-- **23-09-22 : #9.3 ~ #9. / NETFLIX Clone(3)**
-  <!-- TODO 9.4 / 8:00 -->
+- **23-09-22 : #9.3 ~ #9.8 / NETFLIX Clone(3)**
 
 ---
+
+- **23-09-23 : #9.9 ~ #9. / NETFLIX Clone(4)**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

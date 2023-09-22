@@ -80,7 +80,7 @@ const Search = styled.span`
 const Input = styled(motion.input)`
   width: 275px;
   height: 36px;
-  background-color: transparent;
+  background-color: black;
   border: 1px solid white;
   color: white;
   font-size: 16px;
@@ -103,6 +103,11 @@ const logoVariants = {
   },
 };
 
+const navVariants = {
+  top: { backgroundColor: "rgba(0,0,0,0)" },
+  scroll: { backgroundColor: "rgba(0,0,0,1)" },
+};
+
 /* Component */
 export default function Header() {
   // Search Animation
@@ -123,11 +128,14 @@ export default function Header() {
 
   // Scroll Animation
   const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (latest) => console.log(latest));
   const navAnimation = useAnimation();
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 80) navAnimation.start("scroll");
+    else navAnimation.start("top");
+  });
 
   return (
-    <Nav initial={{ backgroundColor: "transparent" }}>
+    <Nav variants={navVariants} initial="top" animate={navAnimation}>
       <Col>
         <Logo
           variants={logoVariants}
