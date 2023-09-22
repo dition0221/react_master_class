@@ -1,9 +1,15 @@
 import styled from "styled-components";
-import { FaSistrix } from "react-icons/fa6";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
+import { useState } from "react";
 
-const Nav = styled.nav`
+/* Styled */
+const Nav = styled(motion.nav)`
   width: 100%;
   height: 68px;
   padding: 20px 60px;
@@ -12,7 +18,6 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: black;
   font-size: 14px;
   color: white;
 `;
@@ -47,7 +52,7 @@ const Item = styled.li`
   transition: color 0.3s ease-in-out;
 `;
 
-const Circle = styled(motion.div)`
+const Circle = styled(motion.span)`
   position: absolute;
   width: 5px;
   height: 5px;
@@ -59,11 +64,35 @@ const Circle = styled(motion.div)`
   margin: 0 auto;
 `;
 
-const SearchIcon = styled(FaSistrix)`
-  width: 25px;
-  height: 25px;
+const Search = styled.span`
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: white;
+    cursor: pointer;
+  }
 `;
 
+const Input = styled(motion.input)`
+  width: 275px;
+  height: 36px;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  font-size: 16px;
+  padding: 5px 10px;
+  padding-left: 40px;
+  z-index: -1;
+  transform-origin: right center;
+  position: absolute;
+  right: 0;
+`;
+
+/* Variants */
 const logoVariants = {
   normal: {
     fillOpacity: 1,
@@ -74,14 +103,31 @@ const logoVariants = {
   },
 };
 
+/* Component */
 export default function Header() {
+  // Search Animation
+  const [searchOpen, setSearchOpen] = useState(false);
+  const inputAnimation = useAnimation();
+  const toggleSearch = () => {
+    if (searchOpen) {
+      inputAnimation.start({ scaleX: 0 });
+    } else {
+      inputAnimation.start({ scaleX: 1 });
+    }
+    setSearchOpen((prev) => !prev);
+  };
+
+  // Menu Animation
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
 
-  console.log(homeMatch, tvMatch);
+  // Scroll Animation
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (latest) => console.log(latest));
+  const navAnimation = useAnimation();
 
   return (
-    <Nav>
+    <Nav initial={{ backgroundColor: "transparent" }}>
       <Col>
         <Logo
           variants={logoVariants}
@@ -105,7 +151,23 @@ export default function Header() {
         </Items>
       </Col>
       <Col>
-        <SearchIcon />
+        <Search>
+          <motion.svg
+            onClick={toggleSearch}
+            animate={{ x: searchOpen ? -240 : 0 }}
+            transition={{ type: "linear" }}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+          </motion.svg>
+          <Input
+            initial={{ scaleX: 0 }}
+            animate={inputAnimation}
+            transition={{ type: "linear" }}
+            placeholder="제목, 사람, 장르"
+          />
+        </Search>
       </Col>
     </Nav>
   );

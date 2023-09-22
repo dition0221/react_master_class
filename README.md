@@ -629,6 +629,17 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - '@font-face'문을 통해 font를 정의
     - 'globalStyle' 보다는 'css파일'에 정의해야 초기 로딩 성능이 향상됨
 - **23-09-21 : #9.2 / NETFLIX Clone(2)**
+  - [Framer-Motion] Animation 반복
+    - CSS의 값을 배열형식으로 지정 시 자동으로 값을 변환하는 Animation처럼 작동함
+    - 'transition'의 'repeat'프로퍼티를 사용해 Animation 반복 횟수 지정 가능
+      - number, "Infinity" 등
+  - [React-Router-Dom] useMatch()
+    - useMatch(URL주소) : 현재 페이지가 어디에 위치하는지 알려주는 Hook
+      - 현재 주소와 같을 시 Object를 반환
+      - 현재 주소와 다를 시 'null'값을 반환
+      - 상대 경로, 절대 경로 둘다 사용 가능
+- **23-09-22 : #9.3 ~ #9. / NETFLIX Clone(3)**
+  <!-- TODO 9.4 / 8:00 -->
 
 ---
 
