@@ -639,10 +639,51 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 현재 주소와 다를 시 'null'값을 반환
       - 상대 경로, 절대 경로 둘다 사용 가능
 - **23-09-22 : #9.3 ~ #9.8 / NETFLIX Clone(3) - Header & Home**
+  - [CSS] 'transform-origin' : 변화가 시작하는 위치를 지정하는 속성
+    - 기본형 : transform-origin: 세로 가로;
+  - [Framer-Motion] 함수로 animation 제어하기
+    - useAnimation() : animation의 제어를 함수로 제어하도록 함
+      - 기존에는 컴포넌트에 속성을 부여하였음
+      - 여러 개의 animation을 동시에 실행시키고 싶을 때 유용함
+    - 기본형
+      선언 : const 변수명 = useAnimation();
+      사용 : 변수명.프로퍼티({스타일})
+      적용 : &lt;컴포넌트명 animate={변수명} /&gt;
+    - > const inputAnimation = useAnimation();
+      > const toggleSearch = () => {
+      > &nbsp;&nbsp; if (searchOpen) {
+      > &nbsp;&nbsp;&nbsp;&nbsp;inputAnimation.start({ scaleX: 0 });
+      > &nbsp;&nbsp;} else {
+      > &nbsp;&nbsp;&nbsp;&nbsp;inputAnimation.start({ scaleX: 1 });
+      > &nbsp;&nbsp;}
+      > &nbsp;&nbsp;&nbsp;&nbsp;setSearchOpen((prev) => !prev);
+      > };
+      > &lt;Input initial={{ scaleX: 0 }} animate={inputAnimation} /&gt;
+    - 'useMotionValueEvent()' 메서드를 통한 제어로, variants 사용도 가능
+  - [React-Query] 영화 API
+    - '_TMDB_'사이트로부터 영화 API를 사용
+    - React-Query 사용법
+      1. 'query client'를 만들고, &lt;QueryClientProvider&gt;로 감싸주기
+      2. fetcher함수 정의하기
+      3. 'useQuery()'를 사용해 API 데이터 가져오기
+         - 기본형 : const { isLoading, data, error } = useQuery&lt;제네릭&gt;([쿼리키명], fetcher함수, ?옵션);
+      4. 받은 데이터의 타입 설명하기
+         - 'interface'를 사용해 데이터타입 정의
+  - [Framer-Motion] 빠른 시간 내의 연속된 animation 중첩 현상 문제
+    - &lt;AnimatePresence&gt;의 'onExitComplete'속성은 exit가 끝난 후 실행됨
+      - animation이 실행되는 동안 동작을 막도록 함
+  - [Framer-Motion] 최초 렌더링 시의 animation 해제
+    - &lt;AnimatePresence&gt;의 'initial'속성값을 'false'로 줄 시 최초 렌더링 시의 animation을 해제함
+  - 영화 리스트에 영화들 넣기
+    - 영화리스트 배열을 슬라이더 배열의 갯수(offset)만큼 잘라서 여러 페이지(page)를 만들어야 함
+      - 배경으로 사용한 첫 번째 인덱스는 제외 : data?.results.slice(1);
+    - '배열.slice(시작인덱스, 끝인덱스)' 메서드를 사용해 배열을 잘라서 사용
+      - '배열.slice(offset\*page, offset\*page+offset);'을 사용하고, page를 1씩 증가
+- **23-09-23 : #9.9 ~ #9.10 / NETFLIX Clone(4) - Box animations**
 
 ---
 
-- **23-09-23 : #9.9 ~ #9. / NETFLIX Clone(4)**
+- **23-09-23 : #9.11 ~ #9. / NETFLIX Clone(5) - Movie modal**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

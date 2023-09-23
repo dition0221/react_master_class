@@ -104,8 +104,14 @@ const logoVariants = {
 };
 
 const navVariants = {
-  top: { backgroundColor: "rgba(0,0,0,0)" },
-  scroll: { backgroundColor: "rgba(0,0,0,1)" },
+  top: {
+    background: "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))",
+    transition: { duration: 0.5 },
+  },
+  scroll: {
+    background: "linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))",
+    transition: { duration: 0.2 },
+  },
 };
 
 /* Component */
@@ -130,7 +136,7 @@ export default function Header() {
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 80) navAnimation.start("scroll");
+    if (latest > 0) navAnimation.start("scroll");
     else navAnimation.start("top");
   });
 

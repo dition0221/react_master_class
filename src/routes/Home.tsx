@@ -9,7 +9,7 @@ import { makeImagePath } from "./../utils";
 import useWindowDimensions from "../components/useWindowDimensions";
 
 /* Styled */
-const Wrapper = styled.div`
+const Wrapper = styled.main`
   background-color: black;
   overflow-x: hidden;
 `;
@@ -42,7 +42,7 @@ const Overview = styled.p`
   width: 50%;
 `;
 
-const Slider = styled.div`
+const Slider = styled.section`
   position: relative;
   top: -100px;
 `;
@@ -55,12 +55,48 @@ const Row = styled(motion.div)`
   position: absolute;
 `;
 
-const Box = styled(motion.div)<{ $bgImg: string }>`
+const Box = styled(motion.article)<{ $bgImg: string }>`
   height: 200px;
   background-image: url(${(props) => props.$bgImg});
   background-size: cover;
   background-position: center center;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
+
+const Info = styled(motion.div)`
+  width: 100%;
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 18px;
+  }
+`;
+
+/* Variants */
+const boxVariants = {
+  normal: { scale: 1 },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: { delay: 0.4, duration: 0.2, type: "tween" },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: { delay: 0.4, duration: 0.2, type: "tween" },
+  },
+};
 
 /* Components */
 export default function Home() {
@@ -94,7 +130,11 @@ export default function Home() {
         <>
           <Banner
             onClick={increaseIndex}
-            $bgImg={makeImagePath(data?.results[0].backdrop_path || "")}
+            $bgImg={makeImagePath(
+              data?.results[0].backdrop_path ||
+                data?.results[0].poster_path ||
+                ""
+            )}
           >
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
@@ -114,8 +154,19 @@ export default function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
-                      $bgImg={makeImagePath(movie.backdrop_path, "w500")}
-                    />
+                      variants={boxVariants}
+                      whileHover="hover"
+                      initial="normal"
+                      transition={{ type: "tween" }}
+                      $bgImg={makeImagePath(
+                        movie.backdrop_path || movie.poster_path,
+                        "w500"
+                      )}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
