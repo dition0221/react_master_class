@@ -680,10 +680,11 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - '배열.slice(시작인덱스, 끝인덱스)' 메서드를 사용해 배열을 잘라서 사용
       - '배열.slice(offset\*page, offset\*page+offset);'을 사용하고, page를 1씩 증가
 - **23-09-23 : #9.9 ~ #9.10 / NETFLIX Clone(4) - Box animations**
+  - [CSS] 영화 리스트에서 영화를 hover 시 scale을 커지게 할 때, 양 끝에 존재하는 영화가 화면이 잘리는 현상
+    - 첫 번째, 마지막 요소에 'transform-origin' 속성을 사용
+- **23-09-25 : #9.11 ~ #9.15 / NETFLIX Clone(5) - Movie modal & Search Form**
 
 ---
-
-- **23-09-23 : #9.11 ~ #9. / NETFLIX Clone(5) - Movie modal**
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

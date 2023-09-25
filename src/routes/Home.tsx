@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useMatch, useNavigate, useParams } from "react-router-dom";
 // APIs
 import { IGetMovieResult, getMovies } from "../api";
 // Utilities
@@ -11,7 +12,8 @@ import useWindowDimensions from "../components/useWindowDimensions";
 /* Styled */
 const Wrapper = styled.main`
   background-color: black;
-  overflow-x: hidden;
+  padding-bottom: 200px;
+  overflow: hidden;
 `;
 
 const Loader = styled.div`
@@ -60,6 +62,7 @@ const Box = styled(motion.article)<{ $bgImg: string }>`
   background-image: url(${(props) => props.$bgImg});
   background-size: cover;
   background-position: center center;
+  cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
@@ -79,6 +82,51 @@ const Info = styled(motion.div)`
     text-align: center;
     font-size: 18px;
   }
+`;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+
+const BigMovie = styled(motion.div)`
+  position: fixed;
+  width: 60vw;
+  height: 80vh;
+  top: 30px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: ${(props) => props.theme.black.lighter};
+  border-radius: 6px;
+  overflow: hidden;
+`;
+
+const BigCover = styled.div`
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+`;
+
+const BigTitle = styled.h2`
+  color: ${(props) => props.theme.white.lighter};
+  font-size: 32px;
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+`;
+
+const BigOverview = styled.p`
+  color: ${(props) => props.theme.white.lighter};
+  padding: 20px;
 `;
 
 /* Variants */
@@ -122,6 +170,17 @@ export default function Home() {
   };
   const width = useWindowDimensions(); // width를 추적해, animation 최적화
 
+  // Box clicked - Show modal box
+  const navigate = useNavigate();
+  const bigMovieMatch = useMatch("/movies/:movieId"); // Exist? Show modal box
+  const onBoxClick = (movieId: number) => navigate(`/movies/${movieId}`);
+  const onOverlayClick = () => navigate("/");
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => movie.id + "" === bigMovieMatch.params.movieId
+    ); // Selected movie's information
+
   return (
     <Wrapper>
       {isLoading ? (
@@ -153,11 +212,13 @@ export default function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
+                      layoutId={movie.id + ""}
                       key={movie.id}
                       variants={boxVariants}
                       whileHover="hover"
                       initial="normal"
                       transition={{ type: "tween" }}
+                      onClick={() => onBoxClick(movie.id)}
                       $bgImg={makeImagePath(
                         movie.backdrop_path || movie.poster_path,
                         "w500"
@@ -171,6 +232,34 @@ export default function Home() {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {bigMovieMatch ? (
+              <>
+                <Overlay
+                  onClick={onOverlayClick}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                />
+                <BigMovie layoutId={bigMovieMatch.params.movieId}>
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path,
+                            "w500"
+                          )})`,
+                        }}
+                      >
+                        <BigTitle>{clickedMovie.title}</BigTitle>
+                      </BigCover>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMovie>
+              </>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>
