@@ -142,15 +142,16 @@ export default function Header() {
     setSearchOpen((prev) => !prev);
   };
 
-  // ! 오픈된 검색창 닫기
+  // * 오픈된 검색창 닫기
   // TODO inputRef -> searchRef
+  const searchRef = useRef(null);
   /*
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: React.MouseEvent<HTMLFormElement>) => {
       if (
         searchOpen &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target as HTMLElement)
+        searchRef.current &&
+        !searchRef.current.contains(event.target)
       )
         setSearchOpen(false);
     };
@@ -208,7 +209,7 @@ export default function Header() {
         </Items>
       </Col>
       <Col>
-        <Search onSubmit={handleSubmit(onValid)}>
+        <Search onSubmit={handleSubmit(onValid)} ref={searchRef}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -240 : 0 }}
