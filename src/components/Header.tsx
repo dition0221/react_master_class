@@ -6,7 +6,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 /* Styled */
@@ -129,14 +129,36 @@ export default function Header() {
   // Search Animation
   const [searchOpen, setSearchOpen] = useState(false);
   const inputAnimation = useAnimation();
+  const inputRef = useRef<HTMLInputElement>(null);
   const toggleSearch = () => {
     if (searchOpen) {
+      // to Close
       inputAnimation.start({ scaleX: 0 });
     } else {
+      // to Open
       inputAnimation.start({ scaleX: 1 });
+      inputRef.current?.focus();
     }
     setSearchOpen((prev) => !prev);
   };
+
+  // ! 오픈된 검색창 닫기
+  // TODO inputRef -> searchRef
+  /*
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchOpen &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as HTMLElement)
+      )
+        setSearchOpen(false);
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [searchOpen]);
+  */
 
   // Menu Animation
   const homeMatch = useMatch("/");
@@ -200,7 +222,8 @@ export default function Header() {
             {...register("keyword", { required: true, minLength: 2 })}
             initial={{ scaleX: 0 }}
             animate={inputAnimation}
-            transition={{ type: "linear" }}
+            transition={{ type: "tween" }}
+            ref={inputRef}
             placeholder="제목, 사람, 장르"
           />
         </Search>

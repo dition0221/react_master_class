@@ -683,6 +683,9 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - [CSS] 영화 리스트에서 영화를 hover 시 scale을 커지게 할 때, 양 끝에 존재하는 영화가 화면이 잘리는 현상
     - 첫 번째, 마지막 요소에 'transform-origin' 속성을 사용
 - **23-09-25 : #9.11 ~ #9.15 / NETFLIX Clone(5) - Movie modal & Search Form**
+- **23-09-26 : NETFLIX Clone(6)**
+  - Header
+    - 검색창을 열 시 자동으로 입력창에 focus
 
 ---
 
