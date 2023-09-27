@@ -6,7 +6,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { Link, useMatch, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 
 /* Styled */
@@ -77,6 +77,7 @@ const Search = styled.form`
     height: 25px;
     fill: white;
     cursor: pointer;
+    z-index: 1;
   }
 `;
 
@@ -89,23 +90,29 @@ const Input = styled(motion.input)`
   font-size: 16px;
   padding: 5px 10px;
   padding-left: 40px;
-  z-index: -1;
   transform-origin: right center;
   position: absolute;
   right: 0;
 `;
 
-/* Variants */
-const logoVariants = {
-  normal: {
-    fillOpacity: 1,
-  },
-  active: {
-    fillOpacity: [1, 0, 1],
-    transition: { repeat: Infinity },
-  },
-};
+const ErrorMessage = styled.span`
+  position: absolute;
+  bottom: -35px;
+  left: -240px;
+  background-color: #485460;
+  color: #ff3f34;
+  font-size: 16px;
+  font-weight: 900;
+  text-decoration: underline;
+  font-style: italic;
+`;
 
+const DeleteBtn = styled.svg`
+  position: absolute;
+  right: 5px;
+`;
+
+/* Variants */
 const navVariants = {
   top: {
     background: "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))",
@@ -114,6 +121,16 @@ const navVariants = {
   scroll: {
     background: "linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1))",
     transition: { duration: 0.2 },
+  },
+};
+
+const logoVariants = {
+  normal: {
+    fillOpacity: 1,
+  },
+  active: {
+    fillOpacity: [1, 0, 1],
+    transition: { repeat: Infinity },
   },
 };
 
@@ -126,40 +143,54 @@ interface IForm {
 export default function Header() {
   const goToTopPage = () => window.scrollTo({ top: 0 }); // <Circle /> Bug 해결
 
-  // Search Animation
+  // Search form
+  const {
+    register,
+    handleSubmit,
+    setFocus,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<IForm>();
+  const navigate = useNavigate();
+  const onSubmit = ({ keyword }: IForm) => {
+    navigate(`/search?keyword=${keyword}`);
+    setValue("keyword", "");
+  };
+  const isInputValue = watch("keyword")?.trim() ? true : false;
+
+  // Search animation (Click search icon)
   const [searchOpen, setSearchOpen] = useState(false);
   const inputAnimation = useAnimation();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const toggleSearch = () => {
+  const toggleSearch = useCallback(() => {
     if (searchOpen) {
       // to Close
       inputAnimation.start({ scaleX: 0 });
+      setValue("keyword", "");
     } else {
       // to Open
       inputAnimation.start({ scaleX: 1 });
-      inputRef.current?.focus();
+      setFocus("keyword");
     }
     setSearchOpen((prev) => !prev);
-  };
+  }, [searchOpen, inputAnimation, setFocus, setValue]);
 
-  // * 오픈된 검색창 닫기
-  // TODO inputRef -> searchRef
-  const searchRef = useRef(null);
-  /*
+  // Closing search animation (Click outside)
+  const searchRef = useRef<HTMLFormElement>(null);
+  const deleteBtnRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
-    const handleClickOutside = (event: React.MouseEvent<HTMLFormElement>) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         searchOpen &&
         searchRef.current &&
-        !searchRef.current.contains(event.target)
+        !searchRef.current.contains(event.target as HTMLFormElement)
       )
-        setSearchOpen(false);
+        toggleSearch();
     };
     document.addEventListener("click", handleClickOutside);
 
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [searchOpen]);
-  */
+  }, [searchOpen, toggleSearch]);
 
   // Menu Animation
   const homeMatch = useMatch("/");
@@ -173,12 +204,6 @@ export default function Header() {
     if (latest > 0) navAnimation.start("scroll");
     else navAnimation.start("top");
   });
-
-  // Search form
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<IForm>();
-  const onValid = ({ keyword }: IForm) =>
-    navigate(`/search?keyword=${keyword}`);
 
   return (
     <Nav variants={navVariants} initial="top" animate={navAnimation}>
@@ -209,7 +234,7 @@ export default function Header() {
         </Items>
       </Col>
       <Col>
-        <Search onSubmit={handleSubmit(onValid)} ref={searchRef}>
+        <Search ref={searchRef} onSubmit={handleSubmit(onSubmit)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -240 : 0 }}
@@ -220,13 +245,32 @@ export default function Header() {
             <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
           </motion.svg>
           <Input
-            {...register("keyword", { required: true, minLength: 2 })}
             initial={{ scaleX: 0 }}
             animate={inputAnimation}
             transition={{ type: "tween" }}
-            ref={inputRef}
             placeholder="제목, 사람, 장르"
+            {...register("keyword", {
+              required: "최소 두 글자 이상이어야 합니다.",
+              minLength: {
+                value: 2,
+                message: "최소 두 글자 이상이어야 합니다.",
+              },
+            })}
           />
+          {searchOpen && <ErrorMessage>{errors.keyword?.message}</ErrorMessage>}
+          {searchOpen && isInputValue && (
+            <DeleteBtn
+              ref={deleteBtnRef}
+              onClick={(e) => {
+                e.stopPropagation();
+                setValue("keyword", "");
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+            >
+              <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+            </DeleteBtn>
+          )}
         </Search>
       </Col>
     </Nav>

@@ -684,10 +684,29 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - 첫 번째, 마지막 요소에 'transform-origin' 속성을 사용
 - **23-09-25 : #9.11 ~ #9.15 / NETFLIX Clone(5) - Movie modal & Search Form**
 - **23-09-26 : NETFLIX Clone(6)**
-  - Header
-    - 검색창을 열 시 자동으로 입력창에 focus
+  - [Header] Update : 검색창을 열 시 자동으로 입력창에 focus
+- **23-09-27 : NETFLIX Clone(7)**
+  - [Header] Update
+    - 검색창 바깥을 클릭 시 열려있는 검색창을 닫도록 함 + 닫을 시 입력된 내용 초기화
+    - 검색 기능 업데이트
+    - 검색창에 값이 있을 시에만 검색값을 비울 수 있는 'x'버튼 생성
+    - 검색 조건 미달 시 error를 보여주는 message 생성
+  - [Header] Fix
+    - 검색창이 열릴 시 우측 부분이 form에 가려져 input이 클릭이 안 되는 현상 수정
+  - [Search] Update
+    - API 결과값의 interface 정의
+    - 인물 검색 시 관련 작품을 '.map()'을 통해 풀어서 화면에 보여줌
+      - 영화, tv쇼 등 여러 API를 각각 사용할 필요없이 하나의 API 사용으로 해결
+  - [Search] Issue
+    - 검색 시 동일 작품이 중복되는 현상 - 멀티 검색이기 때문에, 작품/인물 검색으로 인해 중복되는 것으로 추정
+      - 중복 시 하나만 보여주도록 수정해야 함 <!-- TODO -->
 
 ---
+
+- To-Do
+  - 슬라이더 hover 시 좌우화살표 버튼 생성하기
+  - 'swiper.js' 패키지의 슬라이더 알아보기
+  - favicon 및 title
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

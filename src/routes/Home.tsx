@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { useMatch, useNavigate, useParams } from "react-router-dom";
-// APIs
-import { IGetMovieResult, getMovies } from "../api";
+import { useMatch, useNavigate } from "react-router-dom";
 // Utilities
 import { makeImagePath } from "./../utils";
 import useWindowDimensions from "../components/useWindowDimensions";
+// API & Interface
+import { IGetMovieResult, getMovies } from "../api";
 
 /* Styled */
 const Wrapper = styled.main`
