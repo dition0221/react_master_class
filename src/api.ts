@@ -29,7 +29,7 @@ export interface IGetMovieResult {
   total_results: number;
 }
 
-interface ISearch {
+export interface ISearch {
   adult: boolean;
   backdrop_path: string;
   id: number;

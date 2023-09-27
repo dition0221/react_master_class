@@ -8,19 +8,14 @@ import { makeImagePath } from "./../utils";
 import useWindowDimensions from "../components/useWindowDimensions";
 // API & Interface
 import { IGetMovieResult, getMovies } from "../api";
+// Components
+import Loader from "../components/Loader";
 
 /* Styled */
 const Wrapper = styled.main`
   background-color: black;
   padding-bottom: 200px;
   overflow: hidden;
-`;
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Banner = styled.div<{ $bgImg: string }>`
@@ -184,7 +179,7 @@ export default function Home() {
   return (
     <Wrapper>
       {isLoading ? (
-        <Loader>Loading...</Loader>
+        <Loader />
       ) : (
         <>
           <Banner
