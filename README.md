@@ -705,6 +705,15 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
         - 중복 시 하나만 보여주도록 수정
   - Issue
     - [Search] 장르 검색 관련 설정하기
+- **23-09-28 : NETFLIX Clone(8)**
+  - Update
+    - [Search]
+      - 검색 UI 업데이트
+      - 포스터 이미지가 없는 작품의 대체 이미지
+  - Fix
+    - [Header] 검색창의 검색 키워드가 우측의 'x'버튼과 겹치는 현상 수정
+  - Issue
+    - [Search] 검색 결과의 갯수
 
 ---
 
@@ -712,7 +721,6 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - 슬라이더 hover 시 좌우화살표 버튼 생성하기
   - 'swiper.js' 패키지의 슬라이더 알아보기
   - favicon 및 title
-  - SearchItem.tsx
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

@@ -21,6 +21,7 @@ const Nav = styled(motion.nav)`
   align-items: center;
   font-size: 14px;
   color: white;
+  z-index: 1;
 `;
 
 const Col = styled.div`
@@ -88,8 +89,9 @@ const Input = styled(motion.input)`
   border: 1px solid white;
   color: white;
   font-size: 16px;
-  padding: 5px 10px;
+  padding: 5px;
   padding-left: 40px;
+  padding-right: 30px;
   transform-origin: right center;
   position: absolute;
   right: 0;
@@ -153,10 +155,8 @@ export default function Header() {
     formState: { errors },
   } = useForm<IForm>();
   const navigate = useNavigate();
-  const onSubmit = ({ keyword }: IForm) => {
+  const onSubmit = ({ keyword }: IForm) =>
     navigate(`/search?keyword=${keyword}`);
-    setValue("keyword", "");
-  };
   const isInputValue = watch("keyword")?.trim() ? true : false;
 
   // Search animation (Click search icon)
@@ -251,10 +251,14 @@ export default function Header() {
             transition={{ type: "tween" }}
             placeholder="제목, 사람, 장르"
             {...register("keyword", {
-              required: "최소 두 글자 이상이어야 합니다.",
+              required: "최소 2글자 이상이어야 합니다.",
               minLength: {
                 value: 2,
-                message: "최소 두 글자 이상이어야 합니다.",
+                message: "최소 2글자 이상이어야 합니다.",
+              },
+              maxLength: {
+                value: 15,
+                message: "최대 15글자 이하이어야 합니다.",
               },
             })}
           />

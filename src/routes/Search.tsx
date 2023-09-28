@@ -6,8 +6,36 @@ import { ISearch, ISearchMultiResult, searchMulti } from "../api";
 import SearchItem from "../components/SearchItem";
 import Loader from "../components/Loader";
 
-const Wrapper = styled.main``;
+const Wrapper = styled.main`
+  padding-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+`;
 
+const SearchFor = styled.h1`
+  font-size: calc(max(22px, min(2.2vw, 48px))); // 16px ~ 2.2vw ~ 48px
+`;
+
+const List = styled.ul`
+  position: relative;
+  max-width: 1920px;
+  padding: 100px;
+  padding-bottom: 200px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 65px;
+  li:nth-child(6n + 1) {
+    transform-origin: left;
+  }
+  li:nth-child(6n) {
+    transform-origin: right;
+  }
+`;
+
+/* Component */
 export default function Search() {
   // Search programs from API
   const keyword = useSearchParams()[0].get("keyword") || "";
@@ -28,12 +56,22 @@ export default function Search() {
 
   return (
     <Wrapper>
-      {isLoading && <Loader />}
-      {data?.results.map((item) =>
-        // if search person, Show related programs
-        item.known_for
-          ? item.known_for.map((item) => checkDuplicate(item))
-          : checkDuplicate(item)
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <SearchFor>
+            "{keyword}" 검색 결과 ({uniqueKeys.size})
+          </SearchFor>
+          <List>
+            {data?.results.map((item) =>
+              // if search person, Show related programs
+              item.known_for
+                ? item.known_for.map((item) => checkDuplicate(item))
+                : checkDuplicate(item)
+            )}
+          </List>
+        </>
       )}
     </Wrapper>
   );
