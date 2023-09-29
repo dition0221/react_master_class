@@ -11,6 +11,7 @@ declare module "styled-components" {
     white: {
       lighter: string;
       darker: string;
+      btnColor: string;
     };
   }
 }

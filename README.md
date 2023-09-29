@@ -710,10 +710,11 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - [Search]
       - 검색 UI 업데이트
       - 포스터 이미지가 없는 작품의 대체 이미지
-  - Fix
-    - [Header] 검색창의 검색 키워드가 우측의 'x'버튼과 겹치는 현상 수정
-  - Issue
-    - [Search] 검색 결과의 갯수
+  - Fix : [Header] 검색창의 검색 키워드가 우측의 'x'버튼과 겹치는 현상 수정
+  - Issue : [Search] (完) 검색 결과의 갯수
+- **23-09-29 : NETFLIX Clone(9)**
+  - Update : [Search] 아이템 hover 시의 infoBox 업데이트
+  - Fix : [Search] 검색 결과의 갯수
 
 ---
 

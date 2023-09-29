@@ -14,8 +14,14 @@ const Wrapper = styled.main`
   overflow: hidden;
 `;
 
-const SearchFor = styled.h1`
+const SearchForOnTop = styled.h1`
   font-size: calc(max(22px, min(2.2vw, 48px))); // 16px ~ 2.2vw ~ 48px
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  z-index: -1;
 `;
 
 const List = styled.ul`
@@ -60,9 +66,6 @@ export default function Search() {
         <Loader />
       ) : (
         <>
-          <SearchFor>
-            "{keyword}" 검색 결과 ({uniqueKeys.size})
-          </SearchFor>
           <List>
             {data?.results.map((item) =>
               // if search person, Show related programs
@@ -71,6 +74,9 @@ export default function Search() {
                 : checkDuplicate(item)
             )}
           </List>
+          <SearchForOnTop>
+            "{keyword}" 검색 결과 ({uniqueKeys.size})
+          </SearchForOnTop>
         </>
       )}
     </Wrapper>

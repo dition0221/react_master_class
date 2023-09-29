@@ -10,5 +10,6 @@ export const theme: DefaultTheme = {
   white: {
     lighter: "#fff",
     darker: "#E5E5E5",
+    btnColor: "#919191",
   },
 };
