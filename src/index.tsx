@@ -74,7 +74,7 @@ const GlobalStyle = createGlobalStyle`
 	}
 `;
 
-/* React-Query */
+// React-Query
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(

@@ -15,7 +15,7 @@ const Wrapper = styled.main`
 `;
 
 const SearchForOnTop = styled.h1`
-  font-size: calc(max(22px, min(2.2vw, 48px))); // 16px ~ 2.2vw ~ 48px
+  font-size: calc(max(22px, min(2.2vw, 48px))); // 22px ~ 2.2vw ~ 48px
   height: 60px;
   display: flex;
   justify-content: center;

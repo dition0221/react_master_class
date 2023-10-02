@@ -30,12 +30,14 @@ const AlterImg = styled(Img).attrs({ as: motion.div })`
 
 const InfoBox = styled(motion.article)`
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   padding: 10px;
   opacity: 0;
   background-color: ${(props) => props.theme.black.darker};
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1px);
 `;
 
 const Row = styled.div`
@@ -44,6 +46,11 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 7px;
+  font-size: 16px;
+  &:last-child {
+    font-size: 13px;
+  }
   div {
     display: flex;
     align-items: center;
@@ -90,6 +97,19 @@ const wrapperVariants = {
   },
 };
 
+const imgVariants = {
+  init: {
+    borderRadius: "6px",
+  },
+  hover: {
+    borderTopLeftRadius: "6px",
+    borderTopRightRadius: "6px",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    transition: { delay: 0.4, duration: 0.2, type: "tween" },
+  },
+};
+
 const infoBoxVariants = {
   hover: {
     opacity: 1,
@@ -102,6 +122,7 @@ export default function SearchItem({ item }: SearchItemProps) {
   return (
     <Wrapper
       variants={wrapperVariants}
+      initial="init"
       whileHover="hover"
       transition={{ duration: 0.2, type: "tween" }}
     >
@@ -109,14 +130,13 @@ export default function SearchItem({ item }: SearchItemProps) {
         <Img
           src={makeImagePath(item.poster_path || item.backdrop_path, "w300")}
           alt={item.title || item.name}
+          variants={imgVariants}
         />
       ) : (
-        <AlterImg>{item.title || item.name}</AlterImg>
+        <AlterImg variants={imgVariants}>{item.title || item.name}</AlterImg>
       )}
       <InfoBox variants={infoBoxVariants}>
-        <Row>
-          <span>{item.title || item.name}</span>
-        </Row>
+        <Row>{item.title || item.name}</Row>
         <Row>
           <div>
             <CirclePlayBtn>
@@ -143,7 +163,7 @@ export default function SearchItem({ item }: SearchItemProps) {
             </CircleBtn>
           </div>
         </Row>
-        <Row></Row>
+        <Row>{item.release_date || item.first_air_date || "Unknown"}</Row>
       </InfoBox>
     </Wrapper>
   );

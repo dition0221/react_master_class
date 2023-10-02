@@ -51,12 +51,35 @@ export interface ISearch {
   vote_average: number;
   vote_count: number;
   origin_country?: string[] | []; // tv
-  known_for?: ISearch[]; // if Person
+  known_for?: ISearch[]; // if searching person
 }
 
 export interface ISearchMultiResult {
   page: number;
   results: ISearch[];
+  total_pages: number;
+  total_results: number;
+}
+
+interface ITvShow {
+  backdrop_path: string;
+  first_air_date: string;
+  genre_ids: number[] | [];
+  id: number;
+  name: string;
+  origin_country: string[] | [];
+  original_language: string;
+  original_name: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface IGetTvShows {
+  page: number;
+  results: ITvShow[];
   total_pages: number;
   total_results: number;
 }
@@ -87,5 +110,12 @@ export async function searchMulti(keyword: string) {
       `${BASE_PATH}/search/multi?query=${keyword}&include_adult=false&language=ko-KR&page=1`,
       options
     )
+  ).json();
+}
+
+// TV shows : Top Rated (TV shows main page)
+export async function getTvShowsTopRated() {
+  return await (
+    await fetch(`${BASE_PATH}/tv/top_rated?language=ko-KR&page=1`, options)
   ).json();
 }

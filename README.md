@@ -715,6 +715,12 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
 - **23-09-29 : NETFLIX Clone(9)**
   - Update : [Search] 아이템 hover 시의 infoBox 업데이트
   - Fix : [Search] 검색 결과의 갯수
+- **23-10-02 : NETFLIX Clone(10)**
+  - Update
+    - [Slider] 슬라이더 좌/우 버튼 생성 및 애니메이션 업데이트
+    - [Banner] 영화/TV 둘 다 사용 가능하도록 업데이트
+  - Fix : [ModalBox] z-index 수정
+    <!-- TODO: 슬라이더 기능 완성 / 슬라이더 hover 시 인포박스 / 슬라이더 분할정복 -->
 
 ---
 
