@@ -24,6 +24,17 @@ const Slider = styled.section`
   top: -100px;
 `;
 
+const SliderButton = styled(motion.button)`
+  background-color: red;
+  width: 60px;
+  position: absolute;
+  border: none;
+  font-size: 40px;
+  fill: ${(props) => props.theme.white.lighter};
+  cursor: pointer;
+  z-index: 2;
+`;
+
 const Row = styled(motion.div)`
   width: 100%;
   padding: 0 60px;
@@ -58,18 +69,6 @@ const Info = styled(motion.div)`
     text-align: center;
     font-size: 18px;
   }
-`;
-
-const SliderButton = styled(motion.button)`
-  background-color: red;
-  width: 60px;
-  height: 100%; // !!!!!!!!!!!!!!!!!!!!!
-  position: absolute;
-  border: none;
-  font-size: 40px;
-  fill: ${(props) => props.theme.white.lighter};
-  cursor: pointer;
-  z-index: 2;
 `;
 
 const Overlay = styled(motion.div)`
@@ -203,20 +202,6 @@ export default function Home() {
               onExitComplete={onSliderEnd}
               custom={isBack}
             >
-              <SliderButton
-                key="leftBtn"
-                onClick={() => toggleIndex(true)}
-                style={{ left: 0 }}
-                variants={sliderButtonVariants}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 320 512"
-                >
-                  <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-                </svg>
-              </SliderButton>
               <Row
                 key={index}
                 custom={isBack}
@@ -226,6 +211,20 @@ export default function Home() {
                 exit="exit"
                 transition={{ type: "tween", duration: 1 }}
               >
+                <SliderButton
+                  key="leftBtn"
+                  onClick={() => toggleIndex(true)}
+                  style={{ left: 0 }}
+                  variants={sliderButtonVariants}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="1em"
+                    viewBox="0 0 320 512"
+                  >
+                    <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                  </svg>
+                </SliderButton>
                 {data?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
