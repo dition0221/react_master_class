@@ -720,7 +720,10 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - [Slider] 슬라이더 좌/우 버튼 생성 및 애니메이션 업데이트
     - [Banner] 영화/TV 둘 다 사용 가능하도록 업데이트
   - Fix : [ModalBox] z-index 수정
-    <!-- TODO: 슬라이더 기능 완성 / 슬라이더 hover 시 인포박스 / 슬라이더 분할정복 -->
+- **23-10-04 : NETFLIX Clone(11)**
+  - Fix : [Slider] absolute인 자식 요소의 height를 부모 요소의 height에 적용(padding-bottom 사용)해 슬라이더 좌/우 버튼의 높이를 같게 만듦
+  - Update : [slider] hover 시 infoBox / click 시 infoBox 기초작업
+    <!-- TODO: 슬라이더 click 시 인포박스 / 슬라이더 분할정복 -->
 
 ---
 

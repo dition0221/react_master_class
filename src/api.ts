@@ -41,7 +41,7 @@ export interface ISearch {
   original_language: string;
   overview: string;
   poster_path: string;
-  media_type: string;
+  media_type?: string;
   genre_ids: number[] | [];
   popularity: number;
   // movie - release_date / tv - first_air_date

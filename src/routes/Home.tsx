@@ -11,6 +11,7 @@ import { IGetMovieResult, getMovies } from "../api";
 // Components
 import Loader from "../components/Loader";
 import Banner from "../components/Banner";
+import InfoBox from "../components/InfoBox";
 
 /* Styled */
 const Wrapper = styled.main`
@@ -22,11 +23,14 @@ const Wrapper = styled.main`
 const Slider = styled.section`
   position: relative;
   top: -100px;
+  /* calc((100% - (padding * 2) - (gap * 5)) / 6 / aspect-ratio) */
+  padding-bottom: calc((100% - (60px * 2) - (5px * 5)) / 6 / (25 / 14));
 `;
 
 const SliderButton = styled(motion.button)`
-  background-color: red;
-  width: 60px;
+  background-color: transparent;
+  width: 55px; // gap: 5px
+  height: 100%;
   position: absolute;
   border: none;
   font-size: 40px;
@@ -58,19 +62,6 @@ const Box = styled(motion.article)<{ $bgImg: string }>`
   }
 `;
 
-const Info = styled(motion.div)`
-  width: 100%;
-  padding: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
-  opacity: 0;
-  position: absolute;
-  bottom: 0;
-  h4 {
-    text-align: center;
-    font-size: 18px;
-  }
-`;
-
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -78,43 +69,46 @@ const Overlay = styled(motion.div)`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
+  z-index: 3;
 `;
 
-const BigMovie = styled(motion.div)`
+const BigMovie = styled(motion.article)`
   position: fixed;
   width: 60vw;
-  height: 80vh;
+  max-width: 850px;
   top: 30px;
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: ${(props) => props.theme.black.lighter};
-  border-radius: 6px;
+  background-color: ${(props) => props.theme.black.darker};
+  color: ${(props) => props.theme.white.lighter};
+  z-index: 4;
   overflow: hidden;
-  z-index: 2;
 `;
 
-const BigCover = styled.div`
-  width: 100%;
-  height: 400px;
+const BigImg = styled.img`
   background-size: cover;
-  background-position: center center;
-  position: relative;
+  width: 100%;
+  aspect-ratio: 25/14;
+  display: block;
+`;
+
+const BigDescription = styled.div`
+  padding: 30px 48px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
 `;
 
 const BigTitle = styled.h2`
-  color: ${(props) => props.theme.white.lighter};
-  font-size: 32px;
-  position: absolute;
-  bottom: 0;
-  padding: 10px;
-  width: 100%;
+  font-size: 24px;
   text-align: center;
+  margin-bottom: 30px;
 `;
 
 const BigOverview = styled.p`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
+  font-size: 16px;
+  line-height: 26px;
 `;
 
 /* Variants */
@@ -125,24 +119,21 @@ const rowVariants = (width: number) => ({
 });
 
 const boxVariants = {
-  normal: { scale: 1 },
+  normal: { scale: 1, borderRadius: "6px" },
   hover: {
     scale: 1.3,
     y: -50,
+    borderTopLeftRadius: "6px",
+    borderTopRightRadius: "6px",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
     transition: { delay: 0.4, duration: 0.2, type: "tween" },
   },
 };
 
-const infoVariants = {
-  hover: {
-    opacity: 1,
-    transition: { delay: 0.4, duration: 0.2, type: "tween" },
-  },
-};
-
-// TODO
 const sliderButtonVariants = {
-  hover: {},
+  init: { backgroundColor: "rgba(0,0,0,0)" },
+  hover: { backgroundColor: "rgba(255,255,255,0.3)" },
 };
 
 /* Components */
@@ -202,6 +193,26 @@ export default function Home() {
               onExitComplete={onSliderEnd}
               custom={isBack}
             >
+              <SliderButton
+                key="leftBtn"
+                onClick={() => toggleIndex(true)}
+                style={{
+                  left: 0,
+                  borderTopRightRadius: "6px",
+                  borderBottomRightRadius: "6px",
+                }}
+                variants={sliderButtonVariants}
+                initial="init"
+                whileHover="hover"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 320 512"
+                >
+                  <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                </svg>
+              </SliderButton>
               <Row
                 key={index}
                 custom={isBack}
@@ -209,22 +220,8 @@ export default function Home() {
                 initial="normal"
                 animate="animate"
                 exit="exit"
-                transition={{ type: "tween", duration: 1 }}
+                transition={{ duration: 0.7 }}
               >
-                <SliderButton
-                  key="leftBtn"
-                  onClick={() => toggleIndex(true)}
-                  style={{ left: 0 }}
-                  variants={sliderButtonVariants}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
-                    viewBox="0 0 320 512"
-                  >
-                    <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-                  </svg>
-                </SliderButton>
                 {data?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
@@ -242,17 +239,21 @@ export default function Home() {
                         "w500"
                       )}
                     >
-                      <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
-                      </Info>
+                      <InfoBox item={movie} />
                     </Box>
                   ))}
               </Row>
               <SliderButton
                 key="rightBtn"
                 onClick={() => toggleIndex(false)}
-                style={{ right: 0 }}
+                style={{
+                  right: 0,
+                  borderTopLeftRadius: "6px",
+                  borderBottomLeftRadius: "6px",
+                }}
                 variants={sliderButtonVariants}
+                initial="init"
+                whileHover="hover"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -273,20 +274,28 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 />
-                <BigMovie layoutId={bigMovieMatch.params.movieId}>
+                <BigMovie
+                  layoutId={bigMovieMatch.params.movieId}
+                  animate={{ borderRadius: "6px" }}
+                >
                   {clickedMovie && (
                     <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                            clickedMovie.backdrop_path,
-                            "w500"
-                          )})`,
-                        }}
-                      >
-                        <BigTitle>{clickedMovie.title}</BigTitle>
-                      </BigCover>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                      <BigImg src={makeImagePath(clickedMovie.backdrop_path)} />
+                      <BigDescription>
+                        <div>
+                          <BigTitle>{clickedMovie.title}</BigTitle>
+                          <BigOverview>
+                            {clickedMovie.overview.length > 150
+                              ? clickedMovie.overview.slice(0, 150) + "..."
+                              : clickedMovie.overview}
+                          </BigOverview>
+                        </div>
+                        <div>
+                          {/* https://developer.themoviedb.org/reference/movie-details */}
+                          {/* https://developer.themoviedb.org/reference/movie-credits */}
+                          {/* https://developer.themoviedb.org/reference/movie-recommendations */}
+                        </div>
+                      </BigDescription>
                     </>
                   )}
                 </BigMovie>
