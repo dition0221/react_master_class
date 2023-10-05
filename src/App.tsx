@@ -4,6 +4,7 @@ import Home from "./routes/Home";
 import Tv from "./routes/Tv";
 import Search from "./routes/Search";
 import Header from "./components/Header";
+import ClickedItem from "./routes/ClickedItem";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}>
-          <Route path="/movies/:movieId" />
+          <Route path="/movies/:movieId" element={<ClickedItem />} />
         </Route>
         <Route path="/tv" element={<Tv />} />
         <Route path="/search" element={<Search />} />

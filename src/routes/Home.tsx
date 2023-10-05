@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { Outlet, useMatch, useNavigate } from "react-router-dom";
 // Utilities
 import { makeImagePath } from "./../utils";
 import useWindowDimensions from "../components/useWindowDimensions";
@@ -62,55 +62,6 @@ const Box = styled(motion.article)<{ $bgImg: string }>`
   }
 `;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  z-index: 3;
-`;
-
-const BigMovie = styled(motion.article)`
-  position: fixed;
-  width: 60vw;
-  max-width: 850px;
-  top: 30px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  background-color: ${(props) => props.theme.black.darker};
-  color: ${(props) => props.theme.white.lighter};
-  z-index: 4;
-  overflow: hidden;
-`;
-
-const BigImg = styled.img`
-  background-size: cover;
-  width: 100%;
-  aspect-ratio: 25/14;
-  display: block;
-`;
-
-const BigDescription = styled.div`
-  padding: 30px 48px;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 32px;
-`;
-
-const BigTitle = styled.h2`
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 30px;
-`;
-
-const BigOverview = styled.p`
-  font-size: 16px;
-  line-height: 26px;
-`;
-
 /* Variants */
 const rowVariants = (width: number) => ({
   normal: (isBack: boolean) => ({ x: isBack ? -width + 130 : width - 130 }),
@@ -119,7 +70,7 @@ const rowVariants = (width: number) => ({
 });
 
 const boxVariants = {
-  normal: { scale: 1, borderRadius: "6px" },
+  normal: { scale: 1 },
   hover: {
     scale: 1.3,
     y: -50,
@@ -167,17 +118,11 @@ export default function Home() {
     toggleLeaving();
     setIsBack(false);
   };
-
   // Box clicked - Show modal box
   const navigate = useNavigate();
   const bigMovieMatch = useMatch("/movies/:movieId"); // Exist? Show modal box
-  const onBoxClick = (movieId: number) => navigate(`/movies/${movieId}`);
-  const onOverlayClick = () => navigate("/");
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => movie.id + "" === bigMovieMatch.params.movieId
-    ); // Selected movie's information
+  const onBoxClick = (movieId: number) =>
+    navigate(`/movies/${movieId}`, { state: { data } });
 
   return (
     <Wrapper>
@@ -266,42 +211,7 @@ export default function Home() {
             </AnimatePresence>
           </Slider>
 
-          <AnimatePresence>
-            {bigMovieMatch ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                />
-                <BigMovie
-                  layoutId={bigMovieMatch.params.movieId}
-                  animate={{ borderRadius: "6px" }}
-                >
-                  {clickedMovie && (
-                    <>
-                      <BigImg src={makeImagePath(clickedMovie.backdrop_path)} />
-                      <BigDescription>
-                        <div>
-                          <BigTitle>{clickedMovie.title}</BigTitle>
-                          <BigOverview>
-                            {clickedMovie.overview.length > 150
-                              ? clickedMovie.overview.slice(0, 150) + "..."
-                              : clickedMovie.overview}
-                          </BigOverview>
-                        </div>
-                        <div>
-                          {/* https://developer.themoviedb.org/reference/movie-details */}
-                          {/* https://developer.themoviedb.org/reference/movie-credits */}
-                          {/* https://developer.themoviedb.org/reference/movie-recommendations */}
-                        </div>
-                      </BigDescription>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <AnimatePresence>{bigMovieMatch ? <Outlet /> : null}</AnimatePresence>
         </>
       )}
     </Wrapper>

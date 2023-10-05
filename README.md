@@ -684,7 +684,7 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - 첫 번째, 마지막 요소에 'transform-origin' 속성을 사용
 - **23-09-25 : #9.11 ~ #9.15 / NETFLIX Clone(5) - Movie modal & Search Form**
 - **23-09-26 : NETFLIX Clone(6)**
-  - [Header] Update : 검색창을 열 시 자동으로 입력창에 focus
+  - Update : [Header] 검색창을 열 시 자동으로 입력창에 focus
 - **23-09-27 : NETFLIX Clone(7)**
   - Update
     - [Header]
@@ -697,19 +697,13 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 인물 검색 시 관련 작품을 '.map()'을 통해 풀어서 화면에 보여줌
         - 영화, tv쇼 등 여러 API를 각각 사용할 필요없이 하나의 API 사용으로 해결
   - Fix
-    - [Header]
-      - 검색창이 열릴 시 우측 부분이 form에 가려져 input이 클릭이 안 되는 현상 수정
-    - [Search]
-      - 검색 시 동일 작품이 중복되는 현상 수정 (중복 결과 제거)
-        - 멀티 검색이기 때문에, 작품/인물 검색으로 인해 중복되는 것으로 추정
-        - 중복 시 하나만 보여주도록 수정
-  - Issue
-    - [Search] 장르 검색 관련 설정하기
+    - [Header] 검색창이 열릴 시 우측 부분이 form에 가려져 input이 클릭이 안 되는 현상 수정
+    - [Search] 검색 시 동일 작품이 중복되는 현상 수정 (중복 결과 제거)
+      - 멀티 검색이기 때문에, 작품/인물 검색으로 인해 중복되는 것으로 추정
+      - 중복 시 하나만 보여주도록 수정
+  - Issue : [Search] 장르 검색 관련 설정하기
 - **23-09-28 : NETFLIX Clone(8)**
-  - Update
-    - [Search]
-      - 검색 UI 업데이트
-      - 포스터 이미지가 없는 작품의 대체 이미지
+  - Update : [Search] 검색 UI 업데이트 & 포스터 이미지가 없는 작품의 대체 이미지
   - Fix : [Header] 검색창의 검색 키워드가 우측의 'x'버튼과 겹치는 현상 수정
   - Issue : [Search] (完) 검색 결과의 갯수
 - **23-09-29 : NETFLIX Clone(9)**
@@ -719,18 +713,25 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - Update
     - [Slider] 슬라이더 좌/우 버튼 생성 및 애니메이션 업데이트
     - [Banner] 영화/TV 둘 다 사용 가능하도록 업데이트
-  - Fix : [ModalBox] z-index 수정
+  - Fix : [Modal-Box] z-index 수정
 - **23-10-04 : NETFLIX Clone(11)**
   - Fix : [Slider] absolute인 자식 요소의 height를 부모 요소의 height에 적용(padding-bottom 사용)해 슬라이더 좌/우 버튼의 높이를 같게 만듦
-  - Update : [slider] hover 시 infoBox / click 시 infoBox 기초작업
-    <!-- TODO: 슬라이더 click 시 인포박스 / 슬라이더 분할정복 -->
+  - Update : [Slider] hover 시 infoBox / click 시 infoBox 기초작업
+- **23-10-05 : NETFLIX Clone(12)**
+  - Update
+    - [Modal-Box]
+      - 데이터 추가 및 UI 업데이트
+      - Nested-Router 분할 정복
+      - 홈에서 이미 API data를 가지고 있다면 바로 사용 / URL 검색 시 API 검색
+  - Issue : [Modal-Box] 404 Error 해결하기
 
 ---
 
 - To-Do
-  - 슬라이더 hover 시 좌우화살표 버튼 생성하기
   - 'swiper.js' 패키지의 슬라이더 알아보기
   - favicon 및 title
+  - [Modal-Box] 404 Error 해결하기
+  - [Slider] 분할정복 및 여러 개 만들기
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
