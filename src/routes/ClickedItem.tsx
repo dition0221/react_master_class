@@ -100,21 +100,22 @@ export default function ClickedItem() {
   const params = useParams();
   const paramsMovieId = params.movieId ?? "0";
 
-  // Data: from '/'
+  // Data: from home('/')
   const bigMovieMatch = useMatch("/movies/:movieId");
   const movieIdParam = bigMovieMatch?.params.movieId;
-  // ? URL 검색으로 이동 시 'data'값이 null인 문제
   const location = useLocation() as IUseLocationProps;
   const data = location?.state?.data ?? { results: [] };
   const clickedMovie = movieIdParam
     ? data?.results.find((movie) => movie.id === +movieIdParam)
-    : undefined;
+    : undefined; // Movie's data from home
 
   // Final movie id
   const movieId = clickedMovie ? clickedMovie.id : +paramsMovieId;
 
   // API
-  const { data: detailData, isError } = useQuery<IGetMovieDetails>(
+  // TODO : 404 response를 핸들링 해야 함
+  // TODO : 'useQueries()'로 코드를 합쳐보자
+  const { data: detailData } = useQuery<IGetMovieDetails>(
     ["detail", movieId],
     () => getMovieDetail(+movieId)
   );
@@ -122,15 +123,10 @@ export default function ClickedItem() {
     ["credit", movieId],
     () => getMovieCredit(+movieId)
   );
-  // TODO : 404 Error 해결하기
   //   const { data: recommendationData } = useQuery<IGetMovieRecommendations>(
   //     ["recommendation", bigMovieMatch?.params.movieId],
   //     () => getMovieRecommendation(+bigMovieMatch?.params.movieId!)
   //   );
-  console.log("/", clickedMovie);
-  console.log("detail", detailData);
-  console.log("credit", creditData);
-  console.log("error", isError);
 
   return (
     <>
@@ -143,6 +139,7 @@ export default function ClickedItem() {
         layoutId={bigMovieMatch?.params.movieId}
         animate={{ borderRadius: "6px" }}
       >
+        {/* 조건 바꿔야함 ('error가 아닐 시'로) */}
         {clickedMovie || detailData || creditData ? (
           <>
             <Img
@@ -154,11 +151,14 @@ export default function ClickedItem() {
             <InfoBox>
               <Description>
                 <div>
-                  <Title>{clickedMovie?.title}</Title>
+                  <Title>{clickedMovie?.title || detailData?.title}</Title>
                   <Overview>
-                    {clickedMovie && clickedMovie.overview.length > 150
+                    {(clickedMovie && clickedMovie?.overview?.length > 150
                       ? clickedMovie?.overview.slice(0, 150) + "..."
-                      : clickedMovie?.overview}
+                      : clickedMovie?.overview) ||
+                      (detailData && detailData?.overview?.length > 150
+                        ? detailData?.overview.slice(0, 150) + "..."
+                        : detailData?.overview)}
                   </Overview>
                 </div>
                 <div>
@@ -179,7 +179,9 @@ export default function ClickedItem() {
                   </Detail>
                   <Detail>
                     <span>개봉일:</span>
-                    <span>{clickedMovie?.release_date}</span>
+                    <span>
+                      {clickedMovie?.release_date || detailData?.release_date}
+                    </span>
                   </Detail>
                 </div>
               </Description>
