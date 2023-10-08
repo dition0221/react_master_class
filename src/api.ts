@@ -174,6 +174,7 @@ const options = {
   },
 };
 
+/* Movies */
 // Get movies Now playing
 export async function getMovies() {
   return await (
@@ -208,6 +209,7 @@ export async function getMovieRecommendation(movieId: number) {
   ).json();
 }
 
+/* Search */
 // Multi search (movies, TV shows, people, etc.)
 export async function searchMulti(keyword: string) {
   return await (
@@ -218,6 +220,7 @@ export async function searchMulti(keyword: string) {
   ).json();
 }
 
+/* TV Shows */
 // TV shows : Top Rated (TV shows main page)
 export async function getTvShowsTopRated() {
   return await (

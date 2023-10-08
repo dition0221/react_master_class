@@ -33,7 +33,9 @@ const Overlay = styled(motion.div)`
 const Movie = styled(motion.article)`
   width: 60vw;
   max-width: 850px;
+  height: 200vh;
   position: fixed;
+  /* position: absolute; */
   top: 30px;
   left: 0;
   right: 0;
@@ -41,7 +43,7 @@ const Movie = styled(motion.article)`
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.lighter};
   z-index: 4;
-  overflow: hidden;
+  overflow-x: hidden;
 `;
 
 const Img = styled.img`
@@ -52,14 +54,14 @@ const Img = styled.img`
 `;
 
 const InfoBox = styled.div`
-  padding: 30px 48px;
+  padding: 30px 48px 0;
 `;
 
 const Description = styled.div`
-  margin-bottom: 30px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 32px;
+  margin-bottom: 55px;
 `;
 
 const Title = styled.h2`
@@ -76,13 +78,28 @@ const Overview = styled.p`
 const Detail = styled.p`
   font-size: 14px;
   line-height: 20px;
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
   span:first-child {
     color: #777;
     margin-right: 5px;
   }
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
+`;
+
+const RecommendBox = styled.section`
+  width: 100%;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+`;
+
+const RecommendItem = styled.article`
+  width: 100%;
+  height: 200px;
+  background-color: ${(props) => props.theme.black.lighter};
+  border-radius: 6px;
 `;
 
 interface IUseLocationProps {
@@ -113,20 +130,22 @@ export default function ClickedItem() {
   const movieId = clickedMovie ? clickedMovie.id : +paramsMovieId;
 
   // API
-  // TODO : 404 response를 핸들링 해야 함
+  // TODO : [후순위] 404 response를 핸들링 해야 함
   // TODO : 'useQueries()'로 코드를 합쳐보자
+  // TODO : 'recommendation' 컴포넌트 생성하기
+  // * series가 있다면, series + recommendation
   const { data: detailData } = useQuery<IGetMovieDetails>(
     ["detail", movieId],
-    () => getMovieDetail(+movieId)
+    () => getMovieDetail(movieId)
   );
   const { data: creditData } = useQuery<IGetMovieCredits>(
     ["credit", movieId],
-    () => getMovieCredit(+movieId)
+    () => getMovieCredit(movieId)
   );
-  //   const { data: recommendationData } = useQuery<IGetMovieRecommendations>(
-  //     ["recommendation", bigMovieMatch?.params.movieId],
-  //     () => getMovieRecommendation(+bigMovieMatch?.params.movieId!)
-  //   );
+  const { data: recommendationData } = useQuery<IGetMovieRecommendations>(
+    ["recommendation", movieId],
+    () => getMovieRecommendation(movieId)
+  );
 
   return (
     <>
@@ -185,6 +204,27 @@ export default function ClickedItem() {
                   </Detail>
                 </div>
               </Description>
+              {/* Todo : 추천 페이지 마저만들기 */}
+              {recommendationData?.results.length ? (
+                <>
+                  <Title style={{ textAlign: "left" }}>
+                    함께 시청된 콘텐츠
+                  </Title>
+                  <RecommendBox>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                    <RecommendItem></RecommendItem>
+                  </RecommendBox>
+                </>
+              ) : null}
             </InfoBox>
           </>
         ) : null}
