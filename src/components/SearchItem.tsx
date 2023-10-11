@@ -23,6 +23,7 @@ const Img = styled(motion.img)`
 
 const AlterImg = styled(Img).attrs({ as: motion.div })`
   background-color: ${(props) => props.theme.black.lighter};
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;

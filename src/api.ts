@@ -134,6 +134,7 @@ export interface IGetMovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  success?: boolean;
 }
 
 /* Movie's Credits */
@@ -155,6 +156,7 @@ interface IGetMovieCreditsCast {
 export interface IGetMovieCredits {
   id: number;
   cast: IGetMovieCreditsCast[] | [];
+  success?: boolean;
 }
 
 /* Movie's Recommendations */
@@ -163,6 +165,7 @@ export interface IGetMovieRecommendations {
   results: ISearch[] | [];
   total_pages: number;
   total_results: number;
+  success?: boolean;
 }
 
 // API options

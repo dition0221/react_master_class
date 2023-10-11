@@ -32,10 +32,8 @@ const Overlay = styled(motion.div)`
 
 const Movie = styled(motion.article)`
   width: 60vw;
-  max-width: 850px;
-  height: 200vh;
+  max-width: 934px;
   position: fixed;
-  /* position: absolute; */
   top: 30px;
   left: 0;
   right: 0;
@@ -44,11 +42,14 @@ const Movie = styled(motion.article)`
   color: ${(props) => props.theme.white.lighter};
   z-index: 4;
   overflow-x: hidden;
+  /*  */
+  display: flex;
+  flex-direction: column;
 `;
 
 const Img = styled.img`
-  background-size: cover;
   width: 100%;
+  background-size: cover;
   aspect-ratio: 25/14;
   display: block;
 `;
@@ -87,29 +88,73 @@ const Detail = styled.p`
   }
 `;
 
+// Recommend Items
 const RecommendBox = styled.section`
   width: 100%;
-  height: 200px;
+  padding-bottom: 100px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 1em;
+  color: #d2d2d2;
 `;
 
 const RecommendItem = styled.article`
   width: 100%;
-  height: 200px;
+  height: 380px;
+  padding-bottom: 14px;
   background-color: ${(props) => props.theme.black.lighter};
   border-radius: 6px;
+  cursor: pointer;
+`;
+
+const RecommendImg = styled(Img)`
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+`;
+
+const AlterImg = styled.div`
+  width: 100%;
+  aspect-ratio: 25/14;
+  background-color: ${(props) => props.theme.black.veryDark};
+  font-size: 1vw;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RecommendTitle = styled(Title)`
+  font-size: 18px;
+  margin-top: 15px;
+  margin-bottom: 0;
+`;
+
+const RecommendYear = styled(Title)`
+  font-size: 12px;
+  margin-bottom: 20px;
+`;
+
+const RecommendOverview = styled(Overview)`
+  font-size: 14px;
+  line-height: 20px;
+  padding: 0 14px;
+`;
+
+const Error404 = styled.div`
+  color: ${(props) => props.theme.red};
+  font-size: calc(max(2vw, 20px));
+  font-weight: 900;
+  text-align: center;
+  overflow: hidden;
 `;
 
 interface IUseLocationProps {
-  state: {
-    data: IGetMovieResult | null;
-  };
+  state: { data: IGetMovieResult | null };
 }
 
 export default function ClickedItem() {
-  // if click outside, Exit modal-box
+  // Click outside, Exit modal-box
   const navigate = useNavigate();
   const onOverlayClick = () => navigate("/");
 
@@ -130,10 +175,7 @@ export default function ClickedItem() {
   const movieId = clickedMovie ? clickedMovie.id : +paramsMovieId;
 
   // API
-  // TODO : [후순위] 404 response를 핸들링 해야 함
   // TODO : 'useQueries()'로 코드를 합쳐보자
-  // TODO : 'recommendation' 컴포넌트 생성하기
-  // * series가 있다면, series + recommendation
   const { data: detailData } = useQuery<IGetMovieDetails>(
     ["detail", movieId],
     () => getMovieDetail(movieId)
@@ -147,6 +189,13 @@ export default function ClickedItem() {
     () => getMovieRecommendation(movieId)
   );
 
+  // Variables
+  const overview = (clickedMovie || detailData)?.overview
+    ? ((clickedMovie || detailData)?.overview || "").length > 150
+      ? (clickedMovie || detailData)?.overview.slice(0, 150) + "..."
+      : (clickedMovie || detailData)?.overview
+    : "- Overview unknown -";
+
   return (
     <>
       <Overlay
@@ -156,29 +205,29 @@ export default function ClickedItem() {
       />
       <Movie
         layoutId={bigMovieMatch?.params.movieId}
-        animate={{ borderRadius: "6px" }}
+        animate={
+          recommendationData?.results !== undefined &&
+          recommendationData?.results.length > 0
+            ? { borderRadius: "6px", height: "100%" }
+            : { borderRadius: "6px" }
+        }
       >
-        {/* 조건 바꿔야함 ('error가 아닐 시'로) */}
-        {clickedMovie || detailData || creditData ? (
+        {detailData?.success === undefined ||
+        creditData?.success === undefined ? (
           <>
-            <Img
-              src={makeImagePath(
-                clickedMovie?.backdrop_path || detailData?.backdrop_path || ""
-              )}
-              alt="썸네일"
-            />
+            {(clickedMovie || detailData)?.backdrop_path ? (
+              <Img
+                src={makeImagePath(
+                  (clickedMovie || detailData)?.backdrop_path || ""
+                )}
+                alt="썸네일"
+              />
+            ) : null}
             <InfoBox>
+              <Title>{clickedMovie?.title || detailData?.title}</Title>
               <Description>
                 <div>
-                  <Title>{clickedMovie?.title || detailData?.title}</Title>
-                  <Overview>
-                    {(clickedMovie && clickedMovie?.overview?.length > 150
-                      ? clickedMovie?.overview.slice(0, 150) + "..."
-                      : clickedMovie?.overview) ||
-                      (detailData && detailData?.overview?.length > 150
-                        ? detailData?.overview.slice(0, 150) + "..."
-                        : detailData?.overview)}
-                  </Overview>
+                  <Overview>{overview}</Overview>
                 </div>
                 <div>
                   <Detail>
@@ -204,6 +253,7 @@ export default function ClickedItem() {
                   </Detail>
                 </div>
               </Description>
+
               {/* Todo : 추천 페이지 마저만들기 */}
               {recommendationData?.results.length ? (
                 <>
@@ -211,23 +261,46 @@ export default function ClickedItem() {
                     함께 시청된 콘텐츠
                   </Title>
                   <RecommendBox>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
-                    <RecommendItem></RecommendItem>
+                    {recommendationData.results.map((item) => (
+                      <RecommendItem
+                        onClick={() => navigate(`/movies/${item.id}`)}
+                        key={item.id}
+                      >
+                        {item.backdrop_path ? (
+                          <RecommendImg
+                            src={makeImagePath(item.backdrop_path, "w500")}
+                            alt={item.title || "썸네일"}
+                          />
+                        ) : (
+                          <AlterImg>{item.title || item.name}</AlterImg>
+                        )}
+                        <RecommendTitle>
+                          {item.title || item.name}
+                        </RecommendTitle>
+                        <RecommendYear>
+                          {(item.release_date || item.first_air_date) ??
+                            "- Date unknown -"}
+                        </RecommendYear>
+                        <RecommendOverview>
+                          {item.overview
+                            ? item.overview.length > 135
+                              ? item.overview.slice(0, 135) + "..."
+                              : item.overview
+                            : "- Overview unknown -"}
+                        </RecommendOverview>
+                      </RecommendItem>
+                    ))}
                   </RecommendBox>
                 </>
               ) : null}
             </InfoBox>
           </>
-        ) : null}
+        ) : (
+          <Error404>
+            Error : 404 <br />
+            페이지를 찾을 수 없습니다.
+          </Error404>
+        )}
       </Movie>
     </>
   );

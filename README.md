@@ -723,15 +723,25 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 데이터 추가 및 UI 업데이트
       - Nested-Router 분할 정복
       - 홈에서 이미 API data를 가지고 있다면 바로 사용 / URL 검색 시 API 검색
-  - Issue : [Modal-Box] 404 Error 해결하기
+  - Issue : [Modal-Box] URL 직접 입력 시 404 Error 해결하기 (해결)
+- **23-10-08 : NETFLIX Clone(13)**
+  - Issue : [Modal-Box] 스크롤바 문제 (해결)
+- **23-10-11 : NETFLIX Clone(14)**
+  - Fix : [Modal-Box]
+    - recommendationData가 있을 경우 스크롤바가 생기지 않는 문제 해결
+      - 상위 컨테이너 &lt;Movie&gt;에게 'recommendationData?.result.length'에 따라 참일 경우, 'height:100%'를 선언
+    - URL 직접 입력 시 404 Error 문제 해결
+      - detail과 credit API data가 없을 시 화면을 보여주지 않게 조건문 재설정
+  - Update
+    - [Modal-Box] 추천 페이지 업데이트
+    - [Slider] 분할정복
 
 ---
 
 - To-Do
   - 'swiper.js' 패키지의 슬라이더 알아보기
-  - favicon 및 title
-  - [Modal-Box] 404 Error 해결하기
-  - [Slider] 분할정복 및 여러 개 만들기
+  - favicon 및 title 업데이트
+  - [검색] item 클릭 시 ModalBox가 나오게끔
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
