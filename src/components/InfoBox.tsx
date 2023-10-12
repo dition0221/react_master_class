@@ -3,10 +3,6 @@ import { motion } from "framer-motion";
 // Interface
 import { ISearch } from "../api";
 
-interface SearchItemProps {
-  item: ISearch;
-}
-
 const Wrapper = styled(motion.div)`
   width: 100%;
   min-height: 100px;
@@ -74,6 +70,10 @@ const infoBoxVariants = {
     transition: { delay: 0.4, duration: 0.2, type: "tween" },
   },
 };
+
+interface SearchItemProps {
+  item: ISearch;
+}
 
 export default function InfoBox({ item }: SearchItemProps) {
   return (

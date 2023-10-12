@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 // Interface & API
-import { IGetMovieResult } from "../api";
+import { IGetRecommendAndTrend, IGetMovieResult, IGetTvTopRated } from "../api";
 // Utilities
 import useWindowDimensions from "./useWindowDimensions";
 import { makeImagePath } from "../utils";
@@ -11,11 +11,18 @@ import { makeImagePath } from "../utils";
 import InfoBox from "./InfoBox";
 
 /* Styled */
+const Title = styled.h1`
+  font-size: 1.4vw;
+  font-weight: 500;
+  padding-left: 60px;
+  margin-bottom: 20px;
+`;
+
 const SliderWrapper = styled.section`
   position: relative;
-  top: -100px;
   /* calc((100% - (padding * 2) - (gap * 5)) / 6 / aspect-ratio) */
   padding-bottom: calc((100% - (60px * 2) - (5px * 5)) / 6 / (25 / 14));
+  margin-bottom: 3vw;
 `;
 
 const SliderButton = styled(motion.button)`
@@ -44,6 +51,7 @@ const Box = styled(motion.article)<{ $bgImg: string }>`
   background-image: url(${(props) => props.$bgImg});
   background-size: cover;
   background-position: center center;
+  border-radius: 6px;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
@@ -79,10 +87,18 @@ const sliderButtonVariants = {
 };
 
 interface ISliderProps {
-  data?: IGetMovieResult;
+  sliderTitle: string;
+  mediaType: string; // for clicking URL
+  data?: IGetMovieResult | IGetRecommendAndTrend | IGetTvTopRated;
+  isBanner?: boolean;
 }
 
-export default function Slider({ data }: ISliderProps) {
+export default function Slider({
+  sliderTitle,
+  mediaType,
+  data,
+  isBanner = false,
+}: ISliderProps) {
   // Slider
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false); // Animation동안 클릭 방지용
@@ -109,87 +125,91 @@ export default function Slider({ data }: ISliderProps) {
 
   // Box clicked - Show modal box
   const navigate = useNavigate();
-  const onBoxClick = (movieId: number) =>
-    navigate(`/movies/${movieId}`, { state: { data } });
+  const onBoxClick = (itemId: number) =>
+    navigate(`/${mediaType}/${itemId}`, { state: { data } });
+
+  // Show data from first, Using 'isBanner' prop.
+  const sliderData = isBanner ? data?.results.slice(1) : data?.results;
 
   return (
-    <SliderWrapper>
-      <AnimatePresence
-        initial={false}
-        onExitComplete={onSliderEnd}
-        custom={isBack}
-      >
-        <SliderButton
-          key="leftBtn"
-          onClick={() => toggleIndex(true)}
-          style={{
-            left: 0,
-            borderTopRightRadius: "6px",
-            borderBottomRightRadius: "6px",
-          }}
-          variants={sliderButtonVariants}
-          initial="init"
-          whileHover="hover"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="1em"
-            viewBox="0 0 320 512"
-          >
-            <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-          </svg>
-        </SliderButton>
-        <Row
-          key={index}
+    <>
+      <Title>{sliderTitle}</Title>
+      <SliderWrapper>
+        <AnimatePresence
+          initial={false}
+          onExitComplete={onSliderEnd}
           custom={isBack}
-          variants={rowVariants(width)}
-          initial="normal"
-          animate="animate"
-          exit="exit"
-          transition={{ duration: 0.7 }}
         >
-          {data?.results
-            .slice(1)
-            .slice(offset * index, offset * index + offset)
-            .map((movie) => (
-              <Box
-                layoutId={movie.id + ""}
-                key={movie.id}
-                variants={boxVariants}
-                whileHover="hover"
-                initial="normal"
-                transition={{ type: "tween" }}
-                onClick={() => onBoxClick(movie.id)}
-                $bgImg={makeImagePath(
-                  movie.backdrop_path || movie.poster_path,
-                  "w500"
-                )}
-              >
-                <InfoBox item={movie} />
-              </Box>
-            ))}
-        </Row>
-        <SliderButton
-          key="rightBtn"
-          onClick={() => toggleIndex(false)}
-          style={{
-            right: 0,
-            borderTopLeftRadius: "6px",
-            borderBottomLeftRadius: "6px",
-          }}
-          variants={sliderButtonVariants}
-          initial="init"
-          whileHover="hover"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="1em"
-            viewBox="0 0 320 512"
+          <SliderButton
+            key="leftBtn"
+            onClick={() => toggleIndex(true)}
+            style={{
+              left: 0,
+              borderTopRightRadius: "6px",
+              borderBottomRightRadius: "6px",
+            }}
+            variants={sliderButtonVariants}
+            initial="init"
+            whileHover="hover"
           >
-            <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
-          </svg>
-        </SliderButton>
-      </AnimatePresence>
-    </SliderWrapper>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 320 512"
+            >
+              <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
+          </SliderButton>
+          <Row
+            key={index}
+            custom={isBack}
+            variants={rowVariants(width)}
+            initial="normal"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.7 }}
+          >
+            {sliderData
+              ?.slice(offset * index, offset * index + offset)
+              .map((movie) => (
+                <Box
+                  key={movie.id}
+                  variants={boxVariants}
+                  whileHover="hover"
+                  initial="normal"
+                  transition={{ type: "tween" }}
+                  onClick={() => onBoxClick(movie.id)}
+                  $bgImg={makeImagePath(
+                    movie.backdrop_path || movie.poster_path,
+                    "w500"
+                  )}
+                >
+                  <InfoBox item={movie} />
+                </Box>
+              ))}
+          </Row>
+          <SliderButton
+            key="rightBtn"
+            onClick={() => toggleIndex(false)}
+            style={{
+              right: 0,
+              borderTopLeftRadius: "6px",
+              borderBottomLeftRadius: "6px",
+            }}
+            variants={sliderButtonVariants}
+            initial="init"
+            whileHover="hover"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 320 512"
+            >
+              <path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
+            </svg>
+          </SliderButton>
+        </AnimatePresence>
+      </SliderWrapper>
+    </>
   );
 }

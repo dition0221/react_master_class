@@ -735,13 +735,25 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - Update
     - [Modal-Box] 추천 페이지 업데이트
     - [Slider] 분할정복
+- **23-10-12 : NETFLIX Clone(15)**
+  - Update
+    - [Slider]
+      - 슬라이더 타이틀 추가
+      - 첫 슬라이더만 2번째 데이터부터 보여줌 (첫번째 데이터는 Banner로 사용)
+    - [Modal-Box] movie, tv 둘 다에서 모달박스가 나오게 업데이트
+    - [Home, TV] 더 많은 슬라이드 업데이트
+    - [Footer] 업데이트
+  - Fix : [Slider] 각기 다른 슬라이더에서 같은 영화가 있을 시 서로 애니메이션을 간섭하는 현상 수정
+    - 'LayoutId'가 중복되지 않도록 수정
 
 ---
 
 - To-Do
   - 'swiper.js' 패키지의 슬라이더 알아보기
-  - favicon 및 title 업데이트
-  - [검색] item 클릭 시 ModalBox가 나오게끔
+  - [Head] favicon, title(Helmet), meta미리보기 등 업데이트
+  - [Search] item 클릭 시 'Modal-Box' 생성하기
+  - [Item] 재생 버튼 클릭 시 예고편 영상으로 넘어가기 (/watch/:id)
+  - [API] useQueries를 사용해 'isLoading' 통합하기
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

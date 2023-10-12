@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { makeImagePath } from "../utils";
-import { IGetMovieResult, IGetTvShows } from "../api";
+import { IGetMovieResult, IGetTvTopRated } from "../api";
 
 const Wrapper = styled.div<{ $bgImg: string }>`
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,7 +25,7 @@ const Overview = styled.p`
 `;
 
 interface IBannerProps {
-  data?: IGetMovieResult | IGetTvShows;
+  data?: IGetMovieResult | IGetTvTopRated;
 }
 
 export default function Banner({ data }: IBannerProps) {
