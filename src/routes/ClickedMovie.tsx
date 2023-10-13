@@ -19,6 +19,7 @@ import {
   getMovieDetail,
   getMovieRecommendation,
 } from "../api";
+import PlayInfoBtns from "../components/PlayInfoBtns";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -45,6 +46,10 @@ const Movie = styled(motion.article)`
   /*  */
   display: flex;
   flex-direction: column;
+`;
+
+const ImgContainer = styled.div`
+  position: relative;
 `;
 
 const Img = styled.img`
@@ -182,7 +187,7 @@ export default function ClickedMovie() {
   // Final movie id
   const movieId = clickedMovie ? clickedMovie.id : +paramsMovieId;
 
-  // API
+  // API (Movie)
   // TODO : 'useQueries()'로 코드를 합쳐보자
   const { data: detailData } = useQuery<IGetMovieDetails>(
     ["movie", "detail", movieId],
@@ -229,12 +234,15 @@ export default function ClickedMovie() {
           creditData?.success === undefined ? (
             <>
               {(clickedMovie || detailData)?.backdrop_path ? (
-                <Img
-                  src={makeImagePath(
-                    (clickedMovie || detailData)?.backdrop_path || ""
-                  )}
-                  alt="썸네일"
-                />
+                <ImgContainer>
+                  <Img
+                    src={makeImagePath(
+                      (clickedMovie || detailData)?.backdrop_path || ""
+                    )}
+                    alt="썸네일"
+                  />
+                  <PlayInfoBtns itemId={movieId} mediaType="movie" />
+                </ImgContainer>
               ) : null}
               <InfoBox>
                 <Title>{clickedMovie?.title || detailData?.title}</Title>

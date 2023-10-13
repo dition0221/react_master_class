@@ -46,7 +46,7 @@ export default function Tv() {
         <Loader />
       ) : (
         <>
-          <Banner data={trendingTvData} />
+          <Banner data={trendingTvData} mediaType="tv" />
 
           <Slider
             sliderTitle="지금 뜨는 TV 프로그램"

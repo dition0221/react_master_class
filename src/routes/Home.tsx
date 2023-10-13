@@ -57,7 +57,7 @@ export default function Home() {
         <Loader />
       ) : (
         <>
-          <Banner data={data} />
+          <Banner data={data} mediaType="movie" />
 
           <Slider
             sliderTitle="현재 상영 중인 영화"

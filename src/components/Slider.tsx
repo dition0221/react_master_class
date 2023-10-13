@@ -88,9 +88,9 @@ const sliderButtonVariants = {
 
 interface ISliderProps {
   sliderTitle: string;
-  mediaType: string; // for clicking URL
+  mediaType: "movie" | "tv"; // for clicking URL
   data?: IGetMovieResult | IGetRecommendAndTrend | IGetTvTopRated;
-  isBanner?: boolean;
+  isBanner?: boolean; // T: start [1], F: start [0]
 }
 
 export default function Slider({

@@ -19,6 +19,7 @@ import {
   getTvCredit,
   getTvRecommendation,
 } from "../api";
+import PlayInfoBtns from "../components/PlayInfoBtns";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -45,6 +46,10 @@ const Movie = styled(motion.article)`
   /*  */
   display: flex;
   flex-direction: column;
+`;
+
+const ImgContainer = styled.div`
+  position: relative;
 `;
 
 const Img = styled.img`
@@ -182,7 +187,7 @@ export default function ClickedTv() {
   // Final movie id
   const tvId = clickedTv ? clickedTv.id : +paramsTvId;
 
-  // API
+  // API (TV)
   // TODO :  tv episode 섹션 추가 (recommend 앞에)
   // TODO : 'useQueries()'로 코드를 합쳐보자
   const { data: detailData } = useQuery<ITvDetail>(["tv", "detail", tvId], () =>
@@ -227,12 +232,15 @@ export default function ClickedTv() {
           creditData?.success === undefined ? (
             <>
               {(clickedTv || detailData)?.backdrop_path ? (
-                <Img
-                  src={makeImagePath(
-                    (clickedTv || detailData)?.backdrop_path || ""
-                  )}
-                  alt="썸네일"
-                />
+                <ImgContainer>
+                  <Img
+                    src={makeImagePath(
+                      (clickedTv || detailData)?.backdrop_path || ""
+                    )}
+                    alt="썸네일"
+                  />
+                  <PlayInfoBtns itemId={tvId} mediaType="tv" />
+                </ImgContainer>
               ) : null}
               <InfoBox>
                 <Title>{clickedTv?.name || detailData?.name}</Title>
