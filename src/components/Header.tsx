@@ -157,7 +157,7 @@ export default function Header() {
   const navigate = useNavigate();
   const onSubmit = ({ keyword }: IForm) =>
     navigate(`/search?keyword=${keyword}`);
-  const isInputValue = watch("keyword")?.trim() ? true : false;
+  const isInputValue = watch("keyword")?.trim();
 
   // Search animation (Click search icon)
   const [searchOpen, setSearchOpen] = useState(false);

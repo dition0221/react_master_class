@@ -38,7 +38,7 @@ export default function Tv() {
   );
 
   // Box clicked - Show modal box
-  const bigMovieMatch = useMatch("/tv/:tvId"); // Exist? Show modal box
+  const bigTvMatch = useMatch("/tv/:itemId"); // Exist? Show modal box
 
   return (
     <Wrapper>
@@ -65,8 +65,8 @@ export default function Tv() {
             mediaType="tv"
           />
 
-          {/* 영화 클릭 시 정보 보여주기 */}
-          <AnimatePresence>{bigMovieMatch ? <Outlet /> : null}</AnimatePresence>
+          {/* TV 클릭 시 정보 보여주기 */}
+          <AnimatePresence>{bigTvMatch ? <Outlet /> : null}</AnimatePresence>
         </>
       )}
     </Wrapper>

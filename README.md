@@ -749,17 +749,23 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - Update
     - [Banner] 재생 버튼, 상세 정보 버튼 업데이트
     - [Item] 재생 버튼 클릭 시 예고편 영상(YouTube) 보여주기 업데이트
-
-<!-- TODO: [Item] 예고편 영상(YouTube) 닫을 시 애니메이션 생성하기 -->
-<!-- TODO : [Search] item 클릭 시 'Modal-Box' 생성하기 -->
+- **23-10-16 : NETFLIX Clone(17)**
+  - Fix
+    - [Info-Box] hover 시 하단의 슬라이드보다 레이어가 뒤에 있는 현상 수정
+    - [Iframe] 정가운데 정렬
+  - Update
+    - [ClickedItem] 영화와 tv를 한 컴포넌트로 통합
+    - [Search] 검색된 item 클릭 시 modal-box 보여주기
+  - Issue : [Search] 검색된 item의 modal-box에서 recommendItem 클릭 시 URL 이동하는 현상
+    - 검색 시 검색어를 Query String 대신 하위 동적URL 및 nested route 사용?
 
 ---
 
 - To-Do
   - 'swiper.js' 패키지의 슬라이더 알아보기
   - [Head] favicon, title(Helmet), meta미리보기 등 업데이트
-  - [Search] item 클릭 시 'Modal-Box' 생성하기
   - [API] useQueries를 사용해 'isLoading' 통합하기
+    - ClickedMovie, ClickedTv
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

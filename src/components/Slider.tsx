@@ -20,7 +20,7 @@ const Title = styled.h1`
 
 const SliderWrapper = styled.section`
   position: relative;
-  /* calc((100% - (padding * 2) - (gap * 5)) / 6 / aspect-ratio) */
+  /* calc((100% - (padding * 2) - (gap * 5)) / numberOf<Box> / aspect-ratio) */
   padding-bottom: calc((100% - (60px * 2) - (5px * 5)) / 6 / (25 / 14));
   margin-bottom: 3vw;
 `;
@@ -48,21 +48,24 @@ const Row = styled(motion.div)`
 
 const Box = styled(motion.article)<{ $bgImg: string }>`
   aspect-ratio: 25/14;
+  width: 100%;
+  height: 100%;
   background-image: url(${(props) => props.$bgImg});
   background-size: cover;
   background-position: center center;
   border-radius: 6px;
   cursor: pointer;
   &:first-child {
-    transform-origin: center left;
+    transform-origin: left;
   }
   &:last-child {
-    transform-origin: center right;
+    transform-origin: right;
   }
 `;
 
 /* Variants */
 const rowVariants = (width: number) => ({
+  // 130 = btnWidth(60) * 2 + gap(5) * 2
   normal: (isBack: boolean) => ({ x: isBack ? -width + 130 : width - 130 }),
   animate: { x: 0 },
   exit: (isBack: boolean) => ({ x: isBack ? width - 130 : -width + 130 }),
@@ -77,6 +80,7 @@ const boxVariants = {
     borderTopRightRadius: "6px",
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+    zIndex: 99, // Fix: <InfoBox> hover to top end!
     transition: { delay: 0.4, duration: 0.2, type: "tween" },
   },
 };

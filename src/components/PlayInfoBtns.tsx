@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IGetVideo, getVideo } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Buttons = styled.div<{ $isBanner: boolean | undefined }>`
   display: flex;
@@ -65,14 +65,13 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const Iframe = styled.iframe`
+const Iframe = styled(motion.iframe)`
   width: 80%;
   position: fixed;
   aspect-ratio: 16/9;
-  top: 68px; // header height
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 99;
 `;
 
@@ -92,10 +91,9 @@ export default function PlayInfoBtns({
     getVideo(itemId, mediaType)
   );
   const isYoutube =
+    data &&
     data?.success === undefined &&
-    data?.results.filter((item) => item.site === "YouTube").length
-      ? true
-      : false;
+    data?.results.filter((item) => item.site === "YouTube").length > 0;
   const youtubeKey = data?.results.filter((item) => item.site === "YouTube")[0]
     ?.key;
 

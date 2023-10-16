@@ -6,10 +6,8 @@ import { ISearch } from "../api";
 import { makeImagePath } from "../utils";
 // Components
 import InfoBox from "./InfoBox";
-
-interface SearchItemProps {
-  item: ISearch;
-}
+import { useState } from "react";
+import ClickedItemComp from "./ClickedItemComp";
 
 const Wrapper = styled(motion.li)``;
 
@@ -53,25 +51,53 @@ const imgVariants = {
   },
 };
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+interface SearchItemProps {
+  item: ISearch;
+}
+
 /* Component */
 export default function SearchItem({ item }: SearchItemProps) {
+  // Click item to show detail
+  const [isDetail, setIsDetail] = useState(false);
+  const onItemClick = () => setIsDetail(true);
+  const onOverlayClick = () => setIsDetail(false);
+
   return (
-    <Wrapper
-      variants={wrapperVariants}
-      initial="init"
-      whileHover="hover"
-      transition={{ duration: 0.2, type: "tween" }}
-    >
-      {item.poster_path || item.backdrop_path ? (
-        <Img
-          src={makeImagePath(item.poster_path || item.backdrop_path, "w300")}
-          alt={item.title || item.name}
-          variants={imgVariants}
-        />
-      ) : (
-        <AlterImg variants={imgVariants}>{item.title || item.name}</AlterImg>
-      )}
-      <InfoBox item={item} />
-    </Wrapper>
+    <>
+      <Wrapper
+        variants={wrapperVariants}
+        initial="init"
+        whileHover="hover"
+        transition={{ duration: 0.2, type: "tween" }}
+        onClick={onItemClick}
+      >
+        {item.poster_path || item.backdrop_path ? (
+          <Img
+            src={makeImagePath(item.poster_path || item.backdrop_path, "w300")}
+            alt={item.title || item.name}
+            variants={imgVariants}
+          />
+        ) : (
+          <AlterImg variants={imgVariants}>{item.title || item.name}</AlterImg>
+        )}
+        <InfoBox item={item} />
+      </Wrapper>
+
+      {isDetail ? (
+        <>
+          <Overlay onClick={onOverlayClick} />
+          <ClickedItemComp mediaType={item.media_type} searchId={item.id} />
+        </>
+      ) : null}
+    </>
   );
 }

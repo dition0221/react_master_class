@@ -49,7 +49,7 @@ export default function Home() {
   );
 
   // Box clicked - Show modal box
-  const bigMovieMatch = useMatch("/movie/:movieId"); // Exist? Show modal box
+  const bigMovieMatch = useMatch("/movie/:itemId"); // Exist? Show modal box
 
   return (
     <Wrapper>

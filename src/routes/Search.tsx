@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 // API
 import { ISearch, ISearchMultiResult, searchMulti } from "../api";
@@ -61,24 +61,28 @@ export default function Search() {
   };
 
   return (
-    <Wrapper>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <List>
-            {data?.results.map((item) =>
-              // if search person, Show related programs
-              item.known_for
-                ? item.known_for.map((item) => checkDuplicate(item))
-                : checkDuplicate(item)
-            )}
-          </List>
-          <SearchForOnTop>
-            "{keyword}" 검색 결과 ({uniqueKeys.size})
-          </SearchForOnTop>
-        </>
-      )}
-    </Wrapper>
+    <>
+      <Wrapper>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <List>
+              {data?.results.map((item) =>
+                // if search person, Show related programs
+                item.known_for
+                  ? item.known_for.map((item) => checkDuplicate(item))
+                  : checkDuplicate(item)
+              )}
+            </List>
+            <SearchForOnTop>
+              "{keyword}" 검색 결과 ({uniqueKeys.size})
+            </SearchForOnTop>
+          </>
+        )}
+      </Wrapper>
+
+      <Outlet />
+    </>
   );
 }

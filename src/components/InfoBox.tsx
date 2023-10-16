@@ -13,7 +13,7 @@ const Wrapper = styled(motion.div)`
   border-bottom-right-radius: 6px;
   position: absolute;
   top: calc(100% - 1px);
-  z-index: -99;
+  z-index: -1; // Prevent mouse hover
 `;
 
 const Row = styled.div`

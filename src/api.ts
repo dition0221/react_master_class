@@ -13,7 +13,7 @@ export interface ISearch {
   original_name?: string;
   overview: string;
   poster_path: string;
-  media_type?: string;
+  media_type: "movie" | "tv";
   genre_ids: number[] | [];
   popularity: number;
   // movie - release_date / tv - first_air_date
@@ -54,56 +54,27 @@ export interface IGetTvTopRated {
 }
 
 // Movie - details
-interface IGetMovieDetailsGenres {
+interface IGetDetailsGenres {
   id: number;
   name: string;
 }
 
-interface IGetMovieDetailProductionCompanies {
+interface IGetDetailProductionCompanies {
   id: number;
   logo_path: string;
   name: string;
   origin_country: string;
 }
 
-interface IGetMovieDetailProductionCountries {
+interface IGetDetailProductionCountries {
   iso_3166_1: string;
   name: string;
 }
 
-interface IGetMovieDetailSpokenLanguages {
+interface IGetDetailSpokenLanguages {
   english_name: string;
   iso_639_1: string;
   name: string;
-}
-
-export interface IGetMovieDetails {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: {} | null;
-  budget: number;
-  genres: IGetMovieDetailsGenres[] | [];
-  homepage: string;
-  id: number;
-  imdb_id: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: IGetMovieDetailProductionCompanies[] | [];
-  production_countries: IGetMovieDetailProductionCountries[] | [];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: IGetMovieDetailSpokenLanguages[] | [];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  success?: boolean;
 }
 
 /* Movie - Credits */
@@ -124,14 +95,8 @@ interface IGetMovieCreditsCast {
   job?: string;
 }
 
-export interface IGetMovieCredits {
-  id: number;
-  cast: IGetMovieCreditsCast[] | [];
-  success?: boolean;
-}
-
-/* Movie & tv - Recommendations */
-/* Movie & TV - Trending*/
+/* Movie, TV - Recommendations */
+/* Movie, TV - Trending*/
 /* Movie - Popular */
 /* Movie - Top rated */
 /* TV - On The Air */
@@ -168,13 +133,6 @@ interface ITvEpisode {
   still_path: string | null;
 }
 
-interface ITvNetwork {
-  id: number;
-  logo_path: string;
-  name: string;
-  origin_country: string;
-}
-
 interface ITvSeasons {
   air_date: string;
   episode_count: number;
@@ -186,46 +144,56 @@ interface ITvSeasons {
   vote_average: number;
 }
 
-export interface ITvDetail {
+/* Movie, TV - detail */
+export interface IItemDetail {
   adult: boolean;
   backdrop_path: string;
-  created_by: ITvCreatedBy[] | [];
-  episode_run_time: number[] | [];
-  first_air_date: string;
-  genres: IGetMovieDetailsGenres[];
+  belongs_to_collection?: {} | null;
+  budget?: number;
+  created_by?: ITvCreatedBy[] | [];
+  episode_run_time?: number[] | [];
+  first_air_date?: string;
+  genres: IGetDetailsGenres[];
   homepage: string;
   id: number;
-  in_production: boolean;
-  languages: string[] | [];
-  last_air_date: string;
-  last_episode_to_air: ITvEpisode;
-  name: string;
-  next_episode_to_air: ITvEpisode;
-  networks: ITvNetwork[] | [];
-  number_of_episodes: number;
-  number_of_seasons: number;
-  origin_country: string[] | [];
+  imdb_id?: string;
+  in_production?: boolean;
+  languages?: string[] | [];
+  last_air_date?: string;
+  last_episode_to_air?: ITvEpisode;
+  name?: string;
+  next_episode_to_air?: ITvEpisode;
+  networks?: IGetDetailProductionCompanies[] | [];
+  number_of_episodes?: number;
+  number_of_seasons?: number;
+  origin_country?: string[] | [];
   original_language: string;
-  original_name: string;
+  original_name?: string;
+  original_title?: string;
   overview: string;
   popularity: number;
   poster_path: string;
-  production_companies: ITvNetwork[] | [];
-  production_countries: IGetMovieDetailProductionCountries[] | [];
-  seasons: ITvSeasons[] | [];
-  spoken_languages: IGetMovieDetailSpokenLanguages[] | [];
+  production_companies: IGetDetailProductionCompanies[] | [];
+  production_countries: IGetDetailProductionCountries[] | [];
+  release_date?: string;
+  revenue?: number;
+  runtime?: number;
+  seasons?: ITvSeasons[] | [];
+  spoken_languages: IGetDetailSpokenLanguages[] | [];
   status: string;
   tagline: string;
-  type: string;
+  title?: string;
+  type?: string;
+  video?: boolean;
   vote_average: number;
   vote_count: number;
   success?: boolean;
 }
 
-/* TV - credit */
-export interface ITvCredit {
+/* Movie, TV - credit */
+export interface IItemCredit {
   cast: IGetMovieCreditsCast[] | [];
-  crew: IGetMovieCreditsCast[] | [];
+  crew?: IGetMovieCreditsCast[] | [];
   id: number;
   success?: boolean;
 }
@@ -287,30 +255,6 @@ export async function getUpcomingMovies() {
   ).json();
 }
 
-// Get movie's details
-export async function getMovieDetail(movieId: number) {
-  return await (
-    await fetch(`${BASE_PATH}/movie/${movieId}?language=ko-KR`, options)
-  ).json();
-}
-
-// Get movie's credits
-export async function getMovieCredit(movieId: number) {
-  return await (
-    await fetch(`${BASE_PATH}/movie/${movieId}/credits?language=ko-KR`, options)
-  ).json();
-}
-
-// Get movie's recommendations
-export async function getMovieRecommendation(movieId: number) {
-  return await (
-    await fetch(
-      `${BASE_PATH}/movie/${movieId}/recommendations?language=ko-KR&page=1`,
-      options
-    )
-  ).json();
-}
-
 /* Search */
 // Multi search (movies, TV shows, people, etc.)
 export async function searchMulti(keyword: string) {
@@ -344,25 +288,32 @@ export async function getOnTheAirTv() {
   ).json();
 }
 
+/* Details */
 // Get TV's details
-export async function getTvDetail(tvId: number) {
+export async function getItemDetail(mediaType: "movie" | "tv", itemId: number) {
   return await (
-    await fetch(`${BASE_PATH}/tv/${tvId}?language=ko-KR`, options)
+    await fetch(`${BASE_PATH}/${mediaType}/${itemId}?language=ko-KR`, options)
   ).json();
 }
 
 // Get tv's credits
-export async function getTvCredit(tvId: number) {
+export async function getItemCredit(mediaType: "movie" | "tv", itemId: number) {
   return await (
-    await fetch(`${BASE_PATH}/tv/${tvId}/credits?language=ko-KR`, options)
+    await fetch(
+      `${BASE_PATH}/${mediaType}/${itemId}/credits?language=ko-KR`,
+      options
+    )
   ).json();
 }
 
 // Get tv's recommendations
-export async function getTvRecommendation(tvId: number) {
+export async function getItemRecommendation(
+  mediaType: "movie" | "tv",
+  itemId: number
+) {
   return await (
     await fetch(
-      `${BASE_PATH}/tv/${tvId}/recommendations?language=ko-KR&page=1`,
+      `${BASE_PATH}/${mediaType}/${itemId}/recommendations?language=ko-KR&page=1`,
       options
     )
   ).json();
