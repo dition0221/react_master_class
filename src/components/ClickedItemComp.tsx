@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Navigate,
   useLocation,
   useMatch,
   useNavigate,
@@ -35,9 +34,6 @@ const Item = styled(motion.article)`
   color: ${(props) => props.theme.white.lighter};
   z-index: 4;
   overflow-x: hidden;
-  /*  */
-  display: flex;
-  flex-direction: column;
 `;
 
 const ImgContainer = styled.div`
@@ -86,9 +82,9 @@ const Detail = styled.p`
 `;
 
 // Recommend Items
-const RecommendBox = styled.section`
+const RecommendContainer = styled.section`
   width: 100%;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1em;
@@ -149,7 +145,12 @@ const Error404 = styled.div`
 /* Variants */
 const itemVariants = {
   init: { scale: 0.8, opacity: 0 },
-  yesResult: { borderRadius: "6px", scale: 1, opacity: 1, height: "100%" },
+  yesResult: {
+    borderRadius: "6px",
+    scale: 1,
+    opacity: 1,
+    height: "calc(100% - 30px)", // 100% - top
+  },
   noResult: { borderRadius: "6px", scale: 1, opacity: 1 },
   exit: { scale: 0.8, opacity: 0 },
 };
@@ -168,6 +169,7 @@ export default function ClickedItemComp({
   searchId,
 }: IClickedItemProps) {
   const navigate = useNavigate();
+
   // Data: from URL params
   const params = useParams();
   const paramsItemId = params.id ?? "0";
@@ -186,6 +188,7 @@ export default function ClickedItemComp({
 
   // API
   // TODO :  tv episode 섹션 추가 (recommend 앞에)
+  // ㄴ https://developer.themoviedb.org/reference/tv-season-details
   // TODO : 'useQueries()'로 코드를 합쳐보자
   const { data: detailData } = useQuery<IItemDetail>(
     [mediaType, "detail", itemId],
@@ -228,7 +231,9 @@ export default function ClickedItemComp({
               <ImgContainer>
                 <Img
                   src={makeImagePath(
-                    (clickedItem || detailData)?.backdrop_path || ""
+                    (clickedItem || detailData)?.backdrop_path ||
+                      (clickedItem || detailData)?.poster_path ||
+                      ""
                   )}
                   alt="썸네일"
                 />
@@ -251,13 +256,14 @@ export default function ClickedItemComp({
                       {creditData?.cast
                         ?.slice(0, 3)
                         ?.map((g) => g.name)
-                        .join(", ")}
+                        .join(", ") || "- Cast unknown -"}
                     </span>
                   </Detail>
                   <Detail>
                     <span>장르:</span>
                     <span>
-                      {detailData?.genres?.map((g) => g.name).join(", ")}
+                      {detailData?.genres?.map((g) => g.name).join(", ") ||
+                        "- Genre unknown -"}
                     </span>
                   </Detail>
                   <Detail>
@@ -275,7 +281,7 @@ export default function ClickedItemComp({
                   <Title style={{ textAlign: "left" }}>
                     함께 시청된 콘텐츠
                   </Title>
-                  <RecommendBox>
+                  <RecommendContainer>
                     {recommendationData.results.map((item) => (
                       <RecommendItem
                         onClick={() => navigate(`/${mediaType}/${item.id}`)}
@@ -305,7 +311,7 @@ export default function ClickedItemComp({
                         </RecommendOverview>
                       </RecommendItem>
                     ))}
-                  </RecommendBox>
+                  </RecommendContainer>
                 </>
               ) : null}
             </InfoBox>

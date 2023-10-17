@@ -58,6 +58,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 3; // Under <ClickedItemComp>
 `;
 
 interface SearchItemProps {
@@ -68,8 +69,8 @@ interface SearchItemProps {
 export default function SearchItem({ item }: SearchItemProps) {
   // Click item to show detail
   const [isDetail, setIsDetail] = useState(false);
-  const onItemClick = () => setIsDetail(true);
-  const onOverlayClick = () => setIsDetail(false);
+  const onItemClick = () => setIsDetail(true); // Open
+  const onOverlayClick = () => setIsDetail(false); // Close
 
   return (
     <>

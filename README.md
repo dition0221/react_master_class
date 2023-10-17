@@ -758,6 +758,8 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - [Search] 검색된 item 클릭 시 modal-box 보여주기
   - Issue : [Search] 검색된 item의 modal-box에서 recommendItem 클릭 시 URL 이동하는 현상
     - 검색 시 검색어를 Query String 대신 하위 동적URL 및 nested route 사용?
+- **23-10-17 : NETFLIX Clone(18)**
+  - Fix : [Search] 검색된 item 클릭 시 overlay 위치 수정
 
 ---
 
@@ -766,6 +768,7 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - [Head] favicon, title(Helmet), meta미리보기 등 업데이트
   - [API] useQueries를 사용해 'isLoading' 통합하기
     - ClickedMovie, ClickedTv
+  - [Modal-Box] 시즌 회차(tv episode) 추가하기
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.
