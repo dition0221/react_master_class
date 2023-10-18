@@ -27,7 +27,7 @@ import { useState, memo } from "react";
 
 const Item = styled(motion.article)`
   width: 60vw;
-  max-width: 934px;
+  max-width: 934px; // TODO mobile - width: 95vw
   position: fixed;
   top: 30px;
   left: 0;
@@ -85,30 +85,81 @@ const Detail = styled.p`
 `;
 
 // Season & Episode
-const SeasonTitleHeader = styled(Description)`
+const SeasonTitleHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 17px;
   align-items: center;
 `;
 
-// ? <select>와 <option> 사용 대신 <button>과 <ul>, <li> 사용
-// ? useState()를 사용해, 리스트를 on/off 및 버튼 svg Animation 가능해짐
-const SelectBox = styled.select`
+const SelectSeasonBtn = styled.button`
+  width: max-content;
   max-width: 100%;
   min-height: 40px;
   padding: 9px;
   color: white;
-  font-size: 18px;
+  font-size: min(max(14px, 0.9vw), 18px); // 14px ~ 0.9vw ~ 18px
+  text-align: left;
   background-color: #242424;
-  border-radius: 6px;
   border: 1px solid #424242;
-  option {
-    font-size: 16px;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  svg {
+    fill: white;
+    margin-left: 10px;
+  }
+`;
+
+const SeasonList = styled.ul`
+  min-width: max-content;
+  border: 1px solid #424242;
+  margin-top: 3px;
+  background-color: #242424;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  font-weight: 500;
+  font-size: min(max(12px, 0.8vw), 16px); // 12px ~ 0.8vw ~ 16px
+  li {
+    padding: 9px 14px;
+    &:hover {
+      background-color: #333;
+    }
   }
 `;
 
 const SubTitle = styled.h4`
   margin-bottom: 10px;
   font-size: 14px;
+`;
+
+const EpisodeContainer = styled.ul`
+  width: 100%;
+  margin-bottom: 50px;
+`;
+
+const Episode = styled.li`
+  padding: 16px;
+  border-bottom: 1px solid #424242;
+  display: flex;
+  align-items: center;
+  h1 {
+    width: 3vw;
+    font-size: 24px;
+    text-align: center;
+    display: block;
+  }
+`;
+
+const EpisodeImg = styled(Img)`
+  max-width: 150px;
+`;
+
+const EpisodeDescription = styled.div`
+  width: 100%;
 `;
 
 // Recommend Items
@@ -227,6 +278,7 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
     [mediaType, itemId, "recommendation"],
     () => getItemRecommendation(mediaType, itemId)
   );
+
   // TODO :  tv episode 섹션 추가 (recommend 앞에)
   const seasonParams = detailData?.seasons?.map((season) => ({
     name: season.name,
@@ -248,10 +300,10 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
   // console.log(seasonData); // * 'seasonData.length' === 0, 정보가 없음
 
   // TODO: TV Season <select> value
-  const initSeasonName = seasonData[0]?.data?.name || "";
-  const [selectedSeasonName, setSelectedSeasonName] = useState("");
-  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
-    setSelectedSeasonName(event.currentTarget.value);
+  const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const onSelectClick = () => setIsSelectOpen((prev) => !prev);
+  const onLiClick = (index: number) => setSelectedSeasonIndex(index);
 
   // Variables
   const overview = (clickedItem || detailData)?.overview
@@ -266,8 +318,9 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
         variants={itemVariants}
         initial="init"
         animate={
-          recommendationData?.results !== undefined &&
-          recommendationData?.results.length > 0
+          (recommendationData?.results !== undefined &&
+            recommendationData?.results.length > 0) ||
+          seasonData.length !== 0
             ? "yesResult"
             : "noResult"
         }
@@ -285,7 +338,7 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
                       (clickedItem || detailData)?.poster_path ||
                       ""
                   )}
-                  alt="썸네일"
+                  alt="Backdrop Thumbnail"
                 />
                 <PlayInfoBtns itemId={itemId} mediaType={mediaType} />
               </ImgContainer>
@@ -326,31 +379,80 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
                 </div>
               </Description>
 
+              {/* Season & Episode */}
               {seasonLoadDone && seasonData.length !== 0 ? (
                 <>
                   <SeasonTitleHeader>
                     <Title style={{ textAlign: "left", marginBottom: 0 }}>
                       회차
                     </Title>
-                    <SelectBox
-                      value={selectedSeasonName}
-                      onChange={onSelectChange}
-                    >
-                      {seasonData.map((season, index) => (
-                        <option
-                          value={season.data?.name || ""}
-                          key={season.data?.id || index}
+                    <SelectSeasonBtn onClick={onSelectClick}>
+                      {seasonData[selectedSeasonIndex].data?.name}
+                      {isSelectOpen ? (
+                        <>
+                          <motion.svg
+                            layoutId="selectSeason"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="1em"
+                            viewBox="0 0 320 512"
+                          >
+                            <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+                          </motion.svg>
+                          <SeasonList>
+                            {seasonData.map((season, index) => (
+                              <li
+                                key={season.data?.id}
+                                onClick={() => onLiClick(index)}
+                              >{`${season.data?.name} (${season.data?.episodes.length}개 에피소드)`}</li>
+                            ))}
+                          </SeasonList>
+                        </>
+                      ) : (
+                        <motion.svg
+                          layoutId="selectSeason"
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 0 320 512"
                         >
-                          {season.data?.name}
-                        </option>
-                      ))}
-                    </SelectBox>
+                          <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                        </motion.svg>
+                      )}
+                    </SelectSeasonBtn>
                   </SeasonTitleHeader>
+                  <SubTitle>
+                    {seasonData[selectedSeasonIndex].data?.name}
+                  </SubTitle>
                   {/* TO-DO: 선택된 시즌 화면에 표시하기 */}
-                  <SubTitle>{selectedSeasonName || initSeasonName}</SubTitle>
+                  <EpisodeContainer>
+                    {seasonData[selectedSeasonIndex].data?.episodes.map(
+                      (episode, index) => (
+                        <Episode key={episode.id}>
+                          <h1>{index}</h1>
+                          <EpisodeImg
+                            src={makeImagePath(
+                              episode.still_path || "",
+                              "w200"
+                            )}
+                            alt="Episode Thumbnail"
+                          />
+                          <EpisodeDescription>
+                            <span>{episode.name || `에피소드 ${index}`}</span>
+                            {episode.runtime && (
+                              <span>{`${episode.runtime}분`}</span>
+                            )}
+                            <p>{episode.overview.slice(0, 100)}</p>
+                            {episode.air_date && (
+                              <span>{episode.air_date}</span>
+                            )}
+                          </EpisodeDescription>
+                        </Episode>
+                      )
+                    )}
+                  </EpisodeContainer>
                 </>
               ) : null}
 
+              {/* Recommend programs */}
               {recommendationData?.results.length ? (
                 <>
                   <Title style={{ textAlign: "left" }}>

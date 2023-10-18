@@ -763,8 +763,10 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
 - **23-10-18 : NETFLIX Clone(19)**
   - Fix
     - [Iframe] 중복된 key값을 가지는 현상 수정
-    - [Modal-Box] recommend item들의 height값 수정
-  - Doing : [TV, Modal-Box] Season 및 Episode 업데이트
+    - [Modal-Box] recommend item들의 height값 수정 (max-height)
+  - Update : [TV, Modal-Box] Season 및 Episode 업데이트 (1)
+    - 좀 더 다듬기 필요
+  - Issue : [TV, Season] select svg 애니메이션 만들기
   <!-- TODO: [Modal-Box] 시즌 회차(tv episode) 추가하기 -->
 
 ---
