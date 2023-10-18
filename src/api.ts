@@ -118,19 +118,19 @@ interface ITvCreatedBy {
 }
 
 interface ITvEpisode {
-  id: number;
-  name: string;
-  overview: string;
-  vote_average: number;
-  vote_count: number;
   air_date: string;
   episode_number: number;
   episode_type: string;
+  id: number;
+  name: string;
+  overview: string;
   production_code: string;
   runtime: number;
   season_number: number;
   show_id: number;
   still_path: string | null;
+  vote_average: number;
+  vote_count: number;
 }
 
 interface ITvSeasons {
@@ -289,14 +289,14 @@ export async function getOnTheAirTv() {
 }
 
 /* Details */
-// Get TV's details
+// Get details
 export async function getItemDetail(mediaType: "movie" | "tv", itemId: number) {
   return await (
     await fetch(`${BASE_PATH}/${mediaType}/${itemId}?language=ko-KR`, options)
   ).json();
 }
 
-// Get tv's credits
+// Get credits
 export async function getItemCredit(mediaType: "movie" | "tv", itemId: number) {
   return await (
     await fetch(
@@ -306,7 +306,7 @@ export async function getItemCredit(mediaType: "movie" | "tv", itemId: number) {
   ).json();
 }
 
-// Get tv's recommendations
+// Get recommendations
 export async function getItemRecommendation(
   mediaType: "movie" | "tv",
   itemId: number
@@ -314,6 +314,29 @@ export async function getItemRecommendation(
   return await (
     await fetch(
       `${BASE_PATH}/${mediaType}/${itemId}/recommendations?language=ko-KR&page=1`,
+      options
+    )
+  ).json();
+}
+
+// if TV, get episode of seasons
+export interface IGetTvEpisode {
+  _id: string;
+  air_date: string;
+  episodes: ITvEpisode[] | [];
+  name: string;
+  overview: string;
+  id: number;
+  poster_path: string;
+  season_number: number;
+  vote_average: number;
+  success?: boolean;
+}
+
+export async function getTvEpisode(tvId: number, seasonNumber: number) {
+  return await (
+    await fetch(
+      `${BASE_PATH}/tv/${tvId}/season/${seasonNumber}?language=ko-KR`,
       options
     )
   ).json();

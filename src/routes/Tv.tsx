@@ -25,15 +25,15 @@ const Wrapper = styled.main`
 export default function Tv() {
   // API
   const { data: trendingTvData } = useQuery<IGetRecommendAndTrend>(
-    ["tv", "trending"],
+    ["tvs", "trending"],
     getTrendingTv
   );
   const { isLoading, data: topRated } = useQuery<IGetTvTopRated>(
-    ["tv", "topRated"],
+    ["tvs", "topRated"],
     getTopRatedTv
   );
   const { data: onTheAirTvData } = useQuery<IGetRecommendAndTrend>(
-    ["tv", "onTheAir"],
+    ["tvs", "onTheAir"],
     getOnTheAirTv
   );
 

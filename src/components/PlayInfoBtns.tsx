@@ -87,8 +87,9 @@ export default function PlayInfoBtns({
   isBanner,
 }: IPlayInfoBtnsProps) {
   // API - video
-  const { isLoading, data } = useQuery<IGetVideo>(["video", itemId], () =>
-    getVideo(itemId, mediaType)
+  const { isLoading, data } = useQuery<IGetVideo>(
+    [mediaType, itemId, "video"],
+    () => getVideo(itemId, mediaType)
   );
   const isYoutube =
     data &&
@@ -140,6 +141,7 @@ export default function PlayInfoBtns({
         <AnimatePresence>
           <Overlay onClick={onOverlayClick} />
           <Iframe
+            key={youtubeKey}
             src={`https://www.youtube.com/embed/${youtubeKey}?rel=0&vq=hd1080&autoplay=1`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

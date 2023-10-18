@@ -701,11 +701,11 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
     - [Search] 검색 시 동일 작품이 중복되는 현상 수정 (중복 결과 제거)
       - 멀티 검색이기 때문에, 작품/인물 검색으로 인해 중복되는 것으로 추정
       - 중복 시 하나만 보여주도록 수정
-  - Issue : [Search] 장르 검색 관련 설정하기
+  - ~~Issue : [Search] 장르 검색 관련 설정하기~~
 - **23-09-28 : NETFLIX Clone(8)**
   - Update : [Search] 검색 UI 업데이트 & 포스터 이미지가 없는 작품의 대체 이미지
   - Fix : [Header] 검색창의 검색 키워드가 우측의 'x'버튼과 겹치는 현상 수정
-  - Issue : [Search] (完) 검색 결과의 갯수
+  - ~~Issue : [Search] 검색 결과의 갯수~~
 - **23-09-29 : NETFLIX Clone(9)**
   - Update : [Search] 아이템 hover 시의 infoBox 업데이트
   - Fix : [Search] 검색 결과의 갯수
@@ -723,9 +723,9 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 데이터 추가 및 UI 업데이트
       - Nested-Router 분할 정복
       - 홈에서 이미 API data를 가지고 있다면 바로 사용 / URL 검색 시 API 검색
-  - Issue : [Modal-Box] URL 직접 입력 시 404 Error 해결하기 (해결)
+  - ~~Issue : [Modal-Box] URL 직접 입력 시 404 Error 해결하기~~
 - **23-10-08 : NETFLIX Clone(13)**
-  - Issue : [Modal-Box] 스크롤바 문제 (해결)
+  - ~~Issue : [Modal-Box] 스크롤바 문제~~
 - **23-10-11 : NETFLIX Clone(14)**
   - Fix : [Modal-Box]
     - recommendationData가 있을 경우 스크롤바가 생기지 않는 문제 해결
@@ -756,10 +756,16 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - Update
     - [ClickedItem] 영화와 tv를 한 컴포넌트로 통합
     - [Search] 검색된 item 클릭 시 modal-box 보여주기
-  - Issue : [Search] 검색된 item의 modal-box에서 recommendItem 클릭 시 URL 이동하는 현상
-    - 검색 시 검색어를 Query String 대신 하위 동적URL 및 nested route 사용?
+  - _Issue : [Search] 검색된 item의 modal-box에서 recommendItem 클릭 시 URL 이동하는 현상_
+    - _검색 시 검색어를 Query String 대신 하위 동적URL 및 nested route 사용?_
 - **23-10-17 : NETFLIX Clone(18)**
   - Fix : [Search] 검색된 item 클릭 시 overlay 위치 수정
+- **23-10-18 : NETFLIX Clone(19)**
+  - Fix
+    - [Iframe] 중복된 key값을 가지는 현상 수정
+    - [Modal-Box] recommend item들의 height값 수정
+  - Doing : [TV, Modal-Box] Season 및 Episode 업데이트
+  <!-- TODO: [Modal-Box] 시즌 회차(tv episode) 추가하기 -->
 
 ---
 
@@ -768,7 +774,6 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
   - [Head] favicon, title(Helmet), meta미리보기 등 업데이트
   - [API] useQueries를 사용해 'isLoading' 통합하기
     - ClickedMovie, ClickedTv
-  - [Modal-Box] 시즌 회차(tv episode) 추가하기
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

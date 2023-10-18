@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryResult, useQueries, useQuery } from "@tanstack/react-query";
 // Utility
 import { makeImagePath } from "../utils";
 // API & Interface
@@ -18,9 +18,12 @@ import {
   getItemDetail,
   getItemCredit,
   getItemRecommendation,
+  IGetTvEpisode,
+  getTvEpisode,
 } from "../api";
 // Components
 import PlayInfoBtns from "./PlayInfoBtns";
+import { useState, memo } from "react";
 
 const Item = styled(motion.article)`
   width: 60vw;
@@ -55,7 +58,7 @@ const Description = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 32px;
-  margin-bottom: 55px;
+  margin-bottom: 50px;
 `;
 
 const Title = styled.h2`
@@ -81,10 +84,37 @@ const Detail = styled.p`
   }
 `;
 
+// Season & Episode
+const SeasonTitleHeader = styled(Description)`
+  margin-bottom: 17px;
+  align-items: center;
+`;
+
+// ? <select>와 <option> 사용 대신 <button>과 <ul>, <li> 사용
+// ? useState()를 사용해, 리스트를 on/off 및 버튼 svg Animation 가능해짐
+const SelectBox = styled.select`
+  max-width: 100%;
+  min-height: 40px;
+  padding: 9px;
+  color: white;
+  font-size: 18px;
+  background-color: #242424;
+  border-radius: 6px;
+  border: 1px solid #424242;
+  option {
+    font-size: 16px;
+  }
+`;
+
+const SubTitle = styled.h4`
+  margin-bottom: 10px;
+  font-size: 14px;
+`;
+
 // Recommend Items
 const RecommendContainer = styled.section`
   width: 100%;
-  padding-bottom: 50px;
+  margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1em;
@@ -93,7 +123,7 @@ const RecommendContainer = styled.section`
 
 const RecommendItem = styled.article`
   width: 100%;
-  height: 380px;
+  max-height: fit-content;
   padding-bottom: 14px;
   background-color: ${(props) => props.theme.black.lighter};
   border-radius: 6px;
@@ -164,10 +194,7 @@ interface IClickedItemProps {
   searchId?: number; // Item's id from <SearchItem>
 }
 
-export default function ClickedItemComp({
-  mediaType,
-  searchId,
-}: IClickedItemProps) {
+function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
   const navigate = useNavigate();
 
   // Data: from URL params
@@ -187,21 +214,44 @@ export default function ClickedItemComp({
   const itemId = (clickedItem ? clickedItem.id : +paramsItemId) || searchId!;
 
   // API
-  // TODO :  tv episode 섹션 추가 (recommend 앞에)
-  // ㄴ https://developer.themoviedb.org/reference/tv-season-details
   // TODO : 'useQueries()'로 코드를 합쳐보자
   const { data: detailData } = useQuery<IItemDetail>(
-    [mediaType, "detail", itemId],
+    [mediaType, itemId, "detail"],
     () => getItemDetail(mediaType, itemId)
   );
   const { data: creditData } = useQuery<IItemCredit>(
-    [mediaType, "credit", itemId],
+    [mediaType, itemId, "credit"],
     () => getItemCredit(mediaType, itemId)
   );
   const { data: recommendationData } = useQuery<IGetRecommendAndTrend>(
-    [mediaType, "recommendation", itemId],
+    [mediaType, itemId, "recommendation"],
     () => getItemRecommendation(mediaType, itemId)
   );
+  // TODO :  tv episode 섹션 추가 (recommend 앞에)
+  const seasonParams = detailData?.seasons?.map((season) => ({
+    name: season.name,
+    seasonNumber: season.season_number,
+  }));
+  const seasonData = useQueries({
+    queries:
+      seasonParams?.map((season) => ({
+        queryKey: [
+          mediaType,
+          itemId,
+          "episode",
+          `season ${season.seasonNumber}`,
+        ],
+        queryFn: () => getTvEpisode(itemId, season.seasonNumber),
+      })) || [],
+  }) as UseQueryResult<IGetTvEpisode>[];
+  const seasonLoadDone = seasonData.every((season) => !season.isLoading);
+  // console.log(seasonData); // * 'seasonData.length' === 0, 정보가 없음
+
+  // TODO: TV Season <select> value
+  const initSeasonName = seasonData[0]?.data?.name || "";
+  const [selectedSeasonName, setSelectedSeasonName] = useState("");
+  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+    setSelectedSeasonName(event.currentTarget.value);
 
   // Variables
   const overview = (clickedItem || detailData)?.overview
@@ -276,6 +326,31 @@ export default function ClickedItemComp({
                 </div>
               </Description>
 
+              {seasonLoadDone && seasonData.length !== 0 ? (
+                <>
+                  <SeasonTitleHeader>
+                    <Title style={{ textAlign: "left", marginBottom: 0 }}>
+                      회차
+                    </Title>
+                    <SelectBox
+                      value={selectedSeasonName}
+                      onChange={onSelectChange}
+                    >
+                      {seasonData.map((season, index) => (
+                        <option
+                          value={season.data?.name || ""}
+                          key={season.data?.id || index}
+                        >
+                          {season.data?.name}
+                        </option>
+                      ))}
+                    </SelectBox>
+                  </SeasonTitleHeader>
+                  {/* TO-DO: 선택된 시즌 화면에 표시하기 */}
+                  <SubTitle>{selectedSeasonName || initSeasonName}</SubTitle>
+                </>
+              ) : null}
+
               {recommendationData?.results.length ? (
                 <>
                   <Title style={{ textAlign: "left" }}>
@@ -326,3 +401,5 @@ export default function ClickedItemComp({
     </AnimatePresence>
   );
 }
+
+export default memo(ClickedItemComp);
