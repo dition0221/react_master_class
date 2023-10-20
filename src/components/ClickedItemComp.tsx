@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { UseQueryResult, useQueries, useQuery } from "@tanstack/react-query";
+import { useState, memo } from "react";
+import { Helmet } from "react-helmet-async";
 // Utility
 import { makeImagePath } from "../utils";
 // API & Interface
@@ -23,7 +25,6 @@ import {
 } from "../api";
 // Components
 import PlayInfoBtns from "./PlayInfoBtns";
-import { useState, memo } from "react";
 
 const Item = styled(motion.article)`
   width: 60vw;
@@ -37,6 +38,13 @@ const Item = styled(motion.article)`
   color: ${(props) => props.theme.white.lighter};
   z-index: 4;
   overflow-x: hidden;
+  /* Don't show scroll-bar  */
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    // Chrome, Safari
+    display: none;
+  }
+  scrollbar-width: none; // Firefox
 `;
 
 const ImgContainer = styled.div`
@@ -144,22 +152,91 @@ const EpisodeContainer = styled.ul`
 const Episode = styled.li`
   padding: 16px;
   border-bottom: 1px solid #424242;
+  border-radius: 6px;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #2f2f2f;
+  }
   h1 {
     width: 3vw;
-    font-size: 24px;
-    text-align: center;
     display: block;
+    text-align: center;
+    font-size: 24px;
+    color: #d2d2d2;
   }
 `;
 
 const EpisodeImg = styled(Img)`
   max-width: 150px;
+  aspect-ratio: 25/14;
+  margin-left: 7px;
+  margin-right: 14px;
+`;
+
+const EpisodeAlterImg = styled(EpisodeImg).attrs({ as: "div" })`
+  background-color: ${(props) => props.theme.black.darker};
+  border: 1px solid ${(props) => props.theme.white.darker};
+  color: ${(props) => props.theme.white.darker};
+  font-size: 1vw;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const EpisodeDescription = styled.div`
   width: 100%;
+  small {
+    font-size: 12px;
+    color: #d2d2d2;
+  }
+`;
+
+const EpisodeTitle = styled.div`
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+`;
+
+const EpisodeOverview = styled.p`
+  font-size: 14px;
+  color: #d2d2d2;
+  margin-bottom: 5px;
+`;
+
+const EpisodeMoreBtn = styled.div`
+  height: 2px;
+  background-color: #424242;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #8d8d8d;
+    border-radius: 50%;
+    background-color: rgba(42, 42, 42, 0.6);
+    cursor: pointer;
+    &:hover {
+      border-color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    svg {
+      width: 75%;
+      height: 75%;
+      fill: ${(props) => props.theme.white.darker};
+    }
+  }
 `;
 
 // Recommend Items
@@ -226,13 +303,12 @@ const Error404 = styled.div`
 /* Variants */
 const itemVariants = {
   init: { scale: 0.8, opacity: 0 },
-  yesResult: {
+  result: {
     borderRadius: "6px",
     scale: 1,
     opacity: 1,
-    height: "calc(100% - 30px)", // 100% - top
+    maxHeight: "calc(100% - 30px)", // 100% - top
   },
-  noResult: { borderRadius: "6px", scale: 1, opacity: 1 },
   exit: { scale: 0.8, opacity: 0 },
 };
 
@@ -261,11 +337,10 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
     ? data?.results.find((item) => item.id === +itemIdParam)
     : undefined; // Movie's data from home
 
-  // Final movie id
+  // Final item id
   const itemId = (clickedItem ? clickedItem.id : +paramsItemId) || searchId!;
 
-  // API
-  // TODO : 'useQueries()'로 코드를 합쳐보자
+  // APIs
   const { data: detailData } = useQuery<IItemDetail>(
     [mediaType, itemId, "detail"],
     () => getItemDetail(mediaType, itemId)
@@ -279,7 +354,7 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
     () => getItemRecommendation(mediaType, itemId)
   );
 
-  // TODO :  tv episode 섹션 추가 (recommend 앞에)
+  // API: TV seasons & episode
   const seasonParams = detailData?.seasons?.map((season) => ({
     name: season.name,
     seasonNumber: season.season_number,
@@ -297,13 +372,23 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
       })) || [],
   }) as UseQueryResult<IGetTvEpisode>[];
   const seasonLoadDone = seasonData.every((season) => !season.isLoading);
-  // console.log(seasonData); // * 'seasonData.length' === 0, 정보가 없음
+  // * 'seasonData.length' === 0, 정보가 없음
 
-  // TODO: TV Season <select> value
+  // TV Season <SelectSeasonBtn> value
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const onSelectClick = () => setIsSelectOpen((prev) => !prev);
   const onLiClick = (index: number) => setSelectedSeasonIndex(index);
+
+  // Show more/less tv episodes by clicking <EpisodeMoreBtn>
+  const [isEpisodeOpen, setIsEpisodeOpen] = useState(false);
+  const toggleEpisodeOpen = () => {
+    if (isEpisodeOpen) {
+      const targetEl = document.getElementById("season-episode");
+      targetEl?.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsEpisodeOpen((prev) => !prev);
+  };
 
   // Variables
   const overview = (clickedItem || detailData)?.overview
@@ -313,194 +398,234 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
     : "- Overview unknown -";
 
   return (
-    <AnimatePresence>
-      <Item
-        variants={itemVariants}
-        initial="init"
-        animate={
-          (recommendationData?.results !== undefined &&
-            recommendationData?.results.length > 0) ||
-          seasonData.length !== 0
-            ? "yesResult"
-            : "noResult"
-        }
-        exit={{ scale: 0.8, opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {detailData?.success === undefined ||
-        creditData?.success === undefined ? (
-          <>
-            {(clickedItem || detailData)?.backdrop_path ? (
-              <ImgContainer>
-                <Img
-                  src={makeImagePath(
-                    (clickedItem || detailData)?.backdrop_path ||
-                      (clickedItem || detailData)?.poster_path ||
-                      ""
-                  )}
-                  alt="Backdrop Thumbnail"
-                />
-                <PlayInfoBtns itemId={itemId} mediaType={mediaType} />
-              </ImgContainer>
-            ) : null}
-            <InfoBox>
-              <Title>
-                {(clickedItem || detailData)?.title ||
-                  (clickedItem || detailData)?.name}
-              </Title>
-              <Description>
-                <div>
-                  <Overview>{overview}</Overview>
-                </div>
-                <div>
-                  <Detail>
-                    <span>출연:</span>
-                    <span>
-                      {creditData?.cast
-                        ?.slice(0, 3)
-                        ?.map((g) => g.name)
-                        .join(", ") || "- Cast unknown -"}
-                    </span>
-                  </Detail>
-                  <Detail>
-                    <span>장르:</span>
-                    <span>
-                      {detailData?.genres?.map((g) => g.name).join(", ") ||
-                        "- Genre unknown -"}
-                    </span>
-                  </Detail>
-                  <Detail>
-                    <span>개봉일:</span>
-                    <span>
-                      {(clickedItem || detailData)?.release_date ||
-                        (clickedItem || detailData)?.first_air_date}
-                    </span>
-                  </Detail>
-                </div>
-              </Description>
+    <>
+      <Helmet>
+        <title>{`${
+          (clickedItem || detailData)?.title ||
+          (clickedItem || detailData)?.name
+        } - 넷플릭스`}</title>
+      </Helmet>
 
-              {/* Season & Episode */}
-              {seasonLoadDone && seasonData.length !== 0 ? (
-                <>
-                  <SeasonTitleHeader>
-                    <Title style={{ textAlign: "left", marginBottom: 0 }}>
-                      회차
-                    </Title>
-                    <SelectSeasonBtn onClick={onSelectClick}>
-                      {seasonData[selectedSeasonIndex].data?.name}
-                      {isSelectOpen ? (
-                        <>
+      <AnimatePresence>
+        <Item
+          variants={itemVariants}
+          initial="init"
+          animate="result"
+          exit={{ scale: 0.8, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {detailData?.success === undefined ||
+          creditData?.success === undefined ? (
+            <>
+              {(clickedItem || detailData)?.backdrop_path ? (
+                <ImgContainer>
+                  <Img
+                    src={makeImagePath(
+                      (clickedItem || detailData)?.backdrop_path ||
+                        (clickedItem || detailData)?.poster_path ||
+                        ""
+                    )}
+                    alt="Backdrop Thumbnail"
+                  />
+                  <PlayInfoBtns itemId={itemId} mediaType={mediaType} />
+                </ImgContainer>
+              ) : null}
+              <InfoBox>
+                <Title>
+                  {(clickedItem || detailData)?.title ||
+                    (clickedItem || detailData)?.name}
+                </Title>
+                <Description>
+                  <div>
+                    <Overview>{overview}</Overview>
+                  </div>
+                  <div>
+                    <Detail>
+                      <span>출연:</span>
+                      <span>
+                        {creditData?.cast
+                          ?.slice(0, 3)
+                          ?.map((g) => g.name)
+                          .join(", ") || "- Cast unknown -"}
+                      </span>
+                    </Detail>
+                    <Detail>
+                      <span>장르:</span>
+                      <span>
+                        {detailData?.genres?.map((g) => g.name).join(", ") ||
+                          "- Genre unknown -"}
+                      </span>
+                    </Detail>
+                    <Detail>
+                      <span>개봉일:</span>
+                      <span>
+                        {(clickedItem || detailData)?.release_date ||
+                          (clickedItem || detailData)?.first_air_date}
+                      </span>
+                    </Detail>
+                  </div>
+                </Description>
+
+                {/* Season & Episode */}
+                {seasonLoadDone && seasonData.length !== 0 ? (
+                  <>
+                    <SeasonTitleHeader id="season-episode">
+                      <Title style={{ textAlign: "left", marginBottom: 0 }}>
+                        회차
+                      </Title>
+                      <SelectSeasonBtn onClick={onSelectClick}>
+                        {seasonData[selectedSeasonIndex].data?.name}
+                        {isSelectOpen ? (
+                          <>
+                            <motion.svg
+                              layoutId="selectSeason"
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="1em"
+                              viewBox="0 0 320 512"
+                            >
+                              <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+                            </motion.svg>
+                            <SeasonList>
+                              {seasonData.map((season, index) => (
+                                <li
+                                  key={`season id: ${season.data?.id || index}`}
+                                  onClick={() => onLiClick(index)}
+                                >{`${season.data?.name} (${season.data?.episodes.length}개 에피소드)`}</li>
+                              ))}
+                            </SeasonList>
+                          </>
+                        ) : (
                           <motion.svg
                             layoutId="selectSeason"
                             xmlns="http://www.w3.org/2000/svg"
                             height="1em"
                             viewBox="0 0 320 512"
                           >
-                            <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+                            <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
                           </motion.svg>
-                          <SeasonList>
-                            {seasonData.map((season, index) => (
-                              <li
-                                key={season.data?.id}
-                                onClick={() => onLiClick(index)}
-                              >{`${season.data?.name} (${season.data?.episodes.length}개 에피소드)`}</li>
-                            ))}
-                          </SeasonList>
-                        </>
-                      ) : (
-                        <motion.svg
-                          layoutId="selectSeason"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="1em"
-                          viewBox="0 0 320 512"
-                        >
-                          <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-                        </motion.svg>
-                      )}
-                    </SelectSeasonBtn>
-                  </SeasonTitleHeader>
-                  <SubTitle>
-                    {seasonData[selectedSeasonIndex].data?.name}
-                  </SubTitle>
-                  {/* TO-DO: 선택된 시즌 화면에 표시하기 */}
-                  <EpisodeContainer>
-                    {seasonData[selectedSeasonIndex].data?.episodes.map(
-                      (episode, index) => (
-                        <Episode key={episode.id}>
-                          <h1>{index}</h1>
-                          <EpisodeImg
-                            src={makeImagePath(
-                              episode.still_path || "",
-                              "w200"
-                            )}
-                            alt="Episode Thumbnail"
-                          />
-                          <EpisodeDescription>
-                            <span>{episode.name || `에피소드 ${index}`}</span>
-                            {episode.runtime && (
-                              <span>{`${episode.runtime}분`}</span>
-                            )}
-                            <p>{episode.overview.slice(0, 100)}</p>
-                            {episode.air_date && (
-                              <span>{episode.air_date}</span>
-                            )}
-                          </EpisodeDescription>
-                        </Episode>
-                      )
-                    )}
-                  </EpisodeContainer>
-                </>
-              ) : null}
-
-              {/* Recommend programs */}
-              {recommendationData?.results.length ? (
-                <>
-                  <Title style={{ textAlign: "left" }}>
-                    함께 시청된 콘텐츠
-                  </Title>
-                  <RecommendContainer>
-                    {recommendationData.results.map((item) => (
-                      <RecommendItem
-                        onClick={() => navigate(`/${mediaType}/${item.id}`)}
-                        key={item.id}
-                      >
-                        {item.backdrop_path ? (
-                          <RecommendImg
-                            src={makeImagePath(item.backdrop_path, "w500")}
-                            alt={item.title || item.name || "썸네일"}
-                          />
-                        ) : (
-                          <AlterImg>{item.title || item.name}</AlterImg>
                         )}
-                        <RecommendTitle>
-                          {item.title || item.name}
-                        </RecommendTitle>
-                        <RecommendYear>
-                          {(item.release_date || item.first_air_date) ??
-                            "- Date unknown -"}
-                        </RecommendYear>
-                        <RecommendOverview>
-                          {item.overview
-                            ? item.overview.length > 135
-                              ? item.overview.slice(0, 135) + "..."
-                              : item.overview
-                            : "- Overview unknown -"}
-                        </RecommendOverview>
-                      </RecommendItem>
-                    ))}
-                  </RecommendContainer>
-                </>
-              ) : null}
-            </InfoBox>
-          </>
-        ) : (
-          <Error404>
-            Error : 404 <br />
-            페이지를 찾을 수 없습니다.
-          </Error404>
-        )}
-      </Item>
-    </AnimatePresence>
+                      </SelectSeasonBtn>
+                    </SeasonTitleHeader>
+                    <SubTitle>
+                      {seasonData[selectedSeasonIndex].data?.name}
+                    </SubTitle>
+                    <EpisodeContainer>
+                      {seasonData[selectedSeasonIndex].data?.episodes
+                        .slice(0, isEpisodeOpen ? undefined : 10)
+                        .map((episode, index) => (
+                          <Episode key={episode.id}>
+                            <h1>{index + 1}</h1>
+                            {episode.still_path ? (
+                              <EpisodeImg
+                                src={makeImagePath(
+                                  episode.still_path || "",
+                                  "w200"
+                                )}
+                                alt="Episode Thumbnail"
+                              />
+                            ) : (
+                              <EpisodeAlterImg>
+                                {episode.name || `에피소드 ${index}`}
+                              </EpisodeAlterImg>
+                            )}
+                            <EpisodeDescription>
+                              <EpisodeTitle>
+                                <span>
+                                  {episode.name || `에피소드 ${index}`}
+                                </span>
+                                {episode.runtime && (
+                                  <span>{`${episode.runtime}분`}</span>
+                                )}
+                              </EpisodeTitle>
+                              <EpisodeOverview>
+                                {episode.overview.length > 100
+                                  ? episode.overview.slice(0, 100) + "..."
+                                  : episode.overview}
+                              </EpisodeOverview>
+                              {episode.air_date && (
+                                <small>{episode.air_date}</small>
+                              )}
+                            </EpisodeDescription>
+                          </Episode>
+                        ))}
+                      {seasonData[selectedSeasonIndex].data?.episodes.length! >
+                      10 ? (
+                        <EpisodeMoreBtn>
+                          <button onClick={toggleEpisodeOpen}>
+                            {isEpisodeOpen ? (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="1em"
+                                viewBox="0 0 512 512"
+                              >
+                                <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+                              </svg>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="1em"
+                                viewBox="0 0 512 512"
+                              >
+                                <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                              </svg>
+                            )}
+                          </button>
+                        </EpisodeMoreBtn>
+                      ) : null}
+                    </EpisodeContainer>
+                  </>
+                ) : null}
+
+                {/* Recommend programs */}
+                {recommendationData?.results.length ? (
+                  <>
+                    <Title style={{ textAlign: "left" }}>
+                      함께 시청된 콘텐츠
+                    </Title>
+                    <RecommendContainer>
+                      {recommendationData.results.map((item) => (
+                        <RecommendItem
+                          onClick={() => navigate(`/${mediaType}/${item.id}`)}
+                          key={item.id}
+                        >
+                          {item.backdrop_path ? (
+                            <RecommendImg
+                              src={makeImagePath(item.backdrop_path, "w500")}
+                              alt={item.title || item.name || "썸네일"}
+                            />
+                          ) : (
+                            <AlterImg>{item.title || item.name}</AlterImg>
+                          )}
+                          <RecommendTitle>
+                            {item.title || item.name}
+                          </RecommendTitle>
+                          <RecommendYear>
+                            {(item.release_date || item.first_air_date) ??
+                              "- Date unknown -"}
+                          </RecommendYear>
+                          <RecommendOverview>
+                            {item.overview
+                              ? item.overview.length > 135
+                                ? item.overview.slice(0, 135) + "..."
+                                : item.overview
+                              : "- Overview unknown -"}
+                          </RecommendOverview>
+                        </RecommendItem>
+                      ))}
+                    </RecommendContainer>
+                  </>
+                ) : null}
+              </InfoBox>
+            </>
+          ) : (
+            <Error404>
+              Error : 404 <br />
+              페이지를 찾을 수 없습니다.
+            </Error404>
+          )}
+        </Item>
+      </AnimatePresence>
+    </>
   );
 }
 

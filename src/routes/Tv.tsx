@@ -14,6 +14,7 @@ import {
 import Loader from "../components/Loader";
 import Banner from "../components/Banner";
 import Slider from "../components/Slider";
+import { Helmet } from "react-helmet-async";
 
 /* Styled */
 const Wrapper = styled.main`
@@ -25,15 +26,15 @@ const Wrapper = styled.main`
 export default function Tv() {
   // API
   const { data: trendingTvData } = useQuery<IGetRecommendAndTrend>(
-    ["tvs", "trending"],
+    ["TVS", "trending"],
     getTrendingTv
   );
   const { isLoading, data: topRated } = useQuery<IGetTvTopRated>(
-    ["tvs", "topRated"],
+    ["TVS", "topRated"],
     getTopRatedTv
   );
   const { data: onTheAirTvData } = useQuery<IGetRecommendAndTrend>(
-    ["tvs", "onTheAir"],
+    ["TVS", "onTheAir"],
     getOnTheAirTv
   );
 
@@ -42,6 +43,10 @@ export default function Tv() {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>TV쇼 - 넷플릭스</title>
+      </Helmet>
+
       {isLoading ? (
         <Loader />
       ) : (

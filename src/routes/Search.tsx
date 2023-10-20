@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Outlet, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet-async";
 // API
 import { ISearch, ISearchMultiResult, searchMulti } from "../api";
+// Components
 import SearchItem from "../components/SearchItem";
 import Loader from "../components/Loader";
 
@@ -62,6 +64,10 @@ export default function Search() {
 
   return (
     <>
+      <Helmet>
+        <title>넷플릭스</title>
+      </Helmet>
+
       <Wrapper>
         {isLoading ? (
           <Loader />

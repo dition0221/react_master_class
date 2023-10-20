@@ -4,6 +4,7 @@ import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { HelmetProvider } from "react-helmet-async";
 // Theme
 import { theme } from "./theme";
 // Fonts
@@ -88,7 +89,9 @@ root.render(
         <ThemeProvider theme={theme}>
           <ReactQueryDevtools />
           <GlobalStyle />
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </RecoilRoot>

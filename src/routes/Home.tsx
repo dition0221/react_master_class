@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 import { AnimatePresence } from "framer-motion";
 import { Outlet, useMatch } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 // API & Interface
 import {
   IGetRecommendAndTrend,
@@ -28,23 +29,23 @@ const Wrapper = styled.main`
 export default function Home() {
   // API
   const { isLoading, data } = useQuery<IGetMovieResult>(
-    ["movies", "nowPlaying"],
+    ["MOVIES", "nowPlaying"],
     getMovies
   );
   const { data: trendingMovieData } = useQuery<IGetRecommendAndTrend>(
-    ["movies", "trending"],
+    ["MOVIES", "trending"],
     getTrendingMovies
   );
   const { data: topRatedMovieData } = useQuery<IGetRecommendAndTrend>(
-    ["movies", "topRated"],
+    ["MOVIES", "topRated"],
     getTopRatedMovies
   );
   const { data: popularMovieData } = useQuery<IGetRecommendAndTrend>(
-    ["movies", "popular"],
+    ["MOVIES", "popular"],
     getPopularMovies
   );
   const { data: upcomingMovieData } = useQuery<IGetMovieResult>(
-    ["movies", "upcoming"],
+    ["MOVIES", "upcoming"],
     getUpcomingMovies
   );
 
@@ -53,6 +54,10 @@ export default function Home() {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>홈 - 넷플릭스</title>
+      </Helmet>
+
       {isLoading ? (
         <Loader />
       ) : (
