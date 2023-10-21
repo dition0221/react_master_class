@@ -28,6 +28,7 @@ const MenuBox = styled.ul`
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 14px;
   li {
+    width: fit-content;
     font-size: 13px;
     line-height: 18.2px;
     margin-bottom: 16px;
@@ -56,15 +57,16 @@ const Info = styled.div`
   cursor: default;
   span {
     display: block;
-    &:not(:first-child) {
-      margin-top: 4px;
-    }
-    &:last-child {
+    margin-bottom: 4px;
+    &:last-of-type {
       cursor: pointer;
       &:hover {
         text-decoration: underline;
       }
     }
+  }
+  small {
+    color: ${(props) => props.theme.red};
   }
 `;
 
@@ -104,7 +106,7 @@ export default function Footer() {
           <path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
         </svg>
         <a
-          href="https://github.com/dition0221"
+          href="https://github.com/dition0221/react_master_class"
           target="_blank"
           rel="noreferrer"
         >
@@ -146,6 +148,10 @@ export default function Footer() {
         <span>사업자 등록번호: 165-81-00119</span>
         <span>클라우드 호스팅: Amazon Web Service Inc.</span>
         <span>공정거래위원회 사이트</span>
+        <small>
+          해당 사이트는 넷플릭스 클론사이트이며, 실제 넷플릭스와 관련이
+          없습니다.
+        </small>
       </Info>
     </Wrapper>
   );

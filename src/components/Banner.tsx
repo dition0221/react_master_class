@@ -16,6 +16,7 @@ const Wrapper = styled.div<{ $bgImg: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(props) => props.$bgImg});
   background-size: cover;
+  background-position: center;
 `;
 
 const Title = styled.h2`

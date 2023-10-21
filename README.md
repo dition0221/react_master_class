@@ -774,14 +774,24 @@ _Animation_ : <img src="https://img.shields.io/badge/ApexCharts-00e396?style=fla
       - 세부사항 꾸미기
       - 사진이 없을 시 텍스트로 대체
       - 처음 10개 까지만 보여주고, 버튼 클릭 시 해당 시즌의 에피소드 다 보여주기
-    - [Helmet] &lt;title&gt; 업데이트
+    - [Head] &lt;title&gt; 업데이트
+- **23-10-21 : NETFLIX Clone(21)**
+  - Update : [Head] favicon 업데이트
+  - Fix
+    - [Head] 'description' 변경
+    - [Banner] 배너 이미지 중앙으로 정렬
+    - [Slider] 버튼 색깔 변경
+    - [Footer] github 링크 및 'MenuBox'의 &lt;li&gt;의 width 수정
 
 ---
 
 - To-Do
   - 'swiper.js' 패키지의 슬라이더 알아보기
-  - [Head] favicon, meta미리보기(썸네일), description 등 업데이트
+  - [Head] meta미리보기(썸네일) 업데이트
   - [Season] svg 애니메이션 고치기
+  - [Modal-Box] footer 및 관람 등급 업데이트
+    - https://developer.themoviedb.org/reference/movie-release-dates
+    - https://developer.themoviedb.org/reference/tv-series-content-ratings
 
 노마드 코더 정책 상 강의요약은 괜찮으나, 코드와 필기는 공개적인 곳에 올리면 안 됨.  
 필기 요약지는 암호화된 .zip 파일로 저장함.

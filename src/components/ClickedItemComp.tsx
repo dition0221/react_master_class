@@ -41,8 +41,7 @@ const Item = styled(motion.article)`
   /* Don't show scroll-bar  */
   overflow-y: auto;
   &::-webkit-scrollbar {
-    // Chrome, Safari
-    display: none;
+    display: none; // Chrome, Safari
   }
   scrollbar-width: none; // Firefox
 `;
@@ -210,6 +209,7 @@ const EpisodeOverview = styled.p`
 `;
 
 const EpisodeMoreBtn = styled.div`
+  width: 100%;
   height: 2px;
   background-color: #424242;
   position: relative;
@@ -615,6 +615,8 @@ function ClickedItemComp({ mediaType, searchId }: IClickedItemProps) {
                     </RecommendContainer>
                   </>
                 ) : null}
+
+                {/* TODO: footer */}
               </InfoBox>
             </>
           ) : (

@@ -32,7 +32,7 @@ const SliderButton = styled(motion.button)`
   position: absolute;
   border: none;
   font-size: 40px;
-  fill: ${(props) => props.theme.white.lighter};
+  fill: ${(props) => props.theme.white.btnColor};
   cursor: pointer;
   z-index: 2;
 `;
